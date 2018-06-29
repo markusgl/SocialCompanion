@@ -1,0 +1,108 @@
+slots:
+  activity:
+    type: text
+  datetime:
+    type: text
+  relativedate:
+    type: text
+  dateperiod:
+    type: text
+  location:
+    type: text
+  firstname:
+    type: text
+  relationship:
+    type: text
+  time:
+    type: text
+  matches:
+    type: list
+  me_name:
+    type: text
+  known_user:
+    type: bool
+
+intents:
+  - agree
+  - contact_selection
+  - decline
+  - find_appointment
+  - get_to_know
+  - goodbye
+  - greet
+  - introduce
+  - search_event
+  - tell_mood
+
+entities:
+  - activity
+  - dateperiod
+  - datetime
+  - firstname
+  - location
+  - relativedate
+  - relationship
+  - time
+
+templates:
+  utter_greet:
+    - 'Hallo, ich bin Careina. Du kannst mich zum Beispiel nach deinen Terminen fragen. Und wer bist du?'
+    - 'Guten Tag, ich bin Careina und wie heißt du?'
+    - 'Hallo, ich bin Careina! Wie heißt du?'
+    - 'Hallo, ich bin Careina und kann dir helfen Termine zu finden oder Veranstaltungen vorzuschlagen. Wie ist dein Name?'
+  utter_introduce:
+    - 'Ich bin Careina. Du kannst mich etwa nach deinen Terminen fragen.'
+    - 'Ich bin Careina und kann dir helfen Termine zu finden oder Veranstaltungen vorzuschlagen.'
+  utter_ask_howcanhelp:
+    - 'Wie kann ich dir helfen? Ich kann für dich Veranstaltungen oder deine Termine finden.'
+    - 'Was möchtest du tun? Ich kann dir etwa deine Termine sagen oder Veranstaltungen vorschlagen.'
+  utter_goodbye:
+    - 'Bis später!'
+    - 'Tschüss!'
+  utter_ack_refuse:
+    - 'Ok.'
+    - 'Geht in Ordnung.'
+    - 'Habe ich verstanden.'
+  utter_ask_location:
+    - 'Ok du willst ins {activity} und wo?'
+    - 'Alles klar. An welchem Ort?'
+  utter_ask_time:
+    - 'Wann möchtest du deine Unternehmung {activity} machen?'
+    - 'An welchem Datum möchtest du deine Aktivität tun?'
+  utter_ask_activity:
+    - 'Ok du willst etwas unternehmen und was?'
+    - 'Was würdest du gerne machen? Kino, Theater oder etwas anderes?'
+  utter_ask_invite:
+    - 'Willst du jemand mitnehmen?'
+    - 'Willst du noch jemanden einladen?'
+    - 'Wen willst du mitnehmen?'
+  utter_confirm:
+    - 'Ok habe ich gebucht.'
+  utter_confirm_contact_invitation:
+    - 'Ok ich habe den Kontakt eingeladen'
+  utter_name_not_understood:
+    - 'Ich habe deinen Namen leider nicht verstanden. Kannst du ihn nochmal wiederholen?'
+  utter_not_understood:
+    - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
+
+actions:
+  - utter_greet
+  - utter_ask_howcanhelp
+  - utter_goodbye
+  - utter_ask_location
+  - utter_ask_time
+  - utter_ask_activity
+  - utter_ask_invite
+  - utter_confirm
+  - utter_confirm_contact_invitation
+  - utter_introduce
+  - utter_name_not_understood
+  - utter_not_understood
+  - actions.ActionSuggest
+  - actions.ActionSearchEvents
+  - actions.ActionClearSlots
+  - actions.ActionSearchContact
+  - actions.ActionAddContact
+  - actions.ActionSearchAppointment
+  - actions.ActionAddMe
+  - actions.ActionSearchMe
