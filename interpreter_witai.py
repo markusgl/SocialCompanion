@@ -29,7 +29,7 @@ class Interpreter(RasaNLUInterpreter):
             "https://api.wit.ai/message",
             params=params, headers=headers)
 
-        print("wit.ai response: %s" % response.content)
+        #print("wit.ai response: %s" % response.content)
 
         return response.content
 
@@ -52,32 +52,30 @@ class Interpreter(RasaNLUInterpreter):
             intent_schema.confidence = ''
 
         nlu_response.intent = intent_schema
-        print(intent_schema.name)
-
-        # TODO entity extraction
-        """
         try:
             entities = resp["entities"]
             query = resp["_text"]
-
+            #print(resp)
             nlu_response.entities = []
             for key, value in entities.items():
-                if not value == 'intent':
+                if not key == 'intent':
                     entity_schema = EntitiesSchema()
-                    entity_value = value['value']
+                    entity_value = value[0]['value']
 
-                    a = re.search(r'\b('+entity_value+')\b', query)
-                    print(a.start())
-                    #entity_schema.start =
-                    #entity_schema.end = resolved_query.find(value) + len(value)
-                    #entity_schema.entity = key
-                    #entity_schema.value = value
+                    try:
+                        a = re.search(entity_value, query.lower())
+                        entity_schema.start = a.start()
+                        entity_schema.end = a.start() + len(entity_value)
+                    except:
+                        print('Entity position not found')
+                    entity_schema.entity = key
+                    entity_schema.value = entity_value
                     nlu_response.entities.append(entity_schema)
                     print("Key: {}, Value: {}".format(key, value))
         except Exception as err:
             print(err)
             print("Decoding failed")
-        """
+
 
         schema = RasaNLUSchema()
         data, error = schema.dump(nlu_response)
@@ -86,5 +84,5 @@ class Interpreter(RasaNLUInterpreter):
 
 
 interpreter = Interpreter()
-data = interpreter.parse("Ich würde heute gerne ins Kino gehen")
+data = interpreter.parse("Ich würde gerne ins Kino gehen")
 print(data)

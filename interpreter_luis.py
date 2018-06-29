@@ -30,7 +30,7 @@ class Interpreter(RasaNLUInterpreter):
             "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/10a19e89-f320-4eeb-a7ee-e2aa9fafe755",
             params=params)
 
-        print("LUIS response: %s" % response.content)
+        #print("LUIS response: %s" % response.content)
 
         return response.content
 
