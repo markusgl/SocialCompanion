@@ -77,9 +77,3 @@ class Interpreter(RasaNLUInterpreter):
         data, error = schema.dump(nlu_response)
 
         return data
-
-
-interpreter = Interpreter()
-data = interpreter.parse("Ich würde heute gerne ins Kino gehen?")
-print(data)
-#interpreter.parse("Wie wird das Wetter in Berlin heute?")

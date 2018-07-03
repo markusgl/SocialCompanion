@@ -6,6 +6,7 @@ import json
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.metrics import confusion_matrix
 
 
 def extract_validation_set():
@@ -52,7 +53,7 @@ def plot_all_results():
     # plt.set_xticks(X + 0.25 / 2)
     plt.xticks(X + 0.50 / 2, intents)
     #plt.ylim([0, 100])
-    plt.legend((score_bar[0], avg_conf_bar[0], entity_score_bar[0]), ('conf. score', 'avg. conf.', 'entity score'), loc='upper left')
+    plt.legend((score_bar[0], avg_conf_bar[0], entity_score_bar[0]), ('precision', 'conf score', 'entity score'), loc='upper left')
     plt.savefig('Results_full_wo_time.png', format='png')
     plt.show()
 
@@ -76,6 +77,42 @@ def evaluate_scores(tp_scores, fp_scores):
     print("Average score: {}".format((round(sum(tpr_sum)/len(tpr_sum), 2))))
 
 
+def evaluate_f_score(confusion):
+    precision_list = []
+    recall_tmp = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    recall_list = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    count = 0
+    for key, value in confusion.items():
+        if sum(value) > 0:
+            precision_list.append(value[count]/sum(value)*100)
+        else:
+            precision_list.append(0)
+
+        #print(value)
+        recall_tmp = [x + y for x, y in zip(recall_tmp, value)]
+        recall_list[count] += value[count]
+
+        count += 1
+
+    clean_recall = []
+    count = 0
+    for value in recall_tmp:
+        if value == 0:
+            clean_recall.append(1)
+            recall_tmp[count] = 0
+        else:
+            clean_recall.append(value)
+
+    recall_list = [(x / y)*100 for x, y in zip(recall_list, clean_recall)]
+
+    precision = sum(precision_list)/len(precision_list)
+    recall = sum(recall_list)/len(recall_list)
+    f1_score = 2*((precision*recall)/(precision+recall))
+    print("Precision: {}".format(round(precision, 2)))
+    print("Recall: {}".format(round(recall, 2)))
+    print("F1-score: {}".format(round(f1_score, 2)))
+
+
 def evaluate_nlu(interpreter):
     if interpreter == 'luis':
         interpreter = LuisInterpreter()
@@ -84,7 +121,7 @@ def evaluate_nlu(interpreter):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = Interpreter.load('../rasa-nlu/models/rasa-nlu/default/eventplannernlu')
+        interpreter = Interpreter.load('../rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -93,37 +130,55 @@ def evaluate_nlu(interpreter):
 
     tp_scores = {}
     fp_scores = {}
+
+    intents = {'agree': 0, 'contact_selection': 1, 'decline': 2, 'find_appointment': 3, 'get_to_know': 4, 'gooodbye': 5,
+               'greet': 6, 'introduce': 7, 'search_event': 8}
+    confusion = {'agree': [0, 0, 0, 0, 0, 0, 0, 0, 0], 'contact_selection': [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 'decline': [0, 0, 0, 0, 0, 0, 0, 0, 0], 'find_appointment': [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 'get_to_know': [0, 0, 0, 0, 0, 0, 0, 0, 0], 'gooodbye': [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 'greet': [0, 0, 0, 0, 0, 0, 0, 0, 0], 'introduce': [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 'search_event': [0, 0, 0, 0, 0, 0, 0, 0, 0]}
+
     confidence_scores = []
     duration = []
     entity_score = []
+
     for example in examples:
-        intent = example['intent']
+        actual_intent = example['intent']
         utterance = example['text']
 
         start_time = time.time()
         resp = interpreter.parse(utterance)
         duration.append(round(time.time() - start_time, 2))
-        print(resp)
+        #print(resp)
 
         # check if nlu returns intent and confidence score
         if resp["intent"] and resp["intent"]["name"] and resp["intent"]["confidence"]:
-            resp_intent = resp["intent"]["name"]
+            pred_intent = resp["intent"]["name"]
             resp_conf_score = resp["intent"]["confidence"]
 
-
-            # first check the intent of the response
-            if resp_intent == intent:
-                if example['intent'] in tp_scores.keys():
-                    tp_scores[example['intent']] += 1
+            # check the intent of the response
+            if pred_intent == actual_intent:
+                if actual_intent in tp_scores.keys():
+                    tp_scores[actual_intent] += 1
                 else:
-                    tp_scores[example['intent']] = 1
+                    tp_scores[actual_intent] = 1
 
                 confidence_scores.append(resp_conf_score)
+
             else:
-                if example['intent'] in fp_scores.keys():
-                    fp_scores[example['intent']] += 1
+                if actual_intent in fp_scores.keys():
+                    fp_scores[actual_intent] += 1
                 else:
-                    fp_scores[example['intent']] = 1
+                    fp_scores[actual_intent] = 1
+
+            pred_intent_index = intents.get(pred_intent)
+
+            try:
+                confusion[actual_intent][pred_intent_index] += 1
+            except:
+                print('key {} not found in confusion matrix'.format(pred_intent_index))
+
 
             # check the entities of the response
             if resp['entities']:
@@ -139,22 +194,24 @@ def evaluate_nlu(interpreter):
                 if len(example_entities) > 0:
                     entity_score.append(len(common_entities)/len(example_entities))
 
-        else:
-            if example['intent'] in fp_scores.keys():
-                fp_scores[example['intent']] += 1
-            else:
-                fp_scores[example['intent']] = 1
+        #else:
+        #    if actual_intent in fp_scores.keys():
+        #        fp_scores[actual_intent] += 1
+        #    else:
+        #        fp_scores[actual_intent] = 1
 
-    print("Average request duration: {}".format(round(sum(duration)/len(duration), 2)))
-    print("Average confidence score: {}".format(round(sum(confidence_scores)/len(confidence_scores), 2)))
+    #print("Average request duration: {}".format(round(sum(duration)/len(duration), 2)))
+    #print("Average confidence score: {}".format(round(sum(confidence_scores)/len(confidence_scores), 2)))
+    print("Accuracy score: {}".format(round(sum(tp_scores.values()) / len(examples), 4)*100))
+    evaluate_f_score(confusion)
     if len(entity_score) > 0:
-        print("Entity score: {}".format(round(sum(entity_score) / len(entity_score), 2)))
+        print("Entity score: {}".format(round(sum(entity_score) / len(entity_score), 4)*100))
     else:
         print("Entity score: 0.00")
-    evaluate_scores(tp_scores, fp_scores)
+    #evaluate_scores(tp_scores, fp_scores)
 
 
 if __name__ == '__main__':
-    #evaluate_nlu('witai')
-    plot_all_results()
+    evaluate_nlu('witai')
+    #plot_all_results()
 

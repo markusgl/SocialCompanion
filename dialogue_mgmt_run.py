@@ -17,8 +17,11 @@ from rasa_core.policies import MemoizationPolicy, KerasPolicy
 from rasa_core.featurizers import (MaxHistoryTrackerFeaturizer,
                                    BinarySingleStateFeaturizer)
 
-from interpreter_luis import Interpreter
-#from interpreter_dialogflow import Interpreter
+from interpreter_luis import Interpreter as LuisInterpreter
+from interpreter_dialogflow import Interpreter as DialogflowInterpreter
+from interpreter_witai import Interpreter as WitInterpreter
+from rasa_nlu.model import Interpreter
+
 from knowledge_base.knowledge_graph import KnowledgeGraph
 
 logger = logging.getLogger(__name__)
@@ -46,7 +49,7 @@ def train_bot():
     agent.persist(model_path)
 
 
-def run_cli_bot(serve_forever=True, train=False):
+def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
     try:
         KnowledgeGraph()
@@ -56,7 +59,18 @@ def run_cli_bot(serve_forever=True, train=False):
 
     if train:
         train_bot()
-    interpreter = Interpreter()
+
+    if interpreter == 'luis':
+        interpreter = LuisInterpreter()
+    elif interpreter == 'dialogflow':
+        interpreter = DialogflowInterpreter()
+    elif interpreter == 'witai':
+        interpreter = WitInterpreter()
+    elif interpreter == 'rasa':
+        interpreter = Interpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+    else:
+        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
+
     agent = Agent.load('./models/dialogue', interpreter)
 
     if serve_forever:
@@ -65,7 +79,7 @@ def run_cli_bot(serve_forever=True, train=False):
     return agent
 
 
-def run_telegram_bot(webhook_url, train=False):
+def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
     try:
         KnowledgeGraph()
@@ -88,11 +102,21 @@ def run_telegram_bot(webhook_url, train=False):
         print("Error setting telegram webhook")
         return
 
-    interpreter = Interpreter()
+    if interpreter == 'luis':
+        interpreter = LuisInterpreter()
+    elif interpreter == 'dialogflow':
+        interpreter = DialogflowInterpreter()
+    elif interpreter == 'witai':
+        interpreter = WitInterpreter()
+    elif interpreter == 'rasa':
+        interpreter = Interpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+    else:
+        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
+
     agent = Agent.load('./models/dialogue', interpreter)
 
     input_channel = (TelegramInput(access_token=telegram_api_key,
-                                   verify='event123_bot',
+                                   verify='SocialCompanionBot',
                                    webhook_url=webhook_url,
                                    debug_mode=True))
 
@@ -100,5 +124,5 @@ def run_telegram_bot(webhook_url, train=False):
 
 
 if __name__ == '__main__':
-    #run_cli_bot(train=True)
-    run_telegram_bot('423b0d06.ngrok.io/app/webhook', True)
+    #run_cli_bot(train=True, interpreter='rasa')
+    run_telegram_bot('783f9f1e.ngrok.io/app/webhook', False, interpreter='rasa')

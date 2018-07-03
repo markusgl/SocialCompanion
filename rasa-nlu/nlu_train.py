@@ -9,14 +9,14 @@ def train_nlu(data, configs, model_dir):
     trainer.train(training_data)
 
     # output directory for the trained model
-    trainer.persist(model_dir, fixed_model_name="eventplannernlu")
+    trainer.persist(model_dir, fixed_model_name="socialcompanionnlu")
 
 
 def evaluate_nlu(text):
-    interpreter = Interpreter.load('models/rasa-nlu/default/eventplannernlu')
+    interpreter = Interpreter.load('models/rasa-nlu/default/socialcompanionnlu')
     print(interpreter.parse(text))
 
 
 if __name__ == '__main__':
-    #train_nlu('data/data.json', 'config_rasa-nlu.yml', 'models/rasa-nlu')
-    evaluate_nlu(u"ich ken dich net")
+    train_nlu('data/data.json', 'config_rasa-nlu.yml', 'models/rasa-nlu')
+    #evaluate_nlu(u"ich ken dich net")

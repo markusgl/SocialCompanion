@@ -47,6 +47,7 @@ class Interpreter(RasaNLUInterpreter):
         nlu_response.text = message
 
         intent_schema = IntentSchema()
+        print(resp)
         intent_schema.name = resp["topScoringIntent"]["intent"]
         intent_schema.confidence = resp["topScoringIntent"]["score"]
         nlu_response.intent = intent_schema
@@ -72,6 +73,3 @@ class Interpreter(RasaNLUInterpreter):
 
         return data
 
-interpreter = Interpreter()
-data = interpreter.parse("Ich würde heute gerne ins Kino gehen?")
-print(data)
