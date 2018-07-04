@@ -20,11 +20,6 @@
         ]
       },
       {
-        "text": "ich ken dich net",
-        "intent": "get_to_know",
-        "entities": []
-      },
-      {
         "text": "jah",
         "intent": "agree",
         "entities": []
@@ -137,7 +132,7 @@
         "entities": []
       },
       {
-        "text": "auf wiedersehen",
+        "text": "auf wiedeersehen",
         "intent": "goodbye",
         "entities": []
       },
@@ -166,13 +161,13 @@
         ]
       },
       {
-        "text": "mein name ist sabrina",
+        "text": "mein name ist sally",
         "intent": "introduce",
         "entities": [
           {
             "start": 14,
-            "end": 21,
-            "value": "sabrina",
+            "end": 19,
+            "value": "sally",
             "entity": "firstname"
           }
         ]
@@ -183,9 +178,16 @@
         "entities": []
       },
       {
-        "text": "ich will mit meiner tocher was unternehmen",
+        "text": "ich will mit meiner tochter was unternehmen",
         "intent": "search_event",
-        "entities": []
+        "entities": [
+          {
+            "start": 20,
+            "end": 27,
+            "value": "tochter",
+            "entity": "relationship"
+          }
+        ]
       },
       {
         "text": "welche Filme laufen aktuell im kino",
@@ -279,17 +281,12 @@
         "entities": []
       },
       {
-        "text": "bis die tage",
-        "intent": "goodbye",
-        "entities": []
-      },
-      {
         "text": "korrekt",
         "intent": "agree",
         "entities": []
       },
       {
-        "text": "falsch",
+        "text": "nein will ich nicht",
         "intent": "decline",
         "entities": []
       },
@@ -304,7 +301,7 @@
         "entities": []
       },
       {
-        "text": "ich kenne dich nicht",
+        "text": "wie heißen sie",
         "intent": "get_to_know",
         "entities": []
       },
@@ -383,7 +380,62 @@
       {
         "text": "ich heiße harald",
         "intent": "introduce",
-        "entities": []
+        "entities": [
+          {
+            "start": 10,
+            "end": 16,
+            "value": "harald",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "mit meiner enkeltochter",
+        "intent": "contact_selection",
+        "entities": [
+          {
+            "start": 11,
+            "end": 23,
+            "value": "enkeltochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "ich möchte meine tochter treffen",
+        "intent": "search_event",
+        "entities": [
+          {
+            "start": 17,
+            "end": 24,
+            "value": "tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "ich will meine enkel sehen",
+        "intent": "search_event",
+        "entities": [
+          {
+            "start": 15,
+            "end": 20,
+            "value": "enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "was kann ich am wochenende unternehmen",
+        "intent": "search_event",
+        "entities": [
+          {
+            "start": 16,
+            "end": 26,
+            "value": "wochenende",
+            "entity": "relativedate"
+          }
+        ]
       }
     ]
   }

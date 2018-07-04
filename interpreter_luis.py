@@ -73,6 +73,3 @@ class Interpreter(RasaNLUInterpreter):
         data, error = schema.dump(nlu_response)
 
         return data
-
-#interpreter = Interpreter()
-#interpreter.parse("Habe ich heute Termine")

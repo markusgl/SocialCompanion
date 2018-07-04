@@ -221,7 +221,7 @@ def evaluate_nlu(interpreter):
 
 
 if __name__ == '__main__':
-    evaluate_nlu('witai')
+    evaluate_nlu('luis')
     #plot_all_results()
     #plot_scores(save=True)
 

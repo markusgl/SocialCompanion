@@ -80,7 +80,3 @@ class Interpreter(RasaNLUInterpreter):
         data, error = schema.dump(nlu_response)
 
         return data
-
-interpreter = Interpreter()
-resp = interpreter.parse('ich ken dich net')
-print(resp)
