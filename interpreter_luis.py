@@ -8,7 +8,8 @@ from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSc
 
 class Interpreter(RasaNLUInterpreter):
 
-    def __init__(self, keys_file='keys.json'):
+    def __init__(self):
+        keys_file = 'keys.json'
         with open(keys_file) as f:
             data = json.load(f)
         self.subscription_key = data['luis-subscription-key']
@@ -27,7 +28,7 @@ class Interpreter(RasaNLUInterpreter):
                   }
 
         response = requests.get(
-            "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/10a19e89-f320-4eeb-a7ee-e2aa9fafe755",
+            "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/f8f75a16-ba32-41e6-a10c-6f7b3aaf31f9",
             params=params)
 
         #print("LUIS response: %s" % response.content)
@@ -47,7 +48,7 @@ class Interpreter(RasaNLUInterpreter):
         nlu_response.text = message
 
         intent_schema = IntentSchema()
-        print(resp)
+
         intent_schema.name = resp["topScoringIntent"]["intent"]
         intent_schema.confidence = resp["topScoringIntent"]["score"]
         nlu_response.intent = intent_schema
@@ -73,3 +74,5 @@ class Interpreter(RasaNLUInterpreter):
 
         return data
 
+#interpreter = Interpreter()
+#interpreter.parse("Habe ich heute Termine")

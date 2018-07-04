@@ -8,8 +8,9 @@ from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSc
 
 class Interpreter(RasaNLUInterpreter):
 
-    def __init__(self, keys_file='keys.json'):
+    def __init__(self):
         #super(Interpreter, self)__init__()
+        keys_file = 'keys.json'
         with open(keys_file) as f:
             data = json.load(f)
         self.session_id = data['dialogflow-session-id']
@@ -55,6 +56,7 @@ class Interpreter(RasaNLUInterpreter):
             intent_schema.confidence = resp["result"]["score"]
         nlu_response.intent = intent_schema
 
+
         try:
             entities = resp["result"]["parameters"]
             resolved_query = resp["result"]["resolvedQuery"]
@@ -68,12 +70,17 @@ class Interpreter(RasaNLUInterpreter):
                     entity_schema.entity = key
                     entity_schema.value = value
                     nlu_response.entities.append(entity_schema)
-                    print("Key: {}, Value: {}".format(key, value))
+                    #print("Key: {}, Value: {}".format(key, value))
         except Exception as err:
             print(err)
-            print("Decoding failed")
+            print('No Entites extracted')
+            #print("Failed Response {}".format(resp))
 
         schema = RasaNLUSchema()
         data, error = schema.dump(nlu_response)
 
         return data
+
+interpreter = Interpreter()
+resp = interpreter.parse('ich ken dich net')
+print(resp)

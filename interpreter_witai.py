@@ -8,7 +8,8 @@ from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSc
 
 class Interpreter(RasaNLUInterpreter):
 
-    def __init__(self, keys_file='keys.json'):
+    def __init__(self):
+        keys_file = 'keys.json'
         with open(keys_file) as f:
             data = json.load(f)
         self.bearer_token = data['witai-bearer-token']

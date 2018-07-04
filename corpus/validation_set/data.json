@@ -235,7 +235,7 @@
         "entities": []
       },
       {
-        "text": "morgen",
+        "text": "guden morgen",
         "intent": "greet",
         "entities": []
       },
@@ -286,16 +286,6 @@
       {
         "text": "korrekt",
         "intent": "agree",
-        "entities": []
-      },
-      {
-        "text": "jawohl",
-        "intent": "agree",
-        "entities": []
-      },
-      {
-        "text": "niemals",
-        "intent": "decline",
         "entities": []
       },
       {
@@ -389,6 +379,11 @@
             "entity": "relativedate"
           }
         ]
+      },
+      {
+        "text": "ich heiße harald",
+        "intent": "introduce",
+        "entities": []
       }
     ]
   }
