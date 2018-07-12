@@ -11,8 +11,11 @@ from rasa_core.channels.console import ConsoleInputChannel
 from rasa_core.policies import FallbackPolicy
 from rasa_core.policies.keras_policy import KerasPolicy
 from rasa_core.policies.memoization import MemoizationPolicy
-from interpreter_luis import Interpreter
-#from interpreter_dialogflow import Interpreter
+from interpreter_luis import Interpreter as LuisInterpreter
+from interpreter_dialogflow import Interpreter as DialogflowInterpreter
+from interpreter_witai import Interpreter as WitInterpreter
+from rasa_nlu.model import Interpreter as RasaInterpreter
+
 from knowledge_base.knowledge_graph import KnowledgeGraph
 
 logger = logging.getLogger(__name__)
@@ -27,8 +30,19 @@ def run_eventbot_online(input_channel, interpreter,
         print('Neo4j connection failed. Program stopped.')
         return
 
+    if interpreter == 'luis':
+        interpreter = LuisInterpreter()
+    elif interpreter == 'dialogflow':
+        interpreter = DialogflowInterpreter()
+    elif interpreter == 'witai':
+        interpreter = WitInterpreter()
+    elif interpreter == 'rasa':
+        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+    else:
+        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
+
     fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
-                              core_threshold=0.3, nlu_threshold=0.6)
+                              core_threshold=0.3, nlu_threshold=0.3)
     agent = Agent(domain_file,
                   policies=[MemoizationPolicy(), KerasPolicy(), fallback],
                   interpreter=interpreter)
@@ -46,5 +60,4 @@ def run_eventbot_online(input_channel, interpreter,
 
 if __name__ == '__main__':
     logging.basicConfig(level="INFO")
-    luis_interpreter = Interpreter()
-    run_eventbot_online(ConsoleInputChannel(), luis_interpreter)
+    run_eventbot_online(ConsoleInputChannel(), interpreter='luis')

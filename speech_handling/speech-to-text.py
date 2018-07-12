@@ -1,5 +1,5 @@
 import pyaudio
-import speech_to_text as sr
+import speech_handling as sr
 import wave
 
 FORMAT = pyaudio.paInt16

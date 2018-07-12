@@ -12,6 +12,7 @@ from rasa_core.agent import Agent
 from rasa_core.channels import HttpInputChannel
 from rasa_core.channels.console import ConsoleInputChannel
 from rasa_core.channels.telegram import TelegramInput
+from voice_input_channel import VoiceInput
 from rasa_core.policies.fallback import FallbackPolicy
 from rasa_core.policies import MemoizationPolicy, KerasPolicy
 from rasa_core.featurizers import (MaxHistoryTrackerFeaturizer,
@@ -20,10 +21,10 @@ from rasa_core.featurizers import (MaxHistoryTrackerFeaturizer,
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
-from rasa_nlu.model import Interpreter
+from rasa_nlu.model import Interpreter as RasaInterpreter
 
 from knowledge_base.knowledge_graph import KnowledgeGraph
-
+from speech_handling.speech_recognizer import SpeechHandler
 logger = logging.getLogger(__name__)
 
 
@@ -34,7 +35,7 @@ def train_bot():
     model_path = './models/dialogue'
 
     fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
-                              core_threshold=0.3, nlu_threshold=0.6)
+                              core_threshold=0.3, nlu_threshold=0.3)
     featurizer = MaxHistoryTrackerFeaturizer(BinarySingleStateFeaturizer(), max_history=5)
     agent = Agent('./data/domain.yml', policies=[MemoizationPolicy(max_history=5), KerasPolicy(featurizer), fallback])
 
@@ -67,7 +68,7 @@ def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = Interpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -109,7 +110,7 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = Interpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -123,6 +124,48 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
 
 
+def run_voice_bot(webhook_url, train=False, interpreter='luis'):
+    logging.basicConfig(level="INFO")
+    try:
+        KnowledgeGraph()
+    except ServiceUnavailable:
+        print('Neo4j connection failed. Program stopped.')
+        return
+
+    if train:
+        train_bot()
+
+    if interpreter == 'luis':
+        interpreter = LuisInterpreter()
+    elif interpreter == 'dialogflow':
+        interpreter = DialogflowInterpreter()
+    elif interpreter == 'witai':
+        interpreter = WitInterpreter()
+    elif interpreter == 'rasa':
+        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+    else:
+        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
+
+    agent = Agent.load('./models/dialogue', interpreter)
+
+    input_channel = (VoiceInput(url='SocialCompanionBot'))
+    agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
+
+    """
+    sr = SpeechHandler()
+    message = sr.speech_to_text()
+    print(message)
+    if not message:
+        agent.handle_message(message)
+    """
+    #print(agent.start_message_handling('Hallo'))
+    #if serve_forever:
+    #    agent.handle_message('Hallo')
+
+    return agent
+
 if __name__ == '__main__':
     #run_cli_bot(train=True, interpreter='rasa')
-    run_telegram_bot('783f9f1e.ngrok.io/app/webhook', False, interpreter='rasa')
+    #run_telegram_bot('3c956e75.ngrok.io/app/webhook', True, interpreter='luis')
+    run_voice_bot('https://be6ace21.ngrok.io')
+
