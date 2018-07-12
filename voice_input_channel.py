@@ -63,6 +63,8 @@ class VoiceInput(HttpInputComponent):
 
         @custom_webhook.route("/message", methods=['POST'])
         def message():
-            print(request.json)
+            print(request.get_json())
+
+            return "received"
 
         return custom_webhook
