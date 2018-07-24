@@ -9,6 +9,7 @@ from flask import Blueprint, request, jsonify
 import requests
 from rasa_core.channels.channel import UserMessage, OutputChannel
 from rasa_core.channels.rest import HttpInputComponent
+from rasa_core import utils
 
 logger = logging.getLogger(__name__)
 
@@ -19,9 +20,12 @@ class VoiceOutput(OutputChannel):
     def __init__(self, url, access_token):
         self.access_token = access_token
         self.url = url
+        self.default_output_color = utils.bcolors.OKBLUE
 
     def send_text_message(self, recipient_id, message):
         # you probably use http to send a message
+        # TODO http output channel
+        """
         url = self.url
         if self.access_token is not None:
             headers = {"Auth-token": self.access_token}
@@ -33,6 +37,11 @@ class VoiceOutput(OutputChannel):
                 message,
                 headers=headers
         )
+        """
+
+        # console output for testing purposes
+        utils.print_color(message, self.default_output_color)
+        print(message)
 
 
 class VoiceInput(HttpInputComponent):
@@ -52,19 +61,14 @@ class VoiceInput(HttpInputComponent):
         def health():
             return jsonify({"status": "ok"})
 
-        @custom_webhook.route("/webhook", methods=['POST'])
-        def receive():
+        @custom_webhook.route("/message", methods=['POST'])
+        def message():
             payload = request.json
             sender_id = payload.get("sender", None)
             text = payload.get("message", None)
 
             on_new_message(UserMessage(text, self.out_channel, sender_id))
+
             return "success"
-
-        @custom_webhook.route("/message", methods=['POST'])
-        def message():
-            print(request.get_json())
-
-            return "received"
 
         return custom_webhook
