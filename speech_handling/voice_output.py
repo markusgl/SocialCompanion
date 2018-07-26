@@ -10,3 +10,7 @@ engine.setProperty('rate', 50)  #120 words per minute
 engine.setProperty('volume', 0.9)
 engine.runAndWait()
 
+# Windows output
+import win32com.client as wincl
+speak = wincl.Dispatch("SAPI.SpVoice")
+speak.Speak("Hello World")

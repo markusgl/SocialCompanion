@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import logging
+import logging, json
 
 from flask import Blueprint, request, jsonify
 import requests
@@ -42,6 +42,14 @@ class VoiceOutput(OutputChannel):
         # console output for testing purposes
         utils.print_color(message, self.default_output_color)
         print(message)
+
+        data = {"sender": "testsender",
+                "message": message}
+        print(recipient_id)
+        headers = {"Content-type": "application/json"}
+        requests.post(recipient_id,
+                      headers=headers,
+                      data=json.dumps(data))
 
 
 class VoiceInput(HttpInputComponent):

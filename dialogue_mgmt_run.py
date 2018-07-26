@@ -167,5 +167,5 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
 if __name__ == '__main__':
     #run_cli_bot(train=True, interpreter='rasa')
     #run_telegram_bot('3c956e75.ngrok.io/app/webhook', True, interpreter='luis')
-    run_voice_bot('https://c89804d8.ngrok.io')
+    run_voice_bot('https://b77597fa.ngrok.io')
 
