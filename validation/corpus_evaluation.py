@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def extract_validation_set():
-    with open("../corpus/validation_set/data.json", "r", encoding='utf-8') as f:
+    with open("../validation/validation_set/data.json", "r", encoding='utf-8') as f:
         data = json.load(f)
 
     return data["rasa_nlu_data"]["common_examples"]
