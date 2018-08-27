@@ -202,7 +202,7 @@
         "entities": []
       },
       {
-        "text": "Welche Neuigkeiten gibt es?",
+        "text": "Welche Neuigkeiten gibt es",
         "intent": "read_news",
         "entities": [
           {
@@ -214,7 +214,7 @@
         ]
       },
       {
-        "text": "Welche Nachrichten gibt es?",
+        "text": "Welche Nachrichten gibt es",
         "intent": "read_news",
         "entities": [
           {
@@ -228,7 +228,14 @@
       {
         "text": "Ich würde gerne die Nachrichten wissen",
         "intent": "read_news",
-        "entities": []
+        "entities": [
+          {
+            "start": 20,
+            "end": 31,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
       },
       {
         "text": "Was gibt es Neues",
@@ -291,12 +298,32 @@
       {
         "text": "Die aktuellen Schlagzeilen",
         "intent": "read_news",
-        "entities": []
+        "entities": [
+          {
+            "start": 14,
+            "end": 26,
+            "value": "Schlagzeilen",
+            "entity": "news_type"
+          }
+        ]
       },
       {
         "text": "Welche Schlagzeilen gibt es heute",
         "intent": "read_news",
-        "entities": []
+        "entities": [
+          {
+            "start": 7,
+            "end": 19,
+            "value": "Schlagzeilen",
+            "entity": "news_type"
+          },
+          {
+            "start": 28,
+            "end": 33,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
       },
       {
         "text": "Die Nachrichten aus meiner Region",
@@ -307,6 +334,12 @@
             "end": 33,
             "value": "Region",
             "entity": "news_type"
+          },
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
           }
         ]
       },
@@ -335,6 +368,24 @@
         ]
       },
       {
+        "text": "habe ich heute termine?",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "heute",
+            "entity": "relativedate"
+          },
+          {
+            "start": 15,
+            "end": 22,
+            "value": "termine",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
         "text": "was ist diese woche geplant",
         "intent": "find_appointment",
         "entities": [
@@ -347,7 +398,7 @@
         ]
       },
       {
-        "text": "gibt es heute termine",
+        "text": "gibt es heute termine für mich",
         "intent": "find_appointment",
         "entities": [
           {
@@ -401,12 +452,204 @@
         ]
       },
       {
-        "text": "Ich würde gerne eine Termin vereinbaren",
+        "text": "welche termine habe ich heute",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 29,
+            "value": "heute",
+            "entity": "relativedate"
+          },
+          {
+            "start": 7,
+            "end": 14,
+            "value": "termine",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "was steht für heute in meinem terminkalender",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "habe ich heute termine",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "heute",
+            "entity": "relativedate"
+          },
+          {
+            "start": 15,
+            "end": 22,
+            "value": "termine",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "ich würde gerne meine termine wissen",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 22,
+            "end": 29,
+            "value": "termine",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "welche termine stehen die nächsten tage an",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 7,
+            "end": 14,
+            "value": "termine",
+            "entity": "appointment"
+          },
+          {
+            "start": 26,
+            "end": 39,
+            "value": "nächsten tage",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "habe ich die nächsten tage etwas zu tun",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 26,
+            "value": "nächsten tage",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "kannst du mir sagen ob ich heute termine habe",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 27,
+            "end": 32,
+            "value": "heute",
+            "entity": "relativedate"
+          },
+          {
+            "start": 33,
+            "end": 40,
+            "value": "termine",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "welche termine habe ich morgen",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 7,
+            "end": 14,
+            "value": "termine",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 30,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "was ist für die nächsten tage geplant",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 12,
+            "end": 29,
+            "value": "die nächsten tage",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "gibt es heute termine",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 14,
+            "end": 21,
+            "value": "termine",
+            "entity": "appointment"
+          },
+          {
+            "start": 8,
+            "end": 13,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "habe ich heute etwas zu tun",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "habe ich nächste woche etwas zu tun",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 22,
+            "value": "nächste woche",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "ist am wochenende eine Veranstaltung",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 7,
+            "end": 17,
+            "value": "wochenende",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "Ich würde gerne einen Termin vereinbaren",
         "intent": "make_appointment",
         "entities": [
           {
-            "start": 21,
-            "end": 27,
+            "start": 22,
+            "end": 28,
             "value": "Termin",
             "entity": "appointment"
           }
@@ -421,6 +664,12 @@
             "end": 35,
             "value": "Termin",
             "entity": "appointment"
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "value": "morgen",
+            "entity": "relativedate"
           }
         ]
       },
@@ -442,9 +691,15 @@
         "entities": [
           {
             "start": 0,
-            "end": 7,
+            "end": 6,
             "value": "Morgen",
-            "entity": "date"
+            "entity": "relativedate"
+          },
+          {
+            "start": 20,
+            "end": 28,
+            "value": "Zahnarzt",
+            "entity": "activity"
           }
         ]
       },
@@ -462,7 +717,7 @@
             "start": 9,
             "end": 14,
             "value": "heute",
-            "entity": "date"
+            "entity": "relativedate"
           }
         ]
       },
@@ -521,12 +776,12 @@
         ]
       },
       {
-        "text": "Kannst du meine Sohn anrufen.",
+        "text": "Kannst du meinen Sohn anrufen",
         "intent": "phone_call",
         "entities": [
           {
-            "start": 16,
-            "end": 20,
+            "start": 17,
+            "end": 21,
             "value": "Sohn",
             "entity": "relationship"
           }
@@ -553,6 +808,2233 @@
             "end": 27,
             "value": "Enkelin",
             "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen neuen Termin einstellen bitte",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 12,
+            "end": 18,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Bitte erstelle einen neuen Termin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 27,
+            "end": 33,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Bitte stelle einen neuen Termin ein",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 25,
+            "end": 31,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Neuer Termin bitte",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Bitte erstelle einen Termin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 21,
+            "end": 27,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Ich möchte heute etwas unternehmen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 11,
+            "end": 16,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Ich will morgen ins Theater gehen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 20,
+            "end": 27,
+            "value": "Theater",
+            "entity": "activity"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "ich würde gerne ins kino gehen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 20,
+            "end": 24,
+            "value": "kino",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "ich würde gerne am 8.5. ins theater gehen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 28,
+            "end": 35,
+            "value": "theater",
+            "entity": "activity"
+          },
+          {
+            "start": 16,
+            "end": 22,
+            "value": "am 8.5",
+            "entity": "date"
+          }
+        ]
+      },
+      {
+        "text": "Ich möchte einen Termin vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 17,
+            "end": 23,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Ich muss morgen zur Krankengymnastik",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 15,
+            "value": "morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 20,
+            "end": 36,
+            "value": "Krankengymnastik",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich muss nächste Woche zum Arzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 22,
+            "value": "nächste Woche",
+            "entity": "dateperiod"
+          },
+          {
+            "start": 27,
+            "end": 31,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich muss morgen zum Arzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 15,
+            "value": "morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe nächste Woche einen Termin beim Arzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 29,
+            "end": 35,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 9,
+            "end": 22,
+            "value": "nächste Woche",
+            "entity": "dateperiod"
+          },
+          {
+            "start": 41,
+            "end": 45,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe morgen einen Termin beim Arzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 15,
+            "value": "morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 22,
+            "end": 28,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 34,
+            "end": 38,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe in zwei Wochen einen Termin beim Arzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 12,
+            "end": 23,
+            "value": "zwei Wochen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 30,
+            "end": 36,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 42,
+            "end": 46,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit dem Arzt vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 21,
+            "end": 26,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Einen Arzttermin vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 16,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Einen Arztbesuch vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 16,
+            "value": "Arztbesuch",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ein Familientreffen vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 4,
+            "end": 19,
+            "value": "Familientreffen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meinem Enkel ausmachen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 29,
+            "value": "Enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meiner Tochter einstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 31,
+            "value": "Tochter",
+            "entity": "relationship"
+          },
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Neuer Termin mit meinem Sohn",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich möchte ein Treffen mit meiner Tochter vereinbaren",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 15,
+            "end": 22,
+            "value": "Treffen",
+            "entity": "activity"
+          },
+          {
+            "start": 34,
+            "end": 41,
+            "value": "Tochter",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meinem Sohn ausmachen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 28,
+            "value": "Sohn",
+            "entity": "relationship"
+          },
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meinem Sohn erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meiner Tochter erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 31,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meinem Enkel erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 29,
+            "value": "Enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit meiner Enkelin erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 24,
+            "end": 31,
+            "value": "Enkelin",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit Laura erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 17,
+            "end": 22,
+            "value": "Laura",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit Lukas erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 17,
+            "end": 22,
+            "value": "Lukas",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin mit Emil erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 17,
+            "end": 21,
+            "value": "Emil",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du einen Termin erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du einen Termin mit meiner Tochter erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 34,
+            "end": 41,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du einen Termin mit meinem Sohn erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 34,
+            "end": 38,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du einen Termin mit meiner Enkelin erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 34,
+            "end": 41,
+            "value": "Enkelin",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Erstelle einen neuen Termin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 21,
+            "end": 27,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "Erstelle einen neuen Artztermin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 21,
+            "end": 31,
+            "value": "Artztermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Einen Termin für den Orthopäden erstellen",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 6,
+            "end": 12,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 21,
+            "end": 31,
+            "value": "Orthopäden",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich bin die nächsten zwei Wochen auf Reha",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 21,
+            "end": 32,
+            "value": "zwei Wochen",
+            "entity": "dateperiod"
+          },
+          {
+            "start": 37,
+            "end": 41,
+            "value": "Reha",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Erstelle für morgen einen Friseurtermin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 26,
+            "end": 39,
+            "value": "Friseurtermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe am Freitag einen Friseurtermin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 12,
+            "end": 19,
+            "value": "Freitag",
+            "entity": "relativedate"
+          },
+          {
+            "start": 26,
+            "end": 39,
+            "value": "Friseurtermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich würde gerne die Nachrichten hören",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 20,
+            "end": 31,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Bitte die Nachrichten lesen",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 10,
+            "end": 21,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Die Zeitung von heute bitte",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 11,
+            "value": "Zeitung",
+            "entity": "news"
+          },
+          {
+            "start": 16,
+            "end": 21,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Die Nürnberger Nachrichten bitte",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 26,
+            "value": "Nürnberger Nachrichten",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Lese bitte die Nachrichten vor",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 15,
+            "end": 26,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Die Regionalnachrichten bitte",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 23,
+            "value": "Regionalnachrichten",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Das Regionalblatt bitte",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 17,
+            "value": "Regionalblatt",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Den Sportteil",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 13,
+            "value": "Sportteil",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Die Nachrichten von gestern",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
+          },
+          {
+            "start": 20,
+            "end": 27,
+            "value": "gestern",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du die Nachrichten lesen",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 14,
+            "end": 25,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du mir die Nachrichten vorlesen",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 18,
+            "end": 29,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Ich will die Nachrichten hören",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 13,
+            "end": 24,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du mir die Schlagzeilen sagen",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 18,
+            "end": 30,
+            "value": "Schlagzeilen",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Welche Schlagzeilen gibt es",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 7,
+            "end": 19,
+            "value": "Schlagzeilen",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Die Regionalartikel",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 19,
+            "value": "Regionalartikel",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Neues aus der Region",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 14,
+            "end": 20,
+            "value": "Region",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Die Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Was steht heute in der Zeitung",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 23,
+            "end": 30,
+            "value": "Zeitung",
+            "entity": "news"
+          },
+          {
+            "start": 10,
+            "end": 15,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Was steht heute in den Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 23,
+            "end": 34,
+            "value": "Nachrichten",
+            "entity": "news"
+          },
+          {
+            "start": 10,
+            "end": 15,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Sage mir die Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 13,
+            "end": 24,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Erzähl mir von den Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 19,
+            "end": 30,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Ich würde gerne die Nachrichten erfahren",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 20,
+            "end": 31,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Ich will Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 9,
+            "end": 20,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Gibt es neue Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 13,
+            "end": 24,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Was steht in der Süddeutschen Zeitung",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 17,
+            "end": 37,
+            "value": "Süddeutschen Zeitung",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Was steht in den Nürnberger Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 17,
+            "end": 39,
+            "value": "Nürnberger Nachrichten",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Was steht in der Frankfurter Allgemeinen Zeitung",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 17,
+            "end": 40,
+            "value": "Frankfurter Allgemeinen",
+            "entity": "news_type"
+          },
+          {
+            "start": 41,
+            "end": 48,
+            "value": "Zeitung",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Welche Politik Neuigkeiten gibt es",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 7,
+            "end": 14,
+            "value": "Politik",
+            "entity": "news_type"
+          },
+          {
+            "start": 15,
+            "end": 26,
+            "value": "Neuigkeiten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Nachrichten aus aller Welt",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 0,
+            "end": 11,
+            "value": "Nachrichten",
+            "entity": "news"
+          },
+          {
+            "start": 16,
+            "end": 26,
+            "value": "aller Welt",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Die Nachrichten von letzter Woche",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
+          },
+          {
+            "start": 20,
+            "end": 33,
+            "value": "letzter Woche",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "Les die Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 8,
+            "end": 19,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Sag mir die Nachrichten",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 12,
+            "end": 23,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Wann muss ich zum Arzt",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 22,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist der Arzttermin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 23,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann habe ich den Arzttermin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 28,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Um wie viel Uhr muss ich zur Krankengymnastik",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 29,
+            "end": 45,
+            "value": "Krankengymnastik",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist das Treffen mit meiner Tochter",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 20,
+            "value": "Treffen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist Ostern dieses Jahr",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 15,
+            "value": "Ostern",
+            "entity": "activity"
+          },
+          {
+            "start": 16,
+            "end": 27,
+            "value": "dieses Jahr",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Wann habe ich den Friseurtermin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 31,
+            "value": "Friseurtermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann muss ich zum Friseur",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 25,
+            "value": "Friseur",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wo habe ich Krankengymnastik",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 12,
+            "end": 28,
+            "value": "Krankengymnastik",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "An welchem Tag muss ich zum Arzt",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 28,
+            "end": 32,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann muss ich das nächste mal zum Arzt",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 34,
+            "end": 38,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist mein Arzttermin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 14,
+            "end": 24,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist mein Termin heute",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 14,
+            "end": 20,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 21,
+            "end": 26,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Zu welchem Arzt muss ich morgen",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 11,
+            "end": 15,
+            "value": "Arzt",
+            "entity": "activity"
+          },
+          {
+            "start": 25,
+            "end": 31,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Zu welchem Arzt muss ich heute",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 11,
+            "end": 15,
+            "value": "Arzt",
+            "entity": "activity"
+          },
+          {
+            "start": 25,
+            "end": 30,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "An welchem Tag habe ich meinen Termin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 31,
+            "end": 37,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "An welchem Tag habe ich meinen Arzttermin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 31,
+            "end": 41,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "An welche Datum habe ich meinen Termin für den Friseur",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 32,
+            "end": 38,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 47,
+            "end": 54,
+            "value": "Friseur",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann muss ich ins Training",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 26,
+            "value": "Training",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist der Termin mit meiner Tochter",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 31,
+            "end": 38,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist der Termin mit meinem Sohn",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 31,
+            "end": 35,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist der Termin mit meiner Enkelin",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 31,
+            "end": 38,
+            "value": "Enkelin",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist der Termin mit meinem Enkel",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 31,
+            "end": 36,
+            "value": "Enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist das Familienessen",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 26,
+            "value": "Familienessen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wo ist das Familienessen",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 11,
+            "end": 24,
+            "value": "Familienessen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann findet das Essen statt",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 21,
+            "value": "Essen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wann ist das Treffen mit der Familie",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 13,
+            "end": 36,
+            "value": "Treffen mit der Familie",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Wo findet das Essen morgen statt",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "Essen",
+            "entity": "activity"
+          },
+          {
+            "start": 20,
+            "end": 26,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "An welchem Tag ist das Treffen mit meiner Tochter",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 23,
+            "end": 30,
+            "value": "Treffen",
+            "entity": "activity"
+          },
+          {
+            "start": 42,
+            "end": 49,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Wo ist der Spieleabend heute",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 11,
+            "end": 22,
+            "value": "Spieleabend",
+            "entity": "activity"
+          },
+          {
+            "start": 23,
+            "end": 28,
+            "value": "heute",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Ich möchte mit meinem Enkel sprechen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 22,
+            "end": 27,
+            "value": "Enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich will Emil anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 9,
+            "end": 13,
+            "value": "Emil",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ich will Elisabeth anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 9,
+            "end": 18,
+            "value": "Elisabeth",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Rufe Hans an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 5,
+            "end": 9,
+            "value": "Hans",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ruf meinen Arzt an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 11,
+            "end": 15,
+            "value": "Arzt",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich will mit Lukas telefonieren",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 13,
+            "end": 18,
+            "value": "Lukas",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ich will mit meinem Sohn telefonieren",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 20,
+            "end": 24,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich will mit meiner Tochter telefonieren",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 20,
+            "end": 27,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich möchte jemanden anrufen",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Ich möchte telefonieren",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Ich will telefonieren",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Ich will einen Anruf tätigen",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Kannst du Markus anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 10,
+            "end": 16,
+            "value": "Markus",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ruf Markus an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 4,
+            "end": 10,
+            "value": "Markus",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Rufe die Nummer 0800123 an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 16,
+            "end": 23,
+            "value": "0800123",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Wähle die Nummer 012345",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 17,
+            "end": 23,
+            "value": "012345",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Rufe 012345 an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 5,
+            "end": 11,
+            "value": "012345",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Die Nummer lautet 102412",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 18,
+            "end": 24,
+            "value": "102412",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Kannst du meinen Schwester anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 17,
+            "end": 26,
+            "value": "Schwester",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich will das Telefon nutzen",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Mach einen Anruf",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Telefonieren bitte",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Mache einen Anruf zur Nummer 0911123455",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 29,
+            "end": 39,
+            "value": "0911123455",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Rufe meine Pfleger an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 11,
+            "end": 18,
+            "value": "Pfleger",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Rufe den Arzt Müller an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 9,
+            "end": 13,
+            "value": "Arzt",
+            "entity": "relationship"
+          },
+          {
+            "start": 14,
+            "end": 20,
+            "value": "Müller",
+            "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Ruf bitte meinen Enkel an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 17,
+            "end": 22,
+            "value": "Enkel",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Rufe meinen Sohn an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 12,
+            "end": 16,
+            "value": "Sohn",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Meine Tochter anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 6,
+            "end": 13,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Bitte anrufen",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Das Telefon benutzen",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Ruf Elisabeth an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 4,
+            "end": 13,
+            "value": "Elisabeth",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Rufe Lukas an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 5,
+            "end": 10,
+            "value": "Lukas",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Rufe 0911214324 an",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 5,
+            "end": 15,
+            "value": "0911214324",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Wähle die Nummer 080012345",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 17,
+            "end": 26,
+            "value": "080012345",
+            "entity": "phone_number"
+          }
+        ]
+      },
+      {
+        "text": "Wähle die letzte Nummer",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "Telefonieren mit meiner Enkelin",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 24,
+            "end": 31,
+            "value": "Enkelin",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ein Telefonat mit Herrn Huber führen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 24,
+            "end": 29,
+            "value": "Huber",
+            "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Ein Telefonat mit meiner Tochter führen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 25,
+            "end": 32,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Meinen Mann anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 7,
+            "end": 11,
+            "value": "Mann",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Telefonanruf zu Ingrid",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Ingrid",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Telefonanruf zu meiner Tochter",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 23,
+            "end": 30,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Anruf zu Horst",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "Horst",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Herbert anrufen",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 0,
+            "end": 7,
+            "value": "Herbert",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Detlef telefonieren",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 0,
+            "end": 6,
+            "value": "Detlef",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Telefonat mit Frau Schmidt",
+        "intent": "phone_call",
+        "entities": [
+          {
+            "start": 19,
+            "end": 26,
+            "value": "Schmidt",
+            "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Telefonieren will ich ",
+        "intent": "phone_call",
+        "entities": []
+      },
+      {
+        "text": "tach",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "salut",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "salve",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "moin moin",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "grüezi",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "sers",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "tschüß",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "schönes wochenende",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "schönen abend",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "auf wiederhören",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "machs gut",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "wir sehen uns",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis morgen",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis demnächst",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis die tage",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis zum nächsten mal",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis nachher",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "bis dahin",
+        "intent": "goodbye",
+        "entities": []
+      },
+      {
+        "text": "Die Nachrichten vom 1.7.2018",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
+          },
+          {
+            "start": 20,
+            "end": 28,
+            "value": "1.7.2018",
+            "entity": "date"
+          }
+        ]
+      },
+      {
+        "text": "Wann habe ich den Termin mit Elisabeth",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 18,
+            "end": 24,
+            "value": "Termin",
+            "entity": "appointment"
+          },
+          {
+            "start": 29,
+            "end": 38,
+            "value": "Elisabeth",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Wann kommt Frau Müller zu besuch",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 16,
+            "end": 22,
+            "value": "Müller",
+            "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Welche Sportnachrichten gibt es",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 7,
+            "end": 23,
+            "value": "Sportnachrichten",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Welche Lokalnachrichten gibt es",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 7,
+            "end": 23,
+            "value": "Lokalnachrichten",
+            "entity": "news_type"
+          }
+        ]
+      },
+      {
+        "text": "Die Nachrichten des heutigen Tages",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 15,
+            "value": "Nachrichten",
+            "entity": "news"
+          }
+        ]
+      },
+      {
+        "text": "Die Zeitung von heute",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 4,
+            "end": 11,
+            "value": "Zeitung",
+            "entity": "news"
+          },
+          {
+            "start": 16,
+            "end": 21,
+            "value": "heute",
+            "entity": "relativedate"
           }
         ]
       }

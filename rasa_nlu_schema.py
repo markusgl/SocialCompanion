@@ -25,4 +25,3 @@ class RasaNLUSchema(Schema):
     text = fields.Str()
     intent = fields.Nested(IntentSchema)
     entities = fields.List(fields.Nested(EntitiesSchema))
-
