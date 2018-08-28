@@ -15,9 +15,10 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 
+from fuzzywuzzy import fuzz
 import logging
 
-
+"""
 class ActionSearchContact(Action):
     def name(self):
         return 'action_search_contact'
@@ -97,7 +98,7 @@ class ActionSearchMe(Action):
                 dispatcher.utter_message("Hallo " + me_name.title() + "! Schön von dir zu hören.")
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
-
+"""
 
 class ActionAddMe(Action):
     """
@@ -167,8 +168,8 @@ class ActionSearchAppointment(Action):
 
     def run(self, dispatcher, tracker, domain):
         # check if time was given by the user and convert relative dates and time periods
-        if tracker.get_slot('datetime'):
-            appointment_time = tracker.get_slot('datetime')
+        if tracker.get_slot('date'):
+            appointment_time = tracker.get_slot('date')
         elif tracker.get_slot('relativedate'):
             given_time = tracker.get_slot('relativedate')
             if given_time == 'heute':
@@ -184,13 +185,19 @@ class ActionSearchAppointment(Action):
                 appointment_time = ""
         elif tracker.get_slot('dateperiod'):
             given_time = tracker.get_slot('dateperiod')
+            if fuzz.ratio(given_time, 'nächste tage') > 85:
+                after_tomorrow = datetime.datetime.now() + timedelta(days=5)
+                appointment_time = after_tomorrow.isoformat() + 'Z'
+            elif fuzz.ratio(given_time, 'wochenende') > 85:
+                after_tomorrow = datetime.datetime.now() + timedelta(days=5)
+                appointment_time = after_tomorrow.isoformat() + 'Z'
             appointment_time = ""
+
         else:
             appointment_time = ""
 
         if appointment_time:
-            print(appointment_time)
-            events = self.search_google_calendar(appointment_time)
+            events = self.search_google_calendar_by_time(appointment_time)
             if not events:
                 dispatcher.utter_message("Du hast heute keine Termine.")
             for event in events:
@@ -201,11 +208,45 @@ class ActionSearchAppointment(Action):
                 dispatcher.utter_message(conv_date.strftime('%H:%M') + " " + event['summary'])
 
                 #print(start, event['summary'])
+        elif tracker.get_slot('activity'):
+            subject = tracker.get_slot('activity')
+            event = self.search_google_calendar_by_subject(subject)
+            if event:
+                dispatcher.utter_message(event)
 
         return []
 
-    def search_google_calendar(self, event_time):
+    def search_google_calendar_by_time(self, event_time):
         #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+        tomorrow = datetime.datetime.now() + timedelta(days=2)
+        tomorrow = tomorrow.replace(hour=0, minute=0, second=0, microsecond=0)
+        time_max = tomorrow.isoformat() + 'Z'
+
+        # Setup the Calendar API
+        SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+        store = file.Storage('credentials.json')
+        creds = store.get()
+        if not creds or creds.invalid:
+            flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+            creds = tools.run_flow(flow, store)
+        service = build('calendar', 'v3', http=creds.authorize(Http()), cache_discovery=False)
+        print(event_time)
+
+        # Call the Calendar API
+        events_result = service.events().list(calendarId='primary', timeMin=event_time, timeMax=time_max,
+                                              maxResults=5, singleEvents=True,
+                                              orderBy='startTime').execute()
+        events = events_result.get('items', [])
+        print(events)
+
+        return events
+
+    def search_google_calendar_by_subject(self, subject):
+        #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+        # search the next tow weeks for the corresponding subject
+        after_tomorrow = datetime.datetime.now()
+        event_time = after_tomorrow.isoformat() + 'Z'
+
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
         store = file.Storage('credentials.json')
@@ -219,28 +260,38 @@ class ActionSearchAppointment(Action):
         events_result = service.events().list(calendarId='primary', timeMin=event_time,
                                               maxResults=10, singleEvents=True,
                                               orderBy='startTime').execute()
-        print(events_result)
-        events = events_result.get('items', [])
-        print(events)
 
-        final_events = []
+        events = events_result.get('items', [])
+
+        appointment = None
         if not events:
             print('No upcoming events found.')
             return None
         for event in events:
+            event_subject = event['summary']
             start = event['start'].get('dateTime', event['start'].get('date'))
-            conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-            today = datetime.datetime.today().strftime('%Y-%m-%d')
+            end = event['start'].get('dateTime', event['start'].get('date'))
 
-            #print(start, event['summary'])ö
+            # fuzzy search of the projected subject
+            fuzzy_ratio = fuzz.ratio(event_subject, subject)
+            if fuzzy_ratio > 85:
+                converted_start_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
+                converted_end_date = datetime.datetime.strptime(start[:(len(end) - 6)], '%Y-%m-%dT%H:%M:%S')
+                print(str(converted_start_date) + " - " + str(converted_end_date) + ": " + event_subject)
+                appointment = str(converted_start_date) + " - " + str(converted_end_date) + ": " + event_subject
 
-        return events
+        return appointment
 
 if __name__ == '__main__':
-    today = datetime.datetime.now()
+    today = datetime.datetime.now() + timedelta(days=1)
+    today = today.replace(hour=0, minute=0, second=0, microsecond=0)
     appointment_time = today.isoformat() + 'Z'
-    ActionSearchAppointment().search_google_calendar(appointment_time)
 
+    ActionSearchAppointment().search_google_calendar_by_time(appointment_time)
+
+    """
+    ActionSearchAppointment().search_google_calendar_by_subject('Due Probefahrt')
+    """
 
 class ActionSuggest(Action):
     def name(self):

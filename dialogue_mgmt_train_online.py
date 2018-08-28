@@ -14,7 +14,6 @@ from rasa_core.policies.memoization import MemoizationPolicy
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
-from rasa_nlu.model import Interpreter as RasaInterpreter
 
 from knowledge_base.knowledge_graph import KnowledgeGraph
 
@@ -24,11 +23,13 @@ logger = logging.getLogger(__name__)
 def run_eventbot_online(input_channel, interpreter,
                         domain_file="./data/domain.yml",
                         training_data_file='./data/stories'):
+    """
     try:
         KnowledgeGraph()
     except ServiceUnavailable:
         print('Neo4j connection failed. Program stopped.')
         return
+    """
 
     if interpreter == 'luis':
         interpreter = LuisInterpreter()
@@ -37,9 +38,9 @@ def run_eventbot_online(input_channel, interpreter,
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
-        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
+        return ("Please provide one of these interpreters: luis, dialogflow, witai or rasa")
 
     fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
                               core_threshold=0.3, nlu_threshold=0.3)
@@ -59,5 +60,5 @@ def run_eventbot_online(input_channel, interpreter,
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level="INFO")
-    run_eventbot_online(ConsoleInputChannel(), interpreter='luis')
+    logging.basicConfig(level="DEBUG")
+    run_eventbot_online(ConsoleInputChannel(), interpreter='rasa')

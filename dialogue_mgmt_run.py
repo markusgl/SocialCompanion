@@ -52,11 +52,13 @@ def train_bot():
 
 def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
+    """
     try:
         KnowledgeGraph()
     except ServiceUnavailable:
         print('Neo4j connection failed. Program stopped.')
         return
+    """
 
     if train:
         train_bot()
@@ -68,7 +70,7 @@ def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter ='rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -110,7 +112,7 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -142,7 +144,7 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
     elif interpreter == 'witai':
         interpreter = WitInterpreter()
     elif interpreter == 'rasa':
-        interpreter = RasaInterpreter.load('rasa-nlu/models/rasa-nlu/default/socialcompanionnlu')
+        interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
@@ -165,7 +167,7 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
     return agent
 
 if __name__ == '__main__':
-    #run_cli_bot(train=True, interpreter='rasa')
+    run_cli_bot(train=True, interpreter='rasa')
     #run_telegram_bot('3c956e75.ngrok.io/app/webhook', True, interpreter='luis')
-    run_voice_bot('https://b77597fa.ngrok.io')
+    #run_voice_bot('https://b77597fa.ngrok.io')
 

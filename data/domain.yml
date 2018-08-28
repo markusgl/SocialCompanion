@@ -1,58 +1,54 @@
 slots:
   activity:
     type: text
-  datetime:
+  appointment:
     type: text
-  relativedate:
+  date:
     type: text
   dateperiod:
     type: text
-  location:
-    type: text
   firstname:
+    type: text
+  lastname:
+    type: text
+  news:
+    type: text
+  news_type:
+    type: text
+  phone_number:
     type: text
   relationship:
     type: text
-  time:
+  relativedate:
     type: text
-  matches:
-    type: list
-  me_name:
-    type: text
-  known_user:
-    type: bool
 
 intents:
-  - agree
-  - contact_selection
-  - decline
-  - find_appointment
-  - get_to_know
   - goodbye
   - greet
-  - introduce
-  - search_event
-  - tell_mood
+  - agree
+  - decline
+  - find_appointment
+  - make_appointment
+  - phone_call
+  - read_news
 
 entities:
   - activity
+  - date
   - dateperiod
-  - datetime
   - firstname
-  - location
-  - relativedate
+  - lastname
+  - news
+  - news_type
+  - phone_number
   - relationship
-  - time
+  - relativedate
 
 templates:
   utter_greet:
-    - 'Hallo, ich bin SocialBot. Du kannst mich zum Beispiel nach deinen Terminen fragen. Und wer bist du?'
-    - 'Guten Tag, ich bin SocialBot und wie heißt du?'
-    - 'Hallo, ich bin SocialBot! Wie heißt du?'
-    - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden oder Veranstaltungen vorzuschlagen. Wie ist dein Name?'
-  utter_introduce:
-    - 'Ich bin SocialBot. Du kannst mich etwa nach deinen Terminen fragen.'
-    - 'Ich bin SocialBot und kann dir helfen Termine zu finden oder Veranstaltungen vorzuschlagen.'
+    - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren, Anrufe tätigen oder Termine finden.'
+    - 'Hallo, ich bin SocialBot! Ich kann für die Anrufen tätigen, Termine finden oder dir einfach zuhören.'
+    - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden, Anrufe zu tätigen oder dir einfach zuhören.'
   utter_ask_howcanhelp:
     - 'Wie kann ich dir helfen? Ich kann für dich Veranstaltungen oder deine Termine finden.'
     - 'Was möchtest du tun? Ich kann dir etwa deine Termine sagen oder Veranstaltungen vorschlagen.'
@@ -69,19 +65,6 @@ templates:
   utter_ask_time:
     - 'Wann möchtest du deine Unternehmung {activity} machen?'
     - 'An welchem Datum möchtest du deine Aktivität tun?'
-  utter_ask_activity:
-    - 'Ok du willst etwas unternehmen und was?'
-    - 'Was würdest du gerne machen? Kino, Theater oder etwas anderes?'
-  utter_ask_invite:
-    - 'Willst du jemand mitnehmen?'
-    - 'Willst du noch jemanden einladen?'
-    - 'Wen willst du mitnehmen?'
-  utter_confirm:
-    - 'Ok habe ich gebucht.'
-  utter_confirm_contact_invitation:
-    - 'Ok ich habe den Kontakt eingeladen'
-  utter_name_not_understood:
-    - 'Ich habe deinen Namen leider nicht verstanden. Kannst du ihn nochmal wiederholen?'
   utter_not_understood:
     - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
@@ -91,18 +74,6 @@ actions:
   - utter_goodbye
   - utter_ask_location
   - utter_ask_time
-  - utter_ask_activity
-  - utter_ask_invite
-  - utter_confirm
-  - utter_confirm_contact_invitation
-  - utter_introduce
-  - utter_name_not_understood
   - utter_not_understood
-  - actions.ActionSuggest
-  - actions.ActionSearchEvents
   - actions.ActionClearSlots
-  - actions.ActionSearchContact
-  - actions.ActionAddContact
   - actions.ActionSearchAppointment
-  - actions.ActionAddMe
-  - actions.ActionSearchMe
