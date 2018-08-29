@@ -75,3 +75,14 @@
 * find_appointment{"activity": "arzt"}
     - slot{"activity": "arzt"}
     - action_search_appointment
+    
+## Generated Story 5478279954146030739
+* greet
+    - utter_greet
+* find_appointment{"relativedate": "heute", "appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+* goodbye
+    - utter_goodbye
+    - export

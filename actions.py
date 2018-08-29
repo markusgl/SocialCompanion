@@ -3,10 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
-from rasa_core.actions.forms import EntityFormField
-
-from knowledge_base.knowledge_graph import KnowledgeGraph
-
 from rasa_core.actions.action import Action
 from rasa_core.events import SlotSet, AllSlotsReset, Restarted, UserUttered
 from datetime import timedelta
@@ -17,146 +13,6 @@ from oauth2client import file, client, tools
 
 from fuzzywuzzy import fuzz
 import logging
-
-"""
-class ActionSearchContact(Action):
-    def name(self):
-        return 'action_search_contact'
-
-    def run(self, dispatcher, tracker, domain):
-        kg = KnowledgeGraph()
-        contact_name = tracker.get_slot('firstname')
-        relation_ship = tracker.get_slot('relationship')
-        me_name = tracker.get_slot('me_name')
-
-        # search relationship by contact name
-        if me_name and contact_name:
-            relationship = kg.search_relationship_by_contactname(me_name, contact_name)
-            if relationship is None:
-                dispatcher.utter_message("Ich kenne " + str(contact_name).title() + " nicht. Willst du mir sagen wer das ist?")
-            else:
-                SlotSet("relationship", relationship)
-                dispatcher.utter_message("Deine(n) " + relationship + " " + str(contact_name).title() +"?")
-
-        # search contact name by given relationship
-        elif me_name and relation_ship:
-            contact = kg.search_contactname_by_relationship(me_name, relation_ship)
-            if contact is None:
-                if relation_ship == "vater" or relation_ship == "bruder" or relation_ship == "onkel":
-                    dispatcher.utter_message("Ich kenne deinen " + str(relation_ship).title() + " leider nicht. "
-                                                                                   "Willst du mir sagen wie er heißt?")
-                elif relation_ship == "mutter" or relation_ship == "schwester" or relation_ship == "tante":
-                    dispatcher.utter_message("Ich kenne deine " + str(relation_ship).title() + " leider."
-                                                                                  "Willst du mir sagen wie sie heißt?")
-                else:
-                    dispatcher.utter_message("Ich kenne " + str(relation_ship) + " nicht.")
-            else:
-                SlotSet("contactname", contact)
-                dispatcher.utter_message("Meinst du "+contact+"?")
-        elif not me_name:
-            dispatcher.utter_message("Leider kenne ich dich noch nicht und auch deine Kontkate nicht. "
-                                     "Willst du mir sagen wie du heißt?")
-        else:
-            dispatcher.utter_message("Leider hab ich dich nicht ganz verstanden. Wen willst du mitnehmen?")
-
-        return []
-
-
-class ActionAddContact(Action):
-    def name(self):
-        return 'action_add_contact'
-
-    def run(self, dispatcher, tracker, domain):
-        kg = KnowledgeGraph()
-
-        me_name = tracker.get_slot('me_name')
-        contactname = tracker.get_slot('firstname')
-        relationship = tracker.get_slot('relationship')
-
-        if me_name and contactname and relationship:
-            print("try to add contact")
-            kg.add_contact(me_name, contactname, relationship)
-            dispatcher.utter_message("Danke, jetzt kenne ich auch " + str(contactname).title() + "!")
-        else:
-            dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. Willst du mir sie nochmal sagen?")
-
-
-class ActionSearchMe(Action):
-    def name(self):
-        return 'action_search_me'
-
-    def run(self, dispatcher, tracker, domain):
-        kg = KnowledgeGraph()
-        me_name = tracker.get_slot('firstname')
-        if me_name:
-            exist = kg.get_me_by_name(me_name)
-            if exist:
-                dispatcher.utter_message("Der Name " + me_name.title() + " kommt mir bekannt vor! Kennen wir uns bereits?")
-            else:
-                #ActionAddMe.run(dispatcher, tracker, domain)
-                kg.add_me(me_name)
-                dispatcher.utter_message("Hallo " + me_name.title() + "! Schön von dir zu hören.")
-
-        return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
-"""
-
-class ActionAddMe(Action):
-    """
-    Add the central user i.e. 'Me' if it does not exits yet
-    """
-    def name(self):
-        return 'action_add_me'
-
-    def run(self, dispatcher, tracker, domain):
-        kg = KnowledgeGraph()
-        me_name = tracker.get_slot('me_name')
-
-        if me_name:
-            kg.add_me(me_name)
-            dispatcher.utter_message("Hallo " + str(me_name).title() + "! Schön von dir zu hören.")
-
-        return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
-
-
-class ActionSearchEvents(Action):
-    """
-    Searches eveent recommendations in the area and suggests contacts to join
-    """
-    #@staticmethod
-    #def required_fields(self):
-    #    return[
-    #        EntityFormField("location", "location"),
-    #        EntityFormField("dateperiod", "datetime", "relativedate")
-    #    ]
-
-    def name(self):
-        return 'action_search_events'
-
-    def run(self, dispatcher, tracker, domain):
-        location = tracker.get_slot('location')
-
-        if tracker.get_slot('datetime'):
-            time = tracker.get_slot('datetime')
-        elif tracker.get_slot('relativedate'):
-            time = tracker.get_slot('relativedate')
-            if time == 'morgen':
-                tomorrow = datetime.datetime.now() + timedelta(days=1)
-                event_time = tomorrow.isoformat() + 'Z'
-
-        elif tracker.get_slot('dateperiod'):
-            time = tracker.get_slot('dateperiod')
-
-            #TODO convert to date
-        else:
-            event_time = None
-
-        dispatcher.utter_message("Ich versuche Veranstaltungen in deiner Umgebung zu finden")
-
-        #activity = tracker.get_slot('activity')
-        print("Current slot-values %s" % tracker.current_slot_values())
-        print("Current state %s" % tracker.current_state())
-
-        return []
 
 
 class ActionSearchAppointment(Action):
@@ -169,35 +25,48 @@ class ActionSearchAppointment(Action):
     def run(self, dispatcher, tracker, domain):
         # check if time was given by the user and convert relative dates and time periods
         if tracker.get_slot('date'):
-            appointment_time = tracker.get_slot('date')
+            appointment_start_time = tracker.get_slot('date')
         elif tracker.get_slot('relativedate'):
             given_time = tracker.get_slot('relativedate')
+            appointment_end_time = 0
             if given_time == 'heute':
-                today = datetime.datetime.now()
-                appointment_time = today.isoformat() + 'Z'
+                appointment_start_time = datetime.datetime.now()
             elif given_time == 'morgen':
-                tomorrow = datetime.datetime.now() + timedelta(days=1)
-                appointment_time = tomorrow.isoformat() + 'Z'
+                appointment_start_time = datetime.datetime.now() + timedelta(days=1)
             elif given_time == 'übermorgen':
-                after_tomorrow = datetime.datetime.now() + timedelta(days=2)
-                appointment_time = after_tomorrow.isoformat() + 'Z'
+                appointment_start_time = datetime.datetime.now() + timedelta(days=2)
             else:
-                appointment_time = ""
+                appointment_start_time = ""
         elif tracker.get_slot('dateperiod'):
             given_time = tracker.get_slot('dateperiod')
             if fuzz.ratio(given_time, 'nächste tage') > 85:
-                after_tomorrow = datetime.datetime.now() + timedelta(days=5)
-                appointment_time = after_tomorrow.isoformat() + 'Z'
+                appointment_start_time = datetime.datetime.now()
+                appointment_end_time = 4
             elif fuzz.ratio(given_time, 'wochenende') > 85:
-                after_tomorrow = datetime.datetime.now() + timedelta(days=5)
-                appointment_time = after_tomorrow.isoformat() + 'Z'
-            appointment_time = ""
+
+                # calculate days until weekend depending on weekday
+                weekno = datetime.datetime.now().weekday()
+                if weekno < 4:
+                    delta = 4 - weekno
+                    appointment_start_time = datetime.datetime.now() + timedelta(days=delta)
+                else:
+                    appointment_start_time = datetime.datetime.now()
+
+                appointment_end_time = appointment_start_time + timedelta(days=2)
+
+        elif tracker.get_slot('activity'):
+            subject = tracker.get_slot('activity')
+            event = self.search_google_calendar_by_subject(subject)
+            if event:
+                dispatcher.utter_message("Ich konnte folgende Termine finden " + event)
+            else:
+                dispatcher.utter_message("Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden.")
 
         else:
-            appointment_time = ""
+            appointment_start_time = ""
 
-        if appointment_time:
-            events = self.search_google_calendar_by_time(appointment_time)
+        if appointment_start_time:
+            events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
             if not events:
                 dispatcher.utter_message("Du hast heute keine Termine.")
             for event in events:
@@ -216,11 +85,20 @@ class ActionSearchAppointment(Action):
 
         return []
 
-    def search_google_calendar_by_time(self, event_time):
+    def search_google_calendar_by_time(self, start_time, end_time):
+        """
+        :param start_time: datetime object
+        :param end_time: days to be parsed
+        :return:
+        """
+        # calculate max time for one day
+        time_max = start_time + timedelta(days=end_time)
+        time_max = time_max.replace(hour=23, minute=59, second=59, microsecond=0)
+        time_max = time_max.isoformat() + 'Z'
+
         #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
-        tomorrow = datetime.datetime.now() + timedelta(days=2)
-        tomorrow = tomorrow.replace(hour=0, minute=0, second=0, microsecond=0)
-        time_max = tomorrow.isoformat() + 'Z'
+        start_time = start_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        start_time = start_time.isoformat() + 'Z'
 
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -230,14 +108,15 @@ class ActionSearchAppointment(Action):
             flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
             creds = tools.run_flow(flow, store)
         service = build('calendar', 'v3', http=creds.authorize(Http()), cache_discovery=False)
-        print(event_time)
 
         # Call the Calendar API
-        events_result = service.events().list(calendarId='primary', timeMin=event_time, timeMax=time_max,
+        events_result = service.events().list(calendarId='primary', timeMin=start_time, timeMax=time_max,
                                               maxResults=5, singleEvents=True,
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
-        print(events)
+
+        for event in events:
+            print(event['summary'])
 
         return events
 
@@ -283,28 +162,38 @@ class ActionSearchAppointment(Action):
         return appointment
 
 if __name__ == '__main__':
-    today = datetime.datetime.now() + timedelta(days=1)
+    # for testing
+    today = datetime.datetime.now()
     today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-    appointment_time = today.isoformat() + 'Z'
 
-    ActionSearchAppointment().search_google_calendar_by_time(appointment_time)
+    ActionSearchAppointment().search_google_calendar_by_time(today, 2)
 
-    """
-    ActionSearchAppointment().search_google_calendar_by_subject('Due Probefahrt')
-    """
 
-class ActionSuggest(Action):
+
+class ActionMakeAppointment(Action):
     def name(self):
-        return 'action_suggest'
+        return 'action_make_appointment'
 
     def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message("Ich konnte folgendes finden")
-        count = 1
-        for match in tracker.get_slot("matches"):
-            dispatcher.utter_message(str(count) + " " + match)
-            count += 1
-        dispatcher.utter_message("Wie ist deine Wahl?")
-        dispatcher.utter_button_message("Tippe die entsprechende Zahl ein", buttons=[{"1":"eins", "2":"zwei", "3":"drei"}])
+        # TODO
+
+        return []
+
+class ActionPhoneCall(Action):
+    def name(self):
+        return 'action_phone_call'
+
+    def run(self, dispatcher, tracker, domain):
+        # TODO
+
+        return []
+
+class ActionReadNews(Action):
+    def name(self):
+        return 'action_read_news'
+
+    def run(self, dispatcher, tracker, domain):
+        # TODO
 
         return []
 

@@ -60,5 +60,5 @@ def run_eventbot_online(input_channel, interpreter,
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level="DEBUG")
-    run_eventbot_online(ConsoleInputChannel(), interpreter='rasa')
+    logging.basicConfig(level="INFO")
+    run_eventbot_online(ConsoleInputChannel(), interpreter='dialogflow')
