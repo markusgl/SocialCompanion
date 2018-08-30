@@ -21,6 +21,8 @@ slots:
     type: text
   relativedate:
     type: text
+  time:
+    type: text
 
 intents:
   - goodbye
@@ -31,6 +33,7 @@ intents:
   - make_appointment
   - phone_call
   - read_news
+  - inform
 
 entities:
   - activity
@@ -43,6 +46,7 @@ entities:
   - phone_number
   - relationship
   - relativedate
+  - time
 
 templates:
   utter_greet:
@@ -63,8 +67,11 @@ templates:
     - 'Ok du willst ins {activity} und wo?'
     - 'Alles klar. An welchem Ort?'
   utter_ask_time:
-    - 'Wann möchtest du deine Unternehmung {activity} machen?'
-    - 'An welchem Datum möchtest du deine Aktivität tun?'
+    - 'Zu welcher Uhrzeit?'
+    - 'Um wie viel Uhr?'
+  utter_ask_subject:
+    - 'Wie lautet der Termin?'
+    - 'Was ist der Titel des Termins?'
   utter_not_understood:
     - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
@@ -74,6 +81,8 @@ actions:
   - utter_goodbye
   - utter_ask_location
   - utter_ask_time
+  - utter_ask_subject
   - utter_not_understood
   - actions.ActionClearSlots
   - actions.ActionSearchAppointment
+  - actions.ActionMakeAppointment

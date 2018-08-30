@@ -3037,6 +3037,342 @@
             "entity": "relativedate"
           }
         ]
+      },
+      {
+        "text": "Morgen um 18 Uhr habe ich einen Arzttermin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 0,
+            "end": 6,
+            "value": "Morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 10,
+            "end": 16,
+            "value": "18 Uhr",
+            "entity": "time"
+          },
+          {
+            "start": 32,
+            "end": 42,
+            "value": "Arzttermin",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe um 9 Uhr einen Arzttermin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 34,
+            "value": "Arzttermin",
+            "entity": "activity"
+          },
+          {
+            "start": 12,
+            "end": 17,
+            "value": "9 Uhr",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "Morgen um 10 habe ich einen Termin",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 0,
+            "end": 6,
+            "value": "Morgen",
+            "entity": "relativedate"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "value": "um 10",
+            "entity": "time"
+          },
+          {
+            "start": 28,
+            "end": 34,
+            "value": "Termin",
+            "entity": "appointment"
+          }
+        ]
+      },
+      {
+        "text": "um 9 Uhr",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 8,
+            "value": "9 Uhr",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "um 8 Uhr",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 8,
+            "value": "8 Uhr",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "um 14 Uhr",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 9,
+            "value": "14 Uhr",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "um 18:30",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 8,
+            "value": "18:30",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "Arzt",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "Arzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "kino",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "kino",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "theater",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 7,
+            "value": "theater",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "krankengymnastik",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 16,
+            "value": "krankengymnastik",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "essen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 5,
+            "value": "essen",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "morgen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 6,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "übermorgen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 10,
+            "value": "übermorgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "in zwei Wochen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 14,
+            "value": "zwei Wochen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "die nächsten zwei wochen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 4,
+            "end": 24,
+            "value": "nächsten zwei wochen",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "nächste woche",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 13,
+            "value": "nächste woche",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "in einer woche",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 14,
+            "value": "einer woche",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "am wochenende",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 13,
+            "value": "wochenende",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "nächsten monat",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 14,
+            "value": "nächsten monat",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "in einem Jahr",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 13,
+            "value": "in einem Jahr",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "nächstes Jahr",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 13,
+            "value": "nächstes Jahr",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "um 9",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 4,
+            "value": "9",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "um 8",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 3,
+            "end": 4,
+            "value": "8",
+            "entity": "time"
+          }
+        ]
+      },
+      {
+        "text": "von 9 Uhr bis 10 Uhr",
+        "intent": "",
+        "entities": [
+          {
+            "start": 4,
+            "end": 9,
+            "value": "9 Uhr",
+            "entity": "time"
+          },
+          {
+            "start": 14,
+            "end": 20,
+            "value": "10 Uhr",
+            "entity": "time"
+          }
+        ]
       }
     ]
   }

@@ -112,6 +112,7 @@ ENV/
 keys.json
 client_secret.json
 credentials.json
+credentials_create_event.json
 blablub.py
 knowledge_base/neo4j_creds.json
 stories.md

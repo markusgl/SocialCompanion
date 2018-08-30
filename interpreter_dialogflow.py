@@ -36,7 +36,7 @@ class Interpreter(RasaNLUInterpreter):
             "https://api.dialogflow.com/v1/query",
             params=params, headers=headers)
         #print(response.url)
-        #print("Dialogflow response: %s" % response.content)
+        print("Dialogflow response: %s" % response.content)
 
         return response.content
 
@@ -54,8 +54,10 @@ class Interpreter(RasaNLUInterpreter):
         if resp["result"]["metadata"]:
             intent_schema.name = resp["result"]["metadata"]["intentName"]
             intent_schema.confidence = resp["result"]["score"]
+        else: # fallback if no intent is given by the nlu
+            intent_schema.name = "greet"
+            intent_schema.confidence = 0.0
         nlu_response.intent = intent_schema
-
 
         try:
             entities = resp["result"]["parameters"]
@@ -74,7 +76,6 @@ class Interpreter(RasaNLUInterpreter):
         except Exception as err:
             print(err)
             print('No Entites extracted')
-            #print("Failed Response {}".format(resp))
 
         schema = RasaNLUSchema()
         data, error = schema.dump(nlu_response)

@@ -1,3 +1,7 @@
+"""
+ Interactive Learning for the Dialog Management
+"""
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -15,7 +19,6 @@ from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
 
-from knowledge_base.knowledge_graph import KnowledgeGraph
 
 logger = logging.getLogger(__name__)
 
@@ -23,13 +26,6 @@ logger = logging.getLogger(__name__)
 def run_eventbot_online(input_channel, interpreter,
                         domain_file="./data/domain.yml",
                         training_data_file='./data/stories'):
-    """
-    try:
-        KnowledgeGraph()
-    except ServiceUnavailable:
-        print('Neo4j connection failed. Program stopped.')
-        return
-    """
 
     if interpreter == 'luis':
         interpreter = LuisInterpreter()
@@ -61,4 +57,4 @@ def run_eventbot_online(input_channel, interpreter,
 
 if __name__ == '__main__':
     logging.basicConfig(level="INFO")
-    run_eventbot_online(ConsoleInputChannel(), interpreter='dialogflow')
+    run_eventbot_online(ConsoleInputChannel(), interpreter='rasa')

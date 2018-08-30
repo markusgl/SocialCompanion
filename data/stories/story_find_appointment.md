@@ -15,12 +15,11 @@
 * greet
     - utter_greet
 * find_appointment{"datetime": "06.05.2018"}
-    - utter_ask_time
     - action_search_appointment
     
 ## Story 4
-* find_appointment
-    - utter_ask_time
+* find_appointment{"activity": "arzttermin"}
+    - slot{"activity": "arzttermin"}    
     - action_search_appointment
     
 ## Generated Story -2253719340681464826
@@ -85,4 +84,39 @@
     - action_search_appointment
 * goodbye
     - utter_goodbye
-    - export
+
+## Story 5
+* greet
+    - utter_greet
+* find_appointment{"activity": "Arzt"}
+    - slot{"activity": "Arzt"}
+    - action_search_appointment
+* goodbye
+    - utter_goodbye
+
+## Story 6
+* greet
+    - utter_greet
+* find_appointment{"activity": "Kino"}
+    - slot{"activity": "Kino"}
+    - action_search_appointment
+* goodbye
+    - utter_goodbye
+    
+## Story 7
+* greet
+    - utter_greet
+* find_appointment{"activity": "Orthopäden"}
+    - slot{"activity": "Orthopäden"}
+    - action_search_appointment
+* goodbye
+    - utter_goodbye
+    
+## Generated Story 9174633887046606895
+* greet
+    - utter_greet
+* find_appointment{"activity": "arzttermin"}
+    - slot{"activity": "arzttermin"}
+    - action_search_appointment
+* goodbye
+    - utter_goodbye
