@@ -14,7 +14,7 @@ from oauth2client import file, client, tools
 from fuzzywuzzy import fuzz
 import logging
 import re
-
+from google_news_searcher import GoogleNewsSearcher
 
 class ActionSearchAppointment(Action):
     """
@@ -162,18 +162,48 @@ class ActionSearchAppointment(Action):
 
 
 class ActionMakeAppointment(Action):
+
     def name(self):
         return 'action_make_appointment'
 
     def run(self, dispatcher, tracker, domain):
-        #if tracker.get_slot('end_time'):
-        #   end_time = tracker.get_slot('end_time')
-        # use default duration of 1 hour if end_time is not given
-        #else:
-        #    end_time = start_time
-        date = ""
-        if tracker.get_slot('relativedate'):
-            rel_date = tracker.get_slot('relativedate')
+
+        if tracker.get_slot('time') and tracker.get_slot('activity'):
+            if tracker.get_slot('relativedate'):
+                start_date = self.convert_date(tracker.get_slot('relativedate'), 'relativedate')
+            elif tracker.get_slot('date'):
+                start_date = self.convert_date(tracker.get_slot('date'), 'date')
+            #elif tracker.get_slot('dateperiod'):
+                #TODO
+            else:
+                return
+
+            hour, minute = self.convert_time(tracker.get_slot('time'))
+            start_date = start_date.replace(hour=int(hour), minute=int(minute), second=0, microsecond=0)
+
+            # use default duration of 1 hour if end_time is not given
+            end_date = start_date
+            end_date = end_date.replace(hour=int(hour)+1, minute=int(minute), second=0, microsecond=0)
+            subject = tracker.get_slot('activity')
+
+            self.create_event_in_google_calendar(start_date, end_date, subject)
+            dispatcher.utter_message("Ok ich habe den Termin " + subject + " in den Kalendar eingetragen und werde dich erinnern.")
+        else:
+            dispatcher.utter_message("Mir fehlen leider noch Information zur Erstellung des Termins.")
+
+        return []
+
+    def convert_date(self, date_string, date_type):
+        """
+        gets at date as string and returns as datetime
+        :param date_string: date as string in any format (e. g. heute, morgen, 1.1. etc.)
+        :param date_type: type of the given date
+        :return: date as datetime object
+        """
+
+        converted_date = ""
+        if date_type == 'relativedate':
+            rel_date = date_string
             if rel_date == "heute":
                 time_delta = 0
             elif rel_date == "morgen":
@@ -182,46 +212,75 @@ class ActionMakeAppointment(Action):
                 time_delta = 2
             else:
                 time_delta = 0
-            date = datetime.datetime.now() + timedelta(days=time_delta)
-            date = date.strftime('%Y-%m-%d')
+            converted_date = datetime.datetime.now() + timedelta(days=time_delta)
+            converted_date = converted_date.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        elif tracker.get_slot('date'):
-            # extract date from string
-            match = re.search(r'[0-9]{1,2}\.[0-9]{1,2}(\.)?([0-9]{4}|[0-9]{2})?', tracker.get_slot('date'))
+        # if date is given as numbers
+        if date_type == 'date':
+            # extract dateformat from string
+            match = re.search(r'[0-9]{1,2}\.[0-9]{1,2}(\.)?([0-9]{4}|[0-9]{2})?', date_string)
             if match:
-                date = match.group()
+                # print(match.group())
+                date_array = str(match.group()).split('.')
             else:
-                return
+                print('No match')
+                date_array = ""
+
+            # convert different possible date format to one equal
+            if len(date_array) == 2:
+                day = date_array[0].zfill(2)
+                month = date_array[1].zfill(2)
+                year = datetime.datetime.now().year
+
+            elif len(date_array) == 3 and date_array[2] == "":
+                day = date_array[0].zfill(2)
+                month = date_array[1].zfill(2)
+                year = datetime.datetime.now().year
+
+            elif len(date_array) == 3:
+                day = date_array[0].zfill(2)
+                month = date_array[1].zfill(2)
+                if len(date_array[2]) == 4:
+                    year = date_array[2]
+                elif len(date_array[2]) == 2:
+                    year = '20' + date_array[2]
+
+            converted_date = datetime.datetime.strptime(str(year) + '-' + str(month) + '-' + str(day), '%Y-%m-%d')
+            print(type(converted_date))
+
+        return converted_date
 
 
-        #elif tracker.get_slot('dateperiod'):
-            #TODO
-
-
+    def convert_time(self, time_string):
+        """
+        extract the time of a string and returns the hours and minutes
+        :param time_string:
+        :return: hour and minute
+        """
+        hour = 0
+        minute = 0
+        # extract time from string
+        match = re.search(r'[0-9]{1,2}(:|\.)?([0-9]{1,2})?', time_string)
+        if match:
+            time_string = match.group()
+            time_array = re.split('(\.|:)', time_string)
         else:
             return
 
-        if tracker.get_slot('start_time') and tracker.get_slot('subject'):
-            # convert the given time to datetime format
-            start_time = tracker.get_slot('start_time')
+        if len(time_array) == 1:
+            hour = time_array[0].zfill(2)
+            minute = '00'
+        elif len(time_array) == 3:
+            hour = time_array[0].zfill(2)
+            minute = time_array[2].zfill(2)
 
-            # TODO
-            # extract time from string
-            match = re.search(r'[0-9]{1,2}(:|\.)?([0-9]{1,2})?', start_time)
-            if match:
-                start_time = match.group()
-            subject = tracker.get_slot('subject')
+        return hour, minute
 
-            self.create_event_in_google_calendar(start_time)
-        else:
-            dispatcher.utter_message("Mir fehlen leider noch Information zur Erstellung des Termins.")
 
-        return []
-
-    def create_event_in_google_calendar(self, start_time, end_time, subject, location=""):
+    def create_event_in_google_calendar(self, start_datetime, end_datetime, subject, location=""):
         """
-        :param start_time: datetime object
-        :param end_time: days to be parsed as integer
+        :param start_datetime: datetime object
+        :param end_datetime: days to be parsed as integer
         :param subject: string for the subject
         :param location: string for the location
         :return:
@@ -229,8 +288,8 @@ class ActionMakeAppointment(Action):
 
         # logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
         # transform datetimes to iso format
-        start_time = start_time.isoformat()
-        end_time = end_time.isoformat()
+        start_datetime = start_datetime.isoformat()
+        end_datetime = end_datetime.isoformat()
 
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar'
@@ -248,16 +307,13 @@ class ActionMakeAppointment(Action):
                 'location': location,
                 'description': '',
                 'start': {
-                    'dateTime': start_time,
+                    'dateTime': start_datetime,
                     'timeZone': 'Europe/Berlin',
                 },
                 'end': {
-                    'dateTime': end_time,
+                    'dateTime': end_datetime,
                     'timeZone': 'Europe/Berlin',
-                },
-                'recurrence': [
-                    'RRULE:FREQ=DAILY;COUNT=2'
-                ]
+                }
             }
 
             # Call the Calendar API
@@ -265,6 +321,32 @@ class ActionMakeAppointment(Action):
             print('Event created: %s' % (event.get('htmlLink')))
         else:
             return None
+
+        return []
+
+
+class ActionReadNews(Action):
+    def name(self):
+        return 'action_read_news'
+
+    def run(self, dispatcher, tracker, domain):
+
+        if tracker.get_slot('news_type'):
+            topic = tracker.get_slot('news_type')
+            news_list = GoogleNewsSearcher().search_news(topic)
+            dispatcher.utter_message("Hier sind die 10 Schlagzeilen zum Thema " + topic + ":")
+
+        else:
+            news_list = GoogleNewsSearcher().search_news()
+            dispatcher.utter_message("Hier sind die 10 aktuellen Schlagzeilen:")
+
+        news_utterance = ""
+        for i in range(len(news_list)):
+            if i != 0:
+                #dispatcher.utter_message(news_list[i].title.text)
+                news_utterance += "\n" + news_list[i].title.text
+
+        dispatcher.utter_message(news_utterance)
 
         return []
 
@@ -278,14 +360,7 @@ class ActionPhoneCall(Action):
 
         return []
 
-class ActionReadNews(Action):
-    def name(self):
-        return 'action_read_news'
 
-    def run(self, dispatcher, tracker, domain):
-        # TODO
-
-        return []
 
 
 class ActionClearSlots(Action):
@@ -317,13 +392,16 @@ if __name__ == '__main__':
     today = today.replace(hour=0, minute=0, second=0, microsecond=0)
     ActionSearchAppointment().search_google_calendar_by_time(today, 2)
     """
+    """
     # test search calendar by subject
     ActionSearchAppointment().search_google_calendar_by_subject('Arzt')
 
-    """
+    
     # test create calendar event
-    start_time = datetime.datetime.strptime('30 08 2018 13 00', '%d %m %Y %H %M')
-    end_time = datetime.datetime.strptime('30 08 2018 14 00', '%d %m %Y %H %M')
+    start_time = datetime.datetime.strptime('31 08 2018 13 00', '%d %m %Y %H %M')
+    end_time = datetime.datetime.strptime('31 08 2018 14 00', '%d %m %Y %H %M')
 
     ActionMakeAppointment().create_event_in_google_calendar(start_time, end_time, 'Test')
     """
+
+    print(ActionMakeAppointment().convert_date('1.1.', 'date'))

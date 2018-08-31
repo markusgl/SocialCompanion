@@ -84,11 +84,13 @@ def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
 
 def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
+    """
     try:
         KnowledgeGraph()
     except ServiceUnavailable:
         print('Neo4j connection failed. Program stopped.')
         return
+    """
 
     if train:
         train_bot()
@@ -167,7 +169,7 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
     return agent
 
 if __name__ == '__main__':
-    run_cli_bot(train=True, interpreter='rasa')
-    #run_telegram_bot('3c956e75.ngrok.io/app/webhook', True, interpreter='luis')
+    #run_cli_bot(train=True, interpreter='rasa')
+    run_telegram_bot('58775784.ngrok.io/app/webhook', True, interpreter='rasa')
     #run_voice_bot('https://b77597fa.ngrok.io')
 

@@ -51,7 +51,7 @@ entities:
 templates:
   utter_greet:
     - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren, Anrufe tätigen oder Termine finden.'
-    - 'Hallo, ich bin SocialBot! Ich kann für die Anrufen tätigen, Termine finden oder dir einfach zuhören.'
+    - 'Hallo, ich bin SocialBot! Ich kann für die Anrufen tätigen, Termine finden oder dir einfach zuhören. Sag mir was zu tun möchtest.'
     - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden, Anrufe zu tätigen oder dir einfach zuhören.'
   utter_ask_howcanhelp:
     - 'Wie kann ich dir helfen? Ich kann für dich Veranstaltungen oder deine Termine finden.'
@@ -71,7 +71,8 @@ templates:
     - 'Um wie viel Uhr?'
   utter_ask_subject:
     - 'Wie lautet der Termin?'
-    - 'Was ist der Titel des Termins?'
+    - 'Wie lautet der Titel des Termins?'
+    - 'Wie lautet der Betreff des Termins?'
   utter_not_understood:
     - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
@@ -86,3 +87,4 @@ actions:
   - actions.ActionClearSlots
   - actions.ActionSearchAppointment
   - actions.ActionMakeAppointment
+  - actions.ActionReadNews

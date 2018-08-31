@@ -72,3 +72,37 @@
 * inform{"time": "9 uhr"}
     - slot{"time": "9 uhr"}
     - action_make_appointment
+    
+## Generated Story -6163140389652631878
+* make_appointment{"relativedate": "morgen", "appointment": "termin"}
+    - slot{"appointment": "termin"}
+    - slot{"relativedate": "morgen"}
+    - utter_ask_subject
+* greet{"activity": "arzttermin"}
+    - slot{"activity": "arzttermin"}
+    - utter_ask_time
+* inform{"time": "8 uhr"}
+    - slot{"time": "8 uhr"}
+    - action_make_appointment
+
+## Generated Story 863761430498127100
+* make_appointment{"relativedate": "morgen", "appointment": "termin"}
+    - slot{"appointment": "termin"}
+    - slot{"relativedate": "morgen"}
+    - utter_ask_subject
+* inform{"activity": "arzttermin", "time": "9 uhr"}
+    - slot{"activity": "arzttermin"}
+    - slot{"time": "9 uhr"}
+    - action_make_appointment
+* goodbye
+    - utter_goodbye
+
+## Generated Story 3102257396424295275
+* make_appointment{"relativedate": "heute", "appointment": "termin"}
+    - slot{"appointment": "termin"}
+    - slot{"relativedate": "heute"}
+    - utter_ask_subject
+* inform{"activity": "kino", "time": "20 uhr"}
+    - slot{"activity": "kino"}
+    - slot{"time": "20 uhr"}
+    - action_make_appointment
