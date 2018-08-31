@@ -3373,6 +3373,108 @@
             "entity": "time"
           }
         ]
+      },
+      {
+        "text": "Ich muss am Dienstag zum Zahnarzt",
+        "intent": "make_appointment",
+        "entities": [
+          {
+            "start": 9,
+            "end": 20,
+            "value": "am Dienstag",
+            "entity": "relativedate"
+          },
+          {
+            "start": 25,
+            "end": 33,
+            "value": "Zahnarzt",
+            "entity": "activity"
+          }
+        ]
+      },
+      {
+        "text": "Am Montag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 9,
+            "value": "Am Montag",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Dienstag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 11,
+            "value": "Am Dienstag",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Mittwoch",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 11,
+            "value": "Am Mittwoch",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Donnerstag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 13,
+            "value": "Am Donnerstag",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Freitag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 10,
+            "value": "Am Freitag",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Samstag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 10,
+            "value": "Am Samstag",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "Am Sonntag",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 0,
+            "end": 10,
+            "value": "Am Sonntag",
+            "entity": "relativedate"
+          }
+        ]
       }
     ]
   }

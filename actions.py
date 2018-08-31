@@ -16,6 +16,7 @@ import logging
 import re
 from google_news_searcher import GoogleNewsSearcher
 
+
 class ActionSearchAppointment(Action):
     """
     Searches an appointments in the google calendar
@@ -61,15 +62,25 @@ class ActionSearchAppointment(Action):
                 appointment_end_time = appointment_start_time + timedelta(days=2)
 
         if appointment_start_time:
+            dispatcher.utter_message(
+                "Eine Augenblick. Ich sehe mal im Kalender nach.")
             events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
             if not events:
                 dispatcher.utter_message("Du hast heute keine Termine.")
             for event in events:
                 start = event['start'].get('dateTime', event['start'].get('date'))
-                conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
 
-                dispatcher.utter_message("Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: ")
-                dispatcher.utter_message(conv_date.strftime('%H:%M') + " " + event['summary'])
+                if len(start) == 10:
+                    conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
+                    dispatcher.utter_message(
+                        "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                        + event['summary'])
+                else:
+                    conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
+                    dispatcher.utter_message(
+                        "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                        + conv_date.strftime('%H:%M') + " "
+                        + event['summary'])
 
         # if only activity (subject) is given search by subject
         elif tracker.get_slot('activity'):
@@ -114,8 +125,9 @@ class ActionSearchAppointment(Action):
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
-        for event in events:
-            print(event['summary'])
+        # for debugging
+        #for event in events:
+        #    print(event['summary'])
 
         return events
 
@@ -210,6 +222,22 @@ class ActionMakeAppointment(Action):
                 time_delta = 1
             elif rel_date == "übermorgen":
                 time_delta = 2
+
+            # search depending on weekday
+            if "montag" in rel_date:
+                time_delta = self.convert_weekay(0)
+            elif "dienstag" in rel_date:
+                time_delta = self.convert_weekay(1)
+            elif "mittwoch" in rel_date:
+                time_delta = self.convert_weekay(2)
+            elif "donnerstag" in rel_date:
+                time_delta = self.convert_weekay(3)
+            elif "freitag" in rel_date:
+                time_delta = self.convert_weekay(4)
+            elif "samstag" in rel_date:
+                time_delta = self.convert_weekay(5)
+            elif "sonntag" in rel_date:
+                time_delta = self.convert_weekay(6)
             else:
                 time_delta = 0
             converted_date = datetime.datetime.now() + timedelta(days=time_delta)
@@ -250,6 +278,21 @@ class ActionMakeAppointment(Action):
 
         return converted_date
 
+    def convert_weekay(self, week_no):
+        """
+
+        :param week_no:
+        :return:
+        """
+        current_weekno = datetime.datetime.now().weekday()
+        if week_no <= current_weekno:  # folge woche
+            rest_week = 7 - current_weekno
+            time_delta = rest_week + week_no
+
+        else:
+            time_delta = week_no - current_weekno
+
+        return time_delta
 
     def convert_time(self, time_string):
         """

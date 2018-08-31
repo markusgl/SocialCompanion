@@ -120,3 +120,9 @@
     - action_search_appointment
 * goodbye
     - utter_goodbye
+
+## Generated Story -141300964851179736
+* find_appointment{"dateperiod": "n\u00e4chsten tage", "appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - slot{"dateperiod": "n\u00e4chsten tage"}
+    - action_search_appointment
