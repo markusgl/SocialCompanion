@@ -1,6 +1,6 @@
 """
 knowledge graph representation using neo4j
-this class uses py2neo with will be the final veraion
+this class uses py2neo with will be the final version
 """
 from py2neo import Graph, Node, Relationship, NodeMatcher
 import json
@@ -21,8 +21,8 @@ relationships = {'freund': 'FRIEND',
                  'enkelin': 'GRANDCHILD'}
 
 
-class KnowledgeGraph:
-    def __init__(self, path='./knowledge_base/neo4j_creds.json'):
+class NetworkGraph:
+    def __init__(self, path='./network_graph/neo4j_creds.json'):
         with open(path) as f:
             data = json.load(f)
         username = data['username']
@@ -92,7 +92,7 @@ class KnowledgeGraph:
             me.son.add(contact)
         elif relationship == 'tocher':
             me.daughter.add(contact)
-            #TODO
+            #TODO other relationships
 
 
         self.graph.push(me)

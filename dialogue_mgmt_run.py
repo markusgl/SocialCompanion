@@ -23,7 +23,7 @@ from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
 from rasa_nlu.model import Interpreter as RasaInterpreter
 
-from knowledge_base.knowledge_graph import KnowledgeGraph
+from network_graph.knowledge_graph import NetworkGraph
 from speech_handling.speech_recognizer import SpeechHandler
 logger = logging.getLogger(__name__)
 
@@ -131,7 +131,7 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
 def run_voice_bot(webhook_url, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
     try:
-        KnowledgeGraph()
+        NetworkGraph()
     except ServiceUnavailable:
         print('Neo4j connection failed. Program stopped.')
         return
@@ -170,6 +170,6 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
 
 if __name__ == '__main__':
     #run_cli_bot(train=True, interpreter='rasa')
-    run_telegram_bot('58775784.ngrok.io/app/webhook', True, interpreter='rasa')
+    run_telegram_bot('6ac6ffc5.ngrok.io/app/webhook', True, interpreter='rasa')
     #run_voice_bot('https://b77597fa.ngrok.io')
 
