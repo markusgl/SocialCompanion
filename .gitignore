@@ -120,3 +120,5 @@ rasa-nlu/models/rasa-nlu/default
 corpus/keys.json
 .png
 corpus/*.png
+
+speech_handling/*.mp3

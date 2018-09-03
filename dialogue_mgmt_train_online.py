@@ -18,7 +18,7 @@ from rasa_core.policies.memoization import MemoizationPolicy
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
-
+from network_graph.network_graph import NetworkGraph
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,11 @@ logger = logging.getLogger(__name__)
 def run_eventbot_online(input_channel, interpreter,
                         domain_file="./data/domain.yml",
                         training_data_file='./data/stories'):
+    try:
+        NetworkGraph()
+    except ServiceUnavailable:
+        print('Neo4j connection failed. Program stopped.')
+        return
 
     if interpreter == 'luis':
         interpreter = LuisInterpreter()

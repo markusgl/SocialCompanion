@@ -10,7 +10,14 @@
 * find_appointment
     - utter_ask_time
     - action_search_appointment
-    
+  
+## Story 2
+* inform
+    - utter_greet
+* find_appointment
+    - utter_ask_time
+    - action_search_appointment
+      
 ## Story 3
 * greet
     - utter_greet
@@ -126,6 +133,29 @@
     - slot{"appointment": "termine"}
     - slot{"dateperiod": "n\u00e4chsten tage"}
     - action_search_appointment
+
     
-* start
-    - utter_introduce
+## Generated Story 6584659220962166220
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* find_appointment{"relativedate": "heute", "appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+    - export
+    
+## Generated Story -9118930676261623522
+* greet
+    - utter_greet
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* find_appointment{"relativedate": "heute", "appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment

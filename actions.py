@@ -15,6 +15,7 @@ from fuzzywuzzy import fuzz
 import logging
 import re
 from google_news_searcher import GoogleNewsSearcher
+from speech_handling.text_to_speech import TextToSpeech
 
 
 class ActionSearchAppointment(Action):
@@ -65,22 +66,30 @@ class ActionSearchAppointment(Action):
             dispatcher.utter_message(
                 "Eine Augenblick. Ich sehe mal im Kalender nach.")
             events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
-            if not events:
-                dispatcher.utter_message("Du hast heute keine Termine.")
-            for event in events:
-                start = event['start'].get('dateTime', event['start'].get('date'))
+            if events:
+                for event in events:
+                    start = event['start'].get('dateTime', event['start'].get('date'))
 
-                if len(start) == 10:
-                    conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
-                    dispatcher.utter_message(
-                        "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                        + event['summary'])
-                else:
-                    conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                    dispatcher.utter_message(
-                        "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                        + conv_date.strftime('%H:%M') + " "
-                        + event['summary'])
+                    if len(start) == 10:
+                        conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
+                        dispatcher.utter_message(
+                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                            + event['summary'])
+                        TextToSpeech().out_text_message(
+                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                            + event['summary'])
+                    else:
+                        conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
+                        dispatcher.utter_message(
+                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                            + conv_date.strftime('%H:%M') + " "
+                            + event['summary'])
+                        TextToSpeech().out_text_message(
+                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
+                            + conv_date.strftime('%H:%M') + " "
+                            + event['summary'])
+            else:
+                dispatcher.utter_message("Du hast heute keine Termine.")
 
         # if only activity (subject) is given search by subject
         elif tracker.get_slot('activity'):
@@ -390,6 +399,7 @@ class ActionReadNews(Action):
                 news_utterance += "\n" + news_list[i].title.text
 
         dispatcher.utter_message(news_utterance)
+        TextToSpeech().out_text_message(news_utterance)
 
         return []
 

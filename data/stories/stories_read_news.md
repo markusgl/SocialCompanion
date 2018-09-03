@@ -27,3 +27,14 @@
 * read_news{"news_type": "schlagzeilen"}
     - slot{"news_type": "schlagzeilen"}
     - action_read_news
+    
+## Generated Story -8523545719320867157
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* read_news{"news": "neuigkeiten"}
+    - slot{"news": "neuigkeiten"}
+    - action_read_news
+    - export

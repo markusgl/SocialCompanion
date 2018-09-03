@@ -29,7 +29,7 @@ class NetworkGraph:
         password = data['password']
         self.graph = Graph(host="localhost", username=username, password=password)
 
-    def add_me(self, username):
+    def add_me_w_firstname(self, username, age, gender):
         """
         Pushes a new central user 'Me' to the graph
         Gets a username, creats an Me object and pushes it to the graph
@@ -39,11 +39,31 @@ class NetworkGraph:
         # OGM
         me = Me()
         me.firstname = username.title()
+        me.lastname = ""
+        me.age = age
+        me.gender = gender
 
         self.graph.push(me)
         return me
 
-    def get_me_by_name(self, me_name):
+    def add_me_w_lastname(self, username, age, gender):
+        """
+        Pushes a new central user 'Me' to the graph
+        Gets a username, creats an Me object and pushes it to the graph
+        :param username: string username
+        :return: me object (see ogm pkg)
+        """
+        # OGM
+        me = Me()
+        me.firstname = ""
+        me.lastname = username.title()
+        me.age = age
+        me.gender = gender
+
+        self.graph.push(me)
+        return me
+
+    def get_me_by_firstname(self, me_name):
         """
         return me object by firstname
         :param me_name: string with firstname of me
@@ -58,6 +78,23 @@ class NetworkGraph:
         else:
             return None
 
+    def get_me_by_lastname(self, me_name):
+        """
+        return me object by firstname
+        :param me_name: string with firstname of me
+        :return: me object
+        """
+        result = self.graph.run('MATCH (n:Me) WHERE n.lastname="' + me_name.title() + '" RETURN n.lastname').data()
+
+        me = Me()
+        if result:
+            me.firstname = result[0]['n.lastname']
+            return me
+        else:
+            return None
+
+
+    ### CURRENTLY NOT USED ###
     def add_contact(self, me_name, contactname, relationship):
         """
         adds a new contact to the central user i.e. 'Me' in graph
@@ -67,7 +104,7 @@ class NetworkGraph:
         :return:
         """
         # select central user 'Me'
-        me = self.get_me_by_name(me_name)
+        me = self.get_me_by_firstname(me_name)
 
         contact = Contact()
         contact.firstname = contactname
@@ -127,9 +164,8 @@ class NetworkGraph:
 
         return contactname
 
-"""
+
 if __name__ == '__main__':
-    kg = KnowledgeGraph('neo4j_creds.json')
-    #kg.add_me('marggus')
-    kg.get_me_by_name('marggus')
-"""
+    kg = NetworkGraph('neo4j_creds.json')
+    #kg.get_me_by_firstname('marggus')
+    kg.add_me_w_lastname('Glas')

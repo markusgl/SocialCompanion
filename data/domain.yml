@@ -23,6 +23,10 @@ slots:
     type: text
   time:
     type: text
+  me_name:
+    type: text
+  gender:
+    type: text
 
 intents:
   - goodbye
@@ -34,6 +38,7 @@ intents:
   - phone_call
   - read_news
   - inform
+  - introduce
 
 entities:
   - activity
@@ -47,15 +52,13 @@ entities:
   - relationship
   - relativedate
   - time
+  - gender
 
 templates:
-  utter_introduce:
-    - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren, Anrufe tätigen oder Termine finden.'
-    - 'Hallo, ich bin SocialBot! Ich kann für die Anrufen tätigen, Termine finden oder dir einfach zuhören. Sag mir was zu tun möchtest.'
-    - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden, Anrufe zu tätigen oder dir einfach zuhören.'
   utter_greet:
-    - 'Hallo!'
-    - 'Guten Tag!'
+    - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren oder Termine finden. Wie heißt du?'
+    - 'Hallo, ich bin SocialBot! Ich kann für dich Termine finden oderdich über aktuelle Nachrichten informieren. Sag mir was zu tun möchtest. Wer bist du?'
+    - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden oder aktuelle Neuigkeiten vorlesen. Wie ist dein Name?'
   utter_ask_howcanhelp:
     - 'Wie kann ich dir helfen? Ich kann für dich Veranstaltungen oder deine Termine finden.'
     - 'Was möchtest du tun? Ich kann dir etwa deine Termine sagen oder Veranstaltungen vorschlagen.'
@@ -80,7 +83,6 @@ templates:
     - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
 actions:
-  - utter_introduce
   - utter_greet
   - utter_ask_howcanhelp
   - utter_goodbye
@@ -92,3 +94,5 @@ actions:
   - actions.ActionSearchAppointment
   - actions.ActionMakeAppointment
   - actions.ActionReadNews
+  - actions_network_graph.ActionSearchContact
+  - actions_network_graph.ActionSearchMe
