@@ -165,7 +165,7 @@ class NetworkGraph:
         return contactname
 
 
-if __name__ == '__main__':
-    kg = NetworkGraph('neo4j_creds.json')
+#if __name__ == '__main__':
+    #kg = NetworkGraph('neo4j_creds.json')
     #kg.get_me_by_firstname('marggus')
-    kg.add_me_w_lastname('Glas')
+    #kg.add_me_w_lastname('Glas')

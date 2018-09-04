@@ -62,6 +62,9 @@ class ActionSearchAppointment(Action):
 
                 appointment_end_time = appointment_start_time + timedelta(days=2)
 
+
+        # Generate reply message depending on the given entities start_time or subject
+        bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine."
         if appointment_start_time:
             dispatcher.utter_message(
                 "Eine Augenblick. Ich sehe mal im Kalender nach.")
@@ -72,35 +75,29 @@ class ActionSearchAppointment(Action):
 
                     if len(start) == 10:
                         conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
-                        dispatcher.utter_message(
-                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                            + event['summary'])
-                        TextToSpeech().out_text_message(
-                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                            + event['summary'])
+                        bot_reply_message = "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y')\
+                                             + " finden: \n" + event['summary']
                     else:
                         conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                        dispatcher.utter_message(
-                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                            + conv_date.strftime('%H:%M') + " "
-                            + event['summary'])
-                        TextToSpeech().out_text_message(
-                            "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n"
-                            + conv_date.strftime('%H:%M') + " "
-                            + event['summary'])
-            else:
-                dispatcher.utter_message("Du hast heute keine Termine.")
+                        bot_reply_message = "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n" \
+                                             + conv_date.strftime('%H:%M') + " "\
+                                             + event['summary']
 
-        # if only activity (subject) is given search by subject
+            else:
+                bot_reply_message = "Du hast heute keine Termine."
+
+        # if only activity (subject) is given search an event by activity name
         elif tracker.get_slot('activity'):
             subject = tracker.get_slot('activity')
             dispatcher.utter_message("Ich sehe mal nach ob ich einen Termin zum Thema " + subject.title() + "finden kann.")
             event = self.search_google_calendar_by_subject(subject)
             if event:
-                dispatcher.utter_message("Ich konnte folgende Termine finden " + event)
+                bot_reply_message = "Ich konnte folgende Termine finden " + event
             else:
-                dispatcher.utter_message(
-                    "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden.")
+                bot_reply_message = "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().out_text_message(bot_reply_message)
 
         return []
 
@@ -208,15 +205,17 @@ class ActionMakeAppointment(Action):
             subject = tracker.get_slot('activity')
 
             self.create_event_in_google_calendar(start_date, end_date, subject)
-            dispatcher.utter_message("Ok ich habe den Termin " + subject + " in den Kalendar eingetragen und werde dich erinnern.")
+            bot_reply_message = "Ok ich habe den Termin " + subject + " in den Kalendar eingetragen und werde dich erinnern."
         else:
-            dispatcher.utter_message("Mir fehlen leider noch Information zur Erstellung des Termins.")
+            bot_reply_message = "Mir fehlen leider noch Information zur Erstellung des Termins."
+
+        dispatcher.utter_message(bot_reply_message)
 
         return []
 
     def convert_date(self, date_string, date_type):
         """
-        gets at date as string and returns as datetime
+        converts a date as string into a datetime object
         :param date_string: date as string in any format (e. g. heute, morgen, 1.1. etc.)
         :param date_type: type of the given date
         :return: date as datetime object
@@ -289,15 +288,15 @@ class ActionMakeAppointment(Action):
 
     def convert_weekay(self, week_no):
         """
-
+        calculates the time gap from today to a given day depending on the week number (monday = 0, tuesday = 1, ...)
+        it also recognizes if the date is in the following week or in the current
         :param week_no:
         :return:
         """
         current_weekno = datetime.datetime.now().weekday()
-        if week_no <= current_weekno:  # folge woche
+        if week_no <= current_weekno:  # following week
             rest_week = 7 - current_weekno
             time_delta = rest_week + week_no
-
         else:
             time_delta = week_no - current_weekno
 
@@ -305,7 +304,7 @@ class ActionMakeAppointment(Action):
 
     def convert_time(self, time_string):
         """
-        extract the time of a string and returns the hours and minutes
+        extracts the time of a string and returns the hours and minutes
         :param time_string:
         :return: hour and minute
         """
@@ -392,18 +391,18 @@ class ActionReadNews(Action):
             news_list = GoogleNewsSearcher().search_news()
             dispatcher.utter_message("Hier sind die 10 aktuellen Schlagzeilen:")
 
-        news_utterance = ""
+        bot_reply_message = ""
         for i in range(len(news_list)):
-            if i != 0:
-                #dispatcher.utter_message(news_list[i].title.text)
-                news_utterance += "\n" + news_list[i].title.text
+            if i != 0: # ignore first line containing a deprecation warning
+                bot_reply_message += "\n" + news_list[i].title.text
 
-        dispatcher.utter_message(news_utterance)
-        TextToSpeech().out_text_message(news_utterance)
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().out_text_message(bot_reply_message)
 
         return []
 
 
+"""
 class ActionPhoneCall(Action):
     def name(self):
         return 'action_phone_call'
@@ -412,8 +411,7 @@ class ActionPhoneCall(Action):
         # TODO
 
         return []
-
-
+"""
 
 
 class ActionClearSlots(Action):
@@ -457,4 +455,4 @@ if __name__ == '__main__':
     ActionMakeAppointment().create_event_in_google_calendar(start_time, end_time, 'Test')
     """
 
-    print(ActionMakeAppointment().convert_date('1.1.', 'date'))
+    #print(ActionMakeAppointment().convert_date('1.1.', 'date'))
