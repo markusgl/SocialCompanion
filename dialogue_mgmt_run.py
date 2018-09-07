@@ -24,7 +24,7 @@ from interpreter_witai import Interpreter as WitInterpreter
 from rasa_nlu.model import Interpreter as RasaInterpreter
 
 from network_graph.network_graph import NetworkGraph
-from speech_handling.speech_recognizer import SpeechHandler
+from speech_handling.speech_to_text import SpeechHandler
 logger = logging.getLogger(__name__)
 
 

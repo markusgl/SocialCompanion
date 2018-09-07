@@ -1,6 +1,5 @@
 import speech_recognition as sr
 
-
 class SpeechHandler:
     def __init__(self):
         self.recognizer = sr.Recognizer()
@@ -23,5 +22,5 @@ class SpeechHandler:
 
 
 if __name__ == '__main__':
-    hanler = SpeechHandler()
-    hanler.speech_to_text()
+    handler = SpeechHandler()
+    handler.speech_to_text()

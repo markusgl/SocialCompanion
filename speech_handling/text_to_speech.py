@@ -5,8 +5,6 @@ class TextToSpeech():
     def __init__(self):
         # TTS with pocketshpinx
         self.engine = pyttsx3.init('sapi5')  # use SAPI5 engine
-        # voices = engine.getProperty('voices')
-        # engine.setProperty('voice', voices[0].id)
         rate = self.engine.getProperty('rate')
         self.engine.setProperty('rate', rate - 30)  # words per minute
         self.engine.setProperty('volume', 0.9)

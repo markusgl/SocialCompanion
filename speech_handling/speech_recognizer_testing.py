@@ -1,14 +1,15 @@
 import pyaudio
-import speech_handling as sr
+import speech_recognition as sr
 import wave
 
+"""
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "file.wav"
-"""
+
 audio = pyaudio.PyAudio()
 
 # start Recording
@@ -38,32 +39,43 @@ waveFile.writeframes(b''.join(frames))
 waveFile.close()
 """
 
-r = sr.Recognizer()
-with sr.Microphone() as source:
+# print available input devices
+p = pyaudio.PyAudio()
+for i in range(p.get_device_count()):#list all available audio devices
+  dev = p.get_device_info_by_index(i)
+  print((i,dev['name'],dev['maxInputChannels']))
+
+recognizer = sr.Recognizer()
+#r.energy_threshold = 1500
+
+with sr.Microphone(1) as source:
     print("Sag etwas!")
-    r.adjust_for_ambient_noise(source, duration=5)
-    audio = r.listen(source)
+    recognizer.adjust_for_ambient_noise(source)
+    #r.energy_threshold = 2000
+    audio = recognizer.listen(source)
+
 
 # recognize speech using Sphinx
-"""
 try:
-    print("Sphinx thinks you said " + r.recognize_sphinx(audio))
+    print("Sphinx thinks you said: " + recognizer.recognize_sphinx(audio, language="de-DE"))
 except sr.UnknownValueError:
     print("Sphinx could not understand audio")
 except sr.RequestError as e:
     print("Sphinx error; {0}".format(e))
+
 """
 
 try:
-    print("Du sagtest " + r.recognize_google(audio, key=""))
+    print("Du sagtest " + recognizer.recognize_google(audio))
 except sr.UnknownValueError:
     print("Konnte dich nicht verstehen")
 except sr.RequestError as e:
     print("Konnte die Abfrage nicht senden; {0}".format(e))
-
+"""
 
 # recognize speech using Google Cloud Speech
 GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""INSERT THE CONTENTS OF THE GOOGLE CLOUD SPEECH JSON CREDENTIALS FILE HERE"""
+"""
 try:
     print("Google Cloud Speech thinks you said " + r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS))
 except sr.UnknownValueError:
@@ -108,3 +120,5 @@ except sr.UnknownValueError:
     print("IBM Speech to Text could not understand audio")
 except sr.RequestError as e:
     print("Could not request results from IBM Speech to Text service; {0}".format(e))
+
+"""

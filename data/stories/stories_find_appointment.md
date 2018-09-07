@@ -9,6 +9,7 @@
     - utter_greet
 * find_appointment
     - utter_ask_time
+* inform
     - action_search_appointment
   
 ## Story 2

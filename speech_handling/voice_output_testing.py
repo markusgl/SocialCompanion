@@ -11,8 +11,8 @@ engine.setProperty('volume', 0.9)
 engine.say('LeBron James kommt nach Berlin. - Mittelbayerische')
 engine.runAndWait()
 
-# TTS with google TTS
 
+# TTS with google TTS
 from gtts import gTTS
 # Windows output
 #import win32com.client as wincl
