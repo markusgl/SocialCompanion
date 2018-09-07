@@ -54,42 +54,35 @@ entities:
   - time
   - gender
 
-templates:
-  utter_greet:
-    - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren oder Termine finden. Wie heißt du?'
-    - 'Hallo, ich bin SocialBot! Ich kann für dich Termine finden oderdich über aktuelle Nachrichten informieren. Sag mir was zu tun möchtest. Wer bist du?'
-    - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden oder aktuelle Neuigkeiten vorlesen. Wie ist dein Name?'
-  utter_ask_howcanhelp:
-    - 'Wie kann ich dir helfen? Ich kann für dich Veranstaltungen oder deine Termine finden.'
-    - 'Was möchtest du tun? Ich kann dir etwa deine Termine sagen oder Veranstaltungen vorschlagen.'
-  utter_goodbye:
-    - 'Bis später!'
-    - 'Tschüss!'
-  utter_ack_refuse:
-    - 'Ok.'
-    - 'Geht in Ordnung.'
-    - 'Habe ich verstanden.'
-  utter_ask_location:
-    - 'Ok du willst ins {activity} und wo?'
-    - 'Alles klar. An welchem Ort?'
-  utter_ask_time:
-    - 'Zu welcher Uhrzeit?'
-    - 'Um wie viel Uhr?'
-  utter_ask_subject:
-    - 'Wie lautet der Termin?'
-    - 'Wie lautet der Titel des Termins?'
-    - 'Wie lautet der Betreff des Termins?'
-  utter_not_understood:
-    - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
+#templates:
+  #utter_greet:
+  #  - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren oder Termine finden. Wie heißt du?'
+  #  - 'Hallo, ich bin SocialBot! Ich kann für dich Termine finden oder dich über aktuelle Nachrichten informieren. Sag mir was zu tun möchtest. Wer bist du?'
+  #  - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden oder aktuelle Neuigkeiten vorlesen. Wie ist dein Name?'
+  #utter_goodbye:
+  #  - 'Bis später!'
+  #  - 'Tschüss!'
+  #utter_ask_location:
+  #  - 'Ok du willst ins {activity} und wo?'
+  #  - 'Alles klar. An welchem Ort?'
+  #utter_ask_time:
+  #  - 'Zu welcher Uhrzeit?'
+  #  - 'Um wie viel Uhr?'
+  #utter_ask_subject:
+  #  - 'Wie lautet der Termin?'
+  #  - 'Wie lautet der Titel des Termins?'
+  #  - 'Wie lautet der Betreff des Termins?'
+  #utter_not_understood:
+  #  - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
 actions:
-  - utter_greet
-  - utter_ask_howcanhelp
-  - utter_goodbye
-  - utter_ask_location
-  - utter_ask_time
-  - utter_ask_subject
-  - utter_not_understood
+  - actions_inform.ActionAskLocation
+  - actions_inform.ActionAskTime
+  - actions_inform.ActionAskSubject
+  - actions_basic.ActionUtterGreet
+  - actions_basic.ActionUtterGoodbye
+  - actions_basic.ActionHowCanHelp
+  - actions_basic.ActionNotUnderstood
   - actions.ActionClearSlots
   - actions.ActionSearchAppointment
   - actions.ActionMakeAppointment

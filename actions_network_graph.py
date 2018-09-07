@@ -20,46 +20,43 @@ class ActionSearchMe(Action):
 
     def run(self, dispatcher, tracker, domain):
         kg = NetworkGraph()
+        bot_reply_message = "Ich habe deinen Namen nicht verstanden. Kannst du ihn noch einmal sagen?"
+        me_name = ""
+
         if tracker.get_slot('firstname'):
             me_name = tracker.get_slot('firstname')
             me_node = kg.get_me_by_firstname(me_name)
             if not me_node:
                 kg.add_me_w_firstname(me_name)
-                dispatcher.utter_message("Hallo " + me_name.title() + "! Schön von dir zu hören.")
+                bot_reply_message = "Hallo " + me_name.title() + "! Schön von dir zu hören."
             else:
-                dispatcher.utter_message("Hallo " + me_name.title() + "! Wir kennen uns berits nicht wahr?.")
+                bot_reply_message = "Hallo " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
+
         elif tracker.get_slot('lastname'):
             me_name = tracker.get_slot('lastname')
             me_node = kg.get_me_by_lastname(me_name)
             if me_node:
                 if me_node.gender == 'female':
-                    dispatcher.utter_message("Hallo Frau " + me_name.title() + "! Wir kennen uns berits nicht wahr?.")
-                    TextToSpeech().out_text_message("Hallo Frau " + me_name.title() + "! Wir kennen uns berits nicht wahr?.")
+                    bot_reply_message = "Hallo Frau " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
                 elif me_node.gender == 'male':
-                    dispatcher.utter_message("Guten Tag Herr " + me_name.title() + "! Wir kennen uns bereits nicht wahr?.")
-                    TextToSpeech().out_text_message(
-                        "Guten Tag Herr " + me_name.title() + "! Wir kennen uns bereits nicht wahr?.")
+                    bot_reply_message = "Guten Tag Herr " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
                 else:
-                    dispatcher.utter_message(
-                        "Hallo Herr oder Frau " + me_name.title() + "! Freut mich Sie kennenzulernen.")
-                    TextToSpeech().out_text_message(
-                        "Guten Tag Herr oder Frau" + me_name.title() + "! Freut mich Sie kennenzulernen.")
+                    bot_reply_message = "Guten Tag Herr oder Frau" + me_name.title() + "! Freut mich Sie kennenzulernen."
             else:
                 if tracker.get_slot('gender') and tracker.get_slot('gender') in gender_dict.keys():
                     gender = gender_dict[tracker.get_slot('gender')]
                     if gender == 'female':
-                        dispatcher.utter_message("Guten Tag Frau " + me_name.title() + "! Schön von Ihnen zu hören.")
+                        bot_reply_message = "Hallo Frau " + me_name.title() + "! Schön von Ihnen zu hören."
                     elif gender == 'male':
-                        dispatcher.utter_message("Hallo Herr " + me_name.title() + "! Schön von Ihnen zu hören.")
+                        bot_reply_message = "Hallo Herr " + me_name.title() + "! Schön von Ihnen zu hören."
                 else:
-                    dispatcher.utter_message("Hallo Herr oder Frau " + me_name.title() + "! Freut mich Sie kennenzulernen.")
-                    TextToSpeech().out_text_message(
-                        "Hallo Herr oder Frau " + me_name.title() + "! Freut mich Sie kennenzulernen.")
+                    bot_reply_message = "Guten Tag Herr oder Frau " + me_name.title() + "! Freut mich Sie kennenzulernen."
                     gender = ""
 
                 kg.add_me_w_lastname(me_name, gender=gender, age="")
-        else:
-            return None
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
@@ -74,15 +71,20 @@ class ActionAddMe(Action):
     def run(self, dispatcher, tracker, domain):
         kg = NetworkGraph()
         me_name = tracker.get_slot('me_name')
+        bot_reply_message = ""
 
         if me_name:
             kg.add_me_w_firstname(me_name)
-            dispatcher.utter_message("Hallo " + str(me_name).title() + "! Schön von dir zu hören.")
+            bot_reply_message = "Hallo " + str(me_name).title() + "! Schön von dir zu hören."
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
 
-### CURRENTLY NOT USED ###
+
+###!!!!!!! CURRENTLY NOT IN USE !!!!!!###
 class ActionSearchContact(Action):
     def name(self):
         return 'action_search_contact'

@@ -54,7 +54,7 @@ with sr.Microphone(1) as source:
     #r.energy_threshold = 2000
     audio = recognizer.listen(source)
 
-
+"""
 # recognize speech using Sphinx
 try:
     print("Sphinx thinks you said: " + recognizer.recognize_sphinx(audio, language="de-DE"))
@@ -66,12 +66,12 @@ except sr.RequestError as e:
 """
 
 try:
-    print("Du sagtest " + recognizer.recognize_google(audio))
+    print("Du sagtest " + recognizer.recognize_google(audio, language="de-DE"))
 except sr.UnknownValueError:
     print("Konnte dich nicht verstehen")
 except sr.RequestError as e:
     print("Konnte die Abfrage nicht senden; {0}".format(e))
-"""
+
 
 # recognize speech using Google Cloud Speech
 GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""INSERT THE CONTENTS OF THE GOOGLE CLOUD SPEECH JSON CREDENTIALS FILE HERE"""

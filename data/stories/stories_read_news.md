@@ -3,14 +3,14 @@
     - slot{"news": "nachrichten"}
     - action_read_news
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
 
 ## Story 2
 * read_news{"news_type": "sportnachrichten"}
     - slot{"news_type": "sportnachrichten"}
     - action_read_news
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
     
 ## Story 2
 * read_news
@@ -21,7 +21,7 @@
     - slot{"news_type": "sportnachrichten"}
     - action_read_news
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
 
 ## Generated Story 5558069702233944377
 * read_news{"news_type": "schlagzeilen"}

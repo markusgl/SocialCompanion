@@ -9,7 +9,7 @@
     - slot{"time": "18 Uhr"}
     - action_make_appointment
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
     
 ## Story 2
 * make_appointment{"relativedate": "morgen", "activity": "arzttermin"}    
@@ -19,7 +19,7 @@
 * make_appointment{"relativedate": "morgen", "activity": "arzttermin", "time": "18 Uhr"}
     - action_make_appointment
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
     
 ## Story 3
 * make_appointment{"activity": "Arzttermin"}
@@ -29,23 +29,23 @@
     - slot{"relativedate": "morgen"}
     - action_make_appointment
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
 
 ## Story 4
 * greet
-    - utter_greet
+    - action_utter_greet
 * make_appointment{"activity": "Arzttermin"}
     - slot{"activity": "arzttermin"}
     - utter_ask_time
 * inform{"time": "20 Uhr"}
     - action_make_appointment
-    - utter_goodbye
+    - action_utter_goodbye
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
 
 ## Generated Story -6088525744698529383
 * greet
-    - utter_greet
+    - action_utter_greet
 * make_appointment{"relativedate": "morgen", "activity": "arzttermin"}
     - slot{"activity": "arzttermin"}
     - slot{"relativedate": "morgen"}
@@ -95,7 +95,7 @@
     - slot{"time": "9 uhr"}
     - action_make_appointment
 * goodbye
-    - utter_goodbye
+    - action_utter_goodbye
 
 ## Generated Story 3102257396424295275
 * make_appointment{"relativedate": "heute", "appointment": "termin"}

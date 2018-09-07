@@ -9,7 +9,7 @@ class GoogleNewsSearcher:
     response = requests.get("https://news.google.de/", params=params)
     xml_page = response.content
 
-    soup_page = soup(xml_page,"xml")
+    soup_page = soup(xml_page, "xml")
     news_list = soup_page.findAll("item")
     # Print news title, url and publish date
     """

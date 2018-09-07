@@ -1,4 +1,10 @@
 import pyttsx3
+import os
+from gtts import gTTS
+import pyglet
+import time
+
+import logging
 
 
 class TextToSpeech():
@@ -9,10 +15,27 @@ class TextToSpeech():
         self.engine.setProperty('rate', rate - 30)  # words per minute
         self.engine.setProperty('volume', 0.9)
 
-    def out_text_message(self, message):
-        self.engine.say(message)
-        self.engine.runAndWait()
+    def utter_voice_message(self, message):
+        try:
+            # Google Text-to-Speech API
+            filename = 'temp_voice.mp3'
+            tts = gTTS(text=message, lang='de')
+            tts.save(filename)
+
+            media = pyglet.media.load(filename, streaming=False)
+            media.play()
+
+            time.sleep(media.duration)
+            os.remove(filename)
+
+            # Pocketsphinx
+            """
+            self.engine.say(message)
+            self.engine.runAndWait()
+            """
+        except:
+            logging.error("Problem during TTS")
 
 
 if __name__ == '__main__':
-    TextToSpeech().out_text_message('Hallo ich bin SocialBot und wie heißt du?')
+    TextToSpeech().utter_voice_message("Guten Tag, ich bin Carina")

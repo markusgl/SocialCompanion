@@ -97,7 +97,7 @@ class ActionSearchAppointment(Action):
                 bot_reply_message = "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().out_text_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -386,10 +386,11 @@ class ActionReadNews(Action):
             topic = tracker.get_slot('news_type')
             news_list = GoogleNewsSearcher().search_news(topic)
             dispatcher.utter_message("Hier sind die 10 Schlagzeilen zum Thema " + topic + ":")
-
+            TextToSpeech().utter_voice_message("Hier sind die 10 Schlagzeilen zum Thema " + topic + ":")
         else:
             news_list = GoogleNewsSearcher().search_news()
             dispatcher.utter_message("Hier sind die 10 aktuellen Schlagzeilen:")
+            TextToSpeech().utter_voice_message("Hier sind die 10 aktuellen Schlagzeilen:")
 
         bot_reply_message = ""
         for i in range(len(news_list)):
@@ -397,7 +398,7 @@ class ActionReadNews(Action):
                 bot_reply_message += "\n" + news_list[i].title.text
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().out_text_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 

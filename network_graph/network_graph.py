@@ -29,7 +29,7 @@ class NetworkGraph:
         password = data['password']
         self.graph = Graph(host="localhost", username=username, password=password)
 
-    def add_me_w_firstname(self, username, age, gender):
+    def add_me_w_firstname(self, username, age="", gender=""):
         """
         Pushes a new central user 'Me' to the graph
         Gets a username, creats an Me object and pushes it to the graph
@@ -46,7 +46,7 @@ class NetworkGraph:
         self.graph.push(me)
         return me
 
-    def add_me_w_lastname(self, username, age, gender):
+    def add_me_w_lastname(self, username, age="", gender=""):
         """
         Pushes a new central user 'Me' to the graph
         Gets a username, creats an Me object and pushes it to the graph
@@ -164,8 +164,9 @@ class NetworkGraph:
 
         return contactname
 
-
-#if __name__ == '__main__':
-    #kg = NetworkGraph('neo4j_creds.json')
-    #kg.get_me_by_firstname('marggus')
-    #kg.add_me_w_lastname('Glas')
+"""
+if __name__ == '__main__':
+    kg = NetworkGraph('neo4j_creds.json')
+    kg.get_me_by_firstname('marggus')
+    kg.add_me_w_lastname('Glas')
+"""
