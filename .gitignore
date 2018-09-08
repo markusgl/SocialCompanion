@@ -122,5 +122,7 @@ corpus/keys.json
 corpus/*.png
 
 speech_handling/*.mp3
+speech_handling/*.json
 
 network_graph/neo4j_creds.json
+*.json

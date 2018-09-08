@@ -67,7 +67,9 @@ class ActionSearchAppointment(Action):
         bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine."
         if appointment_start_time:
             dispatcher.utter_message(
-                "Eine Augenblick. Ich sehe mal im Kalender nach.")
+                "Einen Augenblick. Ich sehe mal im Kalender nach.")
+            TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+
             events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
             if events:
                 for event in events:
@@ -180,7 +182,6 @@ class ActionSearchAppointment(Action):
 
 
 class ActionMakeAppointment(Action):
-
     def name(self):
         return 'action_make_appointment'
 
@@ -210,6 +211,7 @@ class ActionMakeAppointment(Action):
             bot_reply_message = "Mir fehlen leider noch Information zur Erstellung des Termins."
 
         dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -326,7 +328,6 @@ class ActionMakeAppointment(Action):
             minute = time_array[2].zfill(2)
 
         return hour, minute
-
 
     def create_event_in_google_calendar(self, start_datetime, end_datetime, subject, location=""):
         """

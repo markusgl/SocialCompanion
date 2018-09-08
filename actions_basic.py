@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 from rasa_core.actions.action import Action
-from rasa_core.events import SlotSet, AllSlotsReset, Restarted, UserUttered
+from rasa_core.events import SlotSet, AllSlotsReset, Restarted, UserUttered, ReminderScheduled
 from speech_handling.text_to_speech import TextToSpeech
 
 
@@ -41,6 +41,18 @@ class ActionHowCanHelp(Action):
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
+
+
+class ActionRemindToDrink(Action):
+    def name(self):
+        return 'action_remind_drink'
+
+    def run(self, dispatcher, tracker, domain):
+        bot_reply_message = "Möchtest du vielleicht etwas Wasser trinken?"
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
+
 
 class ActionNotUnderstood(Action):
     def name(self):

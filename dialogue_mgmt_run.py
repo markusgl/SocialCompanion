@@ -22,11 +22,15 @@ from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
 from rasa_nlu.model import Interpreter as RasaInterpreter
+from rasa_core.events import ReminderScheduled
 
 from network_graph.network_graph import NetworkGraph
 from speech_handling.speech_to_text import SpeechHandler
-logger = logging.getLogger(__name__)
+import datetime
+import os
 
+logger = logging.getLogger(__name__)
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def train_bot():
     logging.basicConfig(level='INFO')
@@ -83,18 +87,23 @@ def run_cli_bot(serve_forever=True, train=False, interpreter='luis'):
 
 def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     logging.basicConfig(level="INFO")
-    try:
-        NetworkGraph()
-    except ServiceUnavailable:
-        print('Neo4j connection failed. Program stopped.')
-        return
 
     if train:
         train_bot()
 
-    with open('keys.json') as f:
+    with open(str(ROOT_DIR + '/keys.json')) as f:
         data = json.load(f)
     telegram_api_key = data['telegram-api-key']
+
+    #TODO start ngrok automatically
+
+    # test neo4j connection
+    try:
+        NetworkGraph()
+        print('Neo4j connection successful.')
+    except ServiceUnavailable:
+        print('Neo4j connection failed. Program stopped.')
+        return
 
     # set webhook of telegram bot
     try:
@@ -116,7 +125,11 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
         return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
     agent = Agent.load('./models/dialogue', interpreter)
+    print('Agent loaded.')
 
+    trigger_date = datetime.datetime.strptime('2018-09-08 20:20', '%Y-%m-%d %H:%M')
+
+    ReminderScheduled('action_remind_drink', trigger_date.isoformat())
     input_channel = (TelegramInput(access_token=telegram_api_key,
                                    verify='SocialCompanionBot',
                                    webhook_url=webhook_url,
@@ -126,6 +139,13 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
 
 
 def run_voice_bot(webhook_url, train=False, interpreter='luis'):
+    """
+    TODO voice Input Channel
+    :param webhook_url:
+    :param train:
+    :param interpreter:
+    :return:
+    """
     logging.basicConfig(level="INFO")
     try:
         NetworkGraph()
@@ -167,7 +187,15 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
 
 
 if __name__ == '__main__':
-    #run_cli_bot(train=False, interpreter='rasa')
-    run_telegram_bot('e512103b.ngrok.io/app/webhook', train=False, interpreter='rasa')
-    #run_voice_bot('https://b77597fa.ngrok.io')
+    keys_file = 'dm_config.json'
+    with open(keys_file) as f:
+        config = json.load(f)
+
+    interpreter = config['nlu']
+    webhook = config['telegram_webhook']
+    run_telegram_bot(webhook, train=False, interpreter=interpreter)
+
+
+
+
 

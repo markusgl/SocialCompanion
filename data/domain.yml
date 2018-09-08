@@ -82,6 +82,7 @@ actions:
   - actions_basic.ActionUtterGreet
   - actions_basic.ActionUtterGoodbye
   - actions_basic.ActionHowCanHelp
+  - actions_basic.ActionRemindToDrink
   - actions_basic.ActionNotUnderstood
   - actions.ActionClearSlots
   - actions.ActionSearchAppointment
