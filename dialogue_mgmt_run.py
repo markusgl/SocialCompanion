@@ -32,6 +32,7 @@ import os
 logger = logging.getLogger(__name__)
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def train_bot():
     logging.basicConfig(level='INFO')
 
@@ -41,14 +42,16 @@ def train_bot():
     fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
                               core_threshold=0.3, nlu_threshold=0.3)
     featurizer = MaxHistoryTrackerFeaturizer(BinarySingleStateFeaturizer(), max_history=5)
-    agent = Agent('./data/domain.yml', policies=[MemoizationPolicy(max_history=5), KerasPolicy(featurizer), fallback])
+    agent = Agent('./data/domain.yml',
+                  policies=[MemoizationPolicy(max_history=2,),
+                            KerasPolicy(featurizer), fallback])
 
     training_data = agent.load_data(training_data_file)
     agent.train(
             training_data,
             augmentation_factor=50,
-            epochs=500,
-            batch_size=10,
+            epochs=400,
+            batch_size=50,
             validation_split=0.2)
 
     agent.persist(model_path)
@@ -127,9 +130,9 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     agent = Agent.load('./models/dialogue', interpreter)
     print('Agent loaded.')
 
-    trigger_date = datetime.datetime.strptime('2018-09-08 20:20', '%Y-%m-%d %H:%M')
+    #trigger_date = datetime.datetime.strptime('2018-09-08 20:20', '%Y-%m-%d %H:%M')
+    #ReminderScheduled('action_remind_drink', trigger_date.isoformat())
 
-    ReminderScheduled('action_remind_drink', trigger_date.isoformat())
     input_channel = (TelegramInput(access_token=telegram_api_key,
                                    verify='SocialCompanionBot',
                                    webhook_url=webhook_url,
@@ -192,10 +195,9 @@ if __name__ == '__main__':
         config = json.load(f)
 
     interpreter = config['nlu']
-    webhook = config['telegram_webhook']
+    #webhook = config['telegram_webhook']
+    webhook = 'https://9588f081.ngrok.io/app/webhook'
     run_telegram_bot(webhook, train=False, interpreter=interpreter)
-
-
-
+    #run_cli_bot(train=False, interpreter=interpreter)
 
 

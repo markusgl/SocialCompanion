@@ -14,11 +14,17 @@ class ActionUtterGreet(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "Guten Tag, ich bin Carina. Ich kann für dich Termine finden oder dich über aktuelle " \
-                            "Nachrichten informieren. Sag mir einfach was zu tun möchtest.\n" \
-                            "Um uns besser kennen zu lernen würde ich gerne deinen Namen erfahren. Wie heißt du?"
+                            "Nachrichten informieren. Sag mir einfach was du tun möchtest.\n"
+                           # "Um uns besser kennen zu lernen würde ich gerne deinen Namen erfahren. Wie heißt du?"
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
+
+        print("Current slot-values %s" % tracker.current_slot_values())
+        print("Current state %s" % tracker.current_state())
+        tracker.clear_follow_up_action()
+
+        return []
 
 
 class ActionUtterGoodbye(Action):
@@ -31,6 +37,8 @@ class ActionUtterGoodbye(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        return []
+
 
 class ActionHowCanHelp(Action):
     def name(self):
@@ -41,6 +49,8 @@ class ActionHowCanHelp(Action):
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
+
+        return []
 
 
 class ActionRemindToDrink(Action):
@@ -53,6 +63,8 @@ class ActionRemindToDrink(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        return []
+
 
 class ActionNotUnderstood(Action):
     def name(self):
@@ -63,3 +75,5 @@ class ActionNotUnderstood(Action):
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
+
+        return []

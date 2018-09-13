@@ -22,6 +22,7 @@ class GoogleNewsSearcher:
 
     return news_list
 
+"""
 if __name__ == "__main__":
     news_list = GoogleNewsSearcher().search_news()
 
@@ -32,3 +33,4 @@ if __name__ == "__main__":
             news_utterance += "\n" + news_list[i].title.text
 
     print(news_utterance)
+"""

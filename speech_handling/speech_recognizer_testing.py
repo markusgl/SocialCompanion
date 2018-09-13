@@ -41,37 +41,62 @@ waveFile.close()
 
 # print available input devices
 p = pyaudio.PyAudio()
-for i in range(p.get_device_count()):#list all available audio devices
+for i in range(p.get_device_count()): #list all available audio devices
   dev = p.get_device_info_by_index(i)
-  print((i,dev['name'],dev['maxInputChannels']))
+  print((i, dev['name'], dev['maxInputChannels']))
+
+# choose an input device from the list
+input_device_number = 2
 
 recognizer = sr.Recognizer()
-#r.energy_threshold = 1500
-
-with sr.Microphone(1) as source:
+with sr.Microphone(input_device_number) as source:
+    # listen for 1 second and create the ambient noise energy level
+    recognizer.adjust_for_ambient_noise(source, duration=1)
+    #recognizer.energy_threshold = 500
     print("Sag etwas!")
-    recognizer.adjust_for_ambient_noise(source)
-    #r.energy_threshold = 2000
-    audio = recognizer.listen(source)
+    audio = recognizer.listen(source, phrase_time_limit=5)
 
 """
 # recognize speech using Sphinx
 try:
-    print("Sphinx thinks you said: " + recognizer.recognize_sphinx(audio, language="de-DE"))
+    print("Sphinx STT: " + recognizer.recognize_sphinx(audio, language="de-DE"))
 except sr.UnknownValueError:
     print("Sphinx could not understand audio")
 except sr.RequestError as e:
     print("Sphinx error; {0}".format(e))
 
-"""
 
+# google speech recognition
 try:
-    print("Du sagtest " + recognizer.recognize_google(audio, language="de-DE"))
+    print("Google Speech Recognition: " + recognizer.recognize_google(audio, language="de-DE"))
 except sr.UnknownValueError:
     print("Konnte dich nicht verstehen")
 except sr.RequestError as e:
     print("Konnte die Abfrage nicht senden; {0}".format(e))
 
+"""
+
+# recognize speech using Microsoft Bing Voice Recognition
+BING_KEY = "307d014082ce4bb9aa83b240ee0ffe62"  # Microsoft Bing Voice Recognition API keys 32-character lowercase hexadecimal strings
+try:
+    print("Microsoft Bing recognized: " + recognizer.recognize_bing(audio, key=BING_KEY, language="de-DE"))
+except sr.UnknownValueError:
+    print("Microsoft Bing Voice Recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Microsoft Bing Voice Recognition service; {0}".format(e))
+
+"""
+
+# recognize speech using Wit.ai
+WIT_AI_KEY = "I5OPZTIRESCYTEDWMHU23K7N6ZAVMBO3"  # Wit.ai keys are 32-character uppercase alphanumeric strings
+try:
+    print("Wit.ai thinks you said " + recognizer.recognize_wit(audio, key=WIT_AI_KEY))
+except sr.UnknownValueError:
+    print("Wit.ai could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Wit.ai service; {0}".format(e))
+
+"""
 
 # recognize speech using Google Cloud Speech
 GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""INSERT THE CONTENTS OF THE GOOGLE CLOUD SPEECH JSON CREDENTIALS FILE HERE"""
@@ -83,14 +108,6 @@ except sr.UnknownValueError:
 except sr.RequestError as e:
     print("Could not request results from Google Cloud Speech service; {0}".format(e))
 
-# recognize speech using Wit.ai
-WIT_AI_KEY = "INSERT WIT.AI API KEY HERE"  # Wit.ai keys are 32-character uppercase alphanumeric strings
-try:
-    print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
-except sr.UnknownValueError:
-    print("Wit.ai could not understand audio")
-except sr.RequestError as e:
-    print("Could not request results from Wit.ai service; {0}".format(e))
 
 # recognize speech using Microsoft Bing Voice Recognition
 BING_KEY = "INSERT BING API KEY HERE"  # Microsoft Bing Voice Recognition API keys 32-character lowercase hexadecimal strings

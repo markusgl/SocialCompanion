@@ -382,26 +382,30 @@ class ActionReadNews(Action):
         return 'action_read_news'
 
     def run(self, dispatcher, tracker, domain):
+        bot_reply_message = ""
+        bot_voice_reply_message = ""
 
         if tracker.get_slot('news_type'):
             topic = tracker.get_slot('news_type')
             news_list = GoogleNewsSearcher().search_news(topic)
-            dispatcher.utter_message("Hier sind die 10 Schlagzeilen zum Thema " + topic + ":")
-            TextToSpeech().utter_voice_message("Hier sind die 10 Schlagzeilen zum Thema " + topic + ":")
+            bot_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic + ":\n"
+            bot_voice_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic + ":\n"
         else:
             news_list = GoogleNewsSearcher().search_news()
-            dispatcher.utter_message("Hier sind die 10 aktuellen Schlagzeilen:")
-            TextToSpeech().utter_voice_message("Hier sind die 10 aktuellen Schlagzeilen:")
+            bot_reply_message += "Hier sind die 5 aktuellen Schlagzeilen:\n"
+            bot_voice_reply_message += "Hier sind die 5 aktuellen Schlagzeilen:\n"
 
-        bot_reply_message = ""
-        for i in range(len(news_list)):
+
+        #for i in range(len(news_list)):
+        for i in range(6):
             if i != 0: # ignore first line containing a deprecation warning
-                bot_reply_message += "\n" + news_list[i].title.text
+                bot_reply_message += "\n" + news_list[i].title.text + "\n" + news_list[i].link.text
+                bot_voice_reply_message += "\n" + news_list[i].title.text
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_voice_reply_message) # TODO threading
 
-        return []
+        return [SlotSet('news', '')]
 
 
 """
@@ -438,7 +442,7 @@ class ActionRestarted(Action):
 
 
 # for testing
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # test search_calendar by time
     """
     today = datetime.datetime.now()

@@ -146,7 +146,6 @@
     - slot{"appointment": "termine"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
-    - export
     
 ## Generated Story -9118930676261623522
 * greet

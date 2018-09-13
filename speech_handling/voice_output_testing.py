@@ -1,16 +1,19 @@
-# TTS with pocketshpinx
+# TTS with microsof speech engine
+
 import pyttsx3
 
-"""
+
 engine = pyttsx3.init('sapi5') # use SAPI5 engine
-#voices = engine.getProperty('voices')
-#engine.setProperty('voice', voices[0].id)
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[2].id)
+print(voices)
 rate = engine.getProperty('rate')
 engine.setProperty('rate', rate-30)  #words per minute
 engine.setProperty('volume', 0.9)
 
 engine.say('LeBron James kommt nach Berlin. - Mittelbayerische')
 engine.runAndWait()
+
 """
 
 # TTS with google TTS
@@ -38,3 +41,4 @@ media = pyglet.media.load(filename, streaming=False)
 media.play()
 time.sleep(media.duration)
 os.remove(filename)
+"""
