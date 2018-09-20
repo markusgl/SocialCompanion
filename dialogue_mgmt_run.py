@@ -134,7 +134,7 @@ def run_telegram_bot(webhook_url, train=False, interpreter='luis'):
     #ReminderScheduled('action_remind_drink', trigger_date.isoformat())
 
     input_channel = (TelegramInput(access_token=telegram_api_key,
-                                   verify='SocialCompanionBot',
+                                   verify='careina1234_bot',
                                    webhook_url=webhook_url,
                                    debug_mode=True))
 
@@ -172,7 +172,7 @@ def run_voice_bot(webhook_url, train=False, interpreter='luis'):
 
     agent = Agent.load('./models/dialogue', interpreter)
 
-    input_channel = (VoiceInput(url='SocialCompanionBot'))
+    input_channel = (VoiceInput(url='Carina'))
     agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
 
     """
@@ -196,7 +196,7 @@ if __name__ == '__main__':
 
     interpreter = config['nlu']
     #webhook = config['telegram_webhook']
-    webhook = 'https://9588f081.ngrok.io/app/webhook'
+    webhook = 'https://   /app/webhook'
     run_telegram_bot(webhook, train=False, interpreter=interpreter)
     #run_cli_bot(train=False, interpreter=interpreter)
 

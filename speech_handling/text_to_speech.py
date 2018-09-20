@@ -41,10 +41,11 @@ class TextToSpeech:
             logging.error("Problem during TTS")
 
 
-if __name__ == '__main__':
-    message = "Guten Tag, ich bin Carina. Ich kann für dich Termine finden oder dich über aktuelle " \
-                            "Nachrichten informieren. Sag mir einfach was du tun möchtest."
-    TextToSpeech().utter_voice_message(message)
+# for testing purposes only
+#if __name__ == '__main__':
+#    message = "Guten Tag, ich bin Carina. Ich kann für dich Termine finden oder dich über aktuelle " \
+#                            "Nachrichten informieren. Sag mir einfach was du tun möchtest."
+#    TextToSpeech().utter_voice_message(message)
 
     #espeak_path = "C:/Program Files (x86)/eSpeak/command_line/espeak.exe"
     #file_name = "C:/temp/test"

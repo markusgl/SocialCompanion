@@ -387,9 +387,10 @@ class ActionReadNews(Action):
 
         if tracker.get_slot('news_type'):
             topic = tracker.get_slot('news_type')
+            topic = re.sub('nachrichten$', '', topic)
             news_list = GoogleNewsSearcher().search_news(topic)
-            bot_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic + ":\n"
-            bot_voice_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic + ":\n"
+            bot_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic.title() + ":\n"
+            bot_voice_reply_message += "Hier sind die 5 Schlagzeilen zum Thema " + topic.title() + ":\n"
         else:
             news_list = GoogleNewsSearcher().search_news()
             bot_reply_message += "Hier sind die 5 aktuellen Schlagzeilen:\n"
@@ -399,7 +400,16 @@ class ActionReadNews(Action):
         #for i in range(len(news_list)):
         for i in range(6):
             if i != 0: # ignore first line containing a deprecation warning
-                bot_reply_message += "\n" + news_list[i].title.text + "\n" + news_list[i].link.text
+
+                # extract url to the full news article from long google news url
+                match = re.search(r'url=.*', news_list[i].link.text)
+                if match:
+                    url_array = re.split('(url=)', match.group())
+                    link_to_article = url_array[2]
+                else:
+                    link_to_article = news_list[i].link.text
+
+                bot_reply_message += "\n" + news_list[i].title.text + "\n" + link_to_article
                 bot_voice_reply_message += "\n" + news_list[i].title.text
 
         dispatcher.utter_message(bot_reply_message)
