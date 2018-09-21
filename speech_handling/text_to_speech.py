@@ -1,11 +1,9 @@
 import pyttsx3
-import os
 from gtts import gTTS
 import pyglet
 import time
 import logging
-import json
-import subprocess
+
 
 class TextToSpeech:
     def __init__(self):
@@ -40,13 +38,3 @@ class TextToSpeech:
         except:
             logging.error("Problem during TTS")
 
-
-# for testing purposes only
-#if __name__ == '__main__':
-#    message = "Guten Tag, ich bin Carina. Ich kann für dich Termine finden oder dich über aktuelle " \
-#                            "Nachrichten informieren. Sag mir einfach was du tun möchtest."
-#    TextToSpeech().utter_voice_message(message)
-
-    #espeak_path = "C:/Program Files (x86)/eSpeak/command_line/espeak.exe"
-    #file_name = "C:/temp/test"
-    #subprocess.call([espeak_path,"-w"+file_name+".wav", message])

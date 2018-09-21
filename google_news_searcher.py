@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as soup
 import requests
 
+
 class GoogleNewsSearcher:
   def search_news(self, topic=""):
 
@@ -17,7 +18,6 @@ class GoogleNewsSearcher:
       print(news.title.text)
       print(news.link.text)
       print(news.pubDate.text)
-      print("-"*60)
     """
 
     return news_list

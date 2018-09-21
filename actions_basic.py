@@ -1,10 +1,11 @@
-
+"""
+Basic actions for greeting, goodbye, accept and decline
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
 from rasa_core.actions.action import Action
-from rasa_core.events import SlotSet, AllSlotsReset, Restarted, UserUttered, ReminderScheduled
 from speech_handling.text_to_speech import TextToSpeech
 
 

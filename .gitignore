@@ -126,3 +126,5 @@ speech_handling/*.json
 
 network_graph/neo4j_creds.json
 *.json
+
+setup.py

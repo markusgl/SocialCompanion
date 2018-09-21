@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 from network_graph.network_graph import NetworkGraph
 
 from rasa_core.actions.action import Action
-from rasa_core.events import SlotSet, AllSlotsReset, Restarted, UserUttered
+from rasa_core.events import SlotSet
 from speech_handling.text_to_speech import TextToSpeech
 
 import logging
