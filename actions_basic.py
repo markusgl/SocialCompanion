@@ -5,7 +5,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import datetime
+
 from rasa_core.actions.action import Action
+from rasa_core.events import ReminderScheduled
+
 from speech_handling.text_to_speech import TextToSpeech
 
 
@@ -21,11 +25,14 @@ class ActionWelcomeMessage(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        trigger_date = datetime.datetime.now() + datetime.timedelta(seconds=10)
+        trigger_date = trigger_date.isoformat()
+        print("Reminderdate {}".format(trigger_date))
         #print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
-        tracker.clear_follow_up_action()
+        #tracker.clear_follow_up_action()
 
-        return []
+        return [ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)]
 
 
 class ActionUtterGreet(Action):

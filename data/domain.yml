@@ -62,18 +62,6 @@ entities:
   #utter_goodbye:
   #  - 'Bis später!'
   #  - 'Tschüss!'
-  #utter_ask_location:
-  #  - 'Ok du willst ins {activity} und wo?'
-  #  - 'Alles klar. An welchem Ort?'
-  #utter_ask_time:
-  #  - 'Zu welcher Uhrzeit?'
-  #  - 'Um wie viel Uhr?'
-  #utter_ask_subject:
-  #  - 'Wie lautet der Termin?'
-  #  - 'Wie lautet der Titel des Termins?'
-  #  - 'Wie lautet der Betreff des Termins?'
-  #utter_not_understood:
-  #  - 'Ich habe dich leider nicht verstanden. Kannst du das wiederholen?'
 
 actions:
   - actions_inform.ActionAskLocation
@@ -85,9 +73,9 @@ actions:
   - actions_basic.ActionHowCanHelp
   - actions_basic.ActionRemindToDrink
   - actions_basic.ActionNotUnderstood
-  - actions.ActionClearSlots
-  - actions.ActionSearchAppointment
-  - actions.ActionMakeAppointment
-  - actions.ActionReadNews
+  - actions_core.ActionClearSlots
+  - actions_core.ActionSearchAppointment
+  - actions_core.ActionMakeAppointment
+  - actions_core.ActionReadNews
   - actions_network_graph.ActionSearchContact
   - actions_network_graph.ActionSearchMe

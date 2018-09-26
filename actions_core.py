@@ -69,7 +69,7 @@ class ActionSearchAppointment(Action):
         if appointment_start_time:
             dispatcher.utter_message(
                 "Einen Augenblick. Ich sehe mal im Kalender nach.")
-            #TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+            TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
 
             events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
             output_message_time = appointment_start_time.strftime('%d.%m.%Y')
@@ -102,12 +102,10 @@ class ActionSearchAppointment(Action):
                 bot_reply_message = "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
 
         dispatcher.utter_message(bot_reply_message)
-        #TextToSpeech().utter_voice_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
-        print("Current slot-values %s" % tracker.current_slot_values())
-        print("Current state %s" % tracker.current_state())
-        #tracker.clear_follow_up_action()
-        #print("Tracker follow up actions {}".format(tracker.follow_up_action()))
+        #print("Current slot-values %s" % tracker.current_slot_values())
+        #print("Current state %s" % tracker.current_state())
 
         return []
 
@@ -296,7 +294,7 @@ class ActionMakeAppointment(Action):
                     year = '20' + date_array[2]
 
             converted_date = datetime.datetime.strptime(str(year) + '-' + str(month) + '-' + str(day), '%Y-%m-%d')
-            print(type(converted_date))
+            #print(type(converted_date))
 
         return converted_date
 
@@ -430,18 +428,6 @@ class ActionReadNews(Action):
         return [SlotSet('news', '')]
 
 
-"""
-class ActionPhoneCall(Action):
-    def name(self):
-        return 'action_phone_call'
-
-    def run(self, dispatcher, tracker, domain):
-        # TODO
-
-        return []
-"""
-
-
 class ActionClearSlots(Action):
     def name(self):
         return 'action_clear_slots'
@@ -483,4 +469,3 @@ class ActionRestarted(Action):
     ActionMakeAppointment().create_event_in_google_calendar(start_time, end_time, 'Test')
     """
 
-    #print(ActionMakeAppointment().convert_date('1.1.', 'date'))

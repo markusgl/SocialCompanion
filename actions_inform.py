@@ -18,6 +18,7 @@ class ActionAskTime(Action):
 
         return []
 
+
 class ActionAskSubject(Action):
     def name(self):
         return 'utter_ask_subject'
@@ -29,6 +30,7 @@ class ActionAskSubject(Action):
         TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
+
 
 class ActionAskLocation(Action):
     def name(self):

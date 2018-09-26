@@ -3358,7 +3358,7 @@
       },
       {
         "text": "von 9 Uhr bis 10 Uhr",
-        "intent": "",
+        "intent": "inform",
         "entities": [
           {
             "start": 4,

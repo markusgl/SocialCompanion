@@ -18,5 +18,5 @@ def evaluate_nlu(text):
 
 
 if __name__ == '__main__':
-    #train_nlu('data/data.json', 'config_rasa-nlu.yml', 'models/rasa-nlu')
-    evaluate_nlu(u"Welche Termine habe ich")
+    train_nlu('data/data.json', 'config_rasa-nlu.yml', 'models/rasa-nlu')
+    #evaluate_nlu(u"Welche Termine habe ich")
