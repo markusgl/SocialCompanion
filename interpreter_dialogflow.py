@@ -7,7 +7,6 @@ from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSc
 
 
 class Interpreter(RasaNLUInterpreter):
-
     def __init__(self):
         #super(Interpreter, self)__init__()
         keys_file = 'keys.json'
@@ -16,13 +15,34 @@ class Interpreter(RasaNLUInterpreter):
         self.session_id = data['dialogflow-session-id']
         self.bearer_token = data['dialogflow-bearer-token']
 
+    def check_connection(self):
+        query = 'hall%20hola'
+        params = {"v": "20170712",
+                  "query": query,
+                  "lang": "de",
+                  "sessionId": self.session_id,
+                  "timezone": "Europe/Berlin"
+                  }
+        headers = {"Authorization": self.bearer_token}
+
+        try:
+            response = requests.get(
+                "https://api.dialogflow.com/v1/query",
+                params=params, headers=headers)
+        except:
+            return False
+
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+
     def send_api_request(self, query):
         """
         Sends a HTTP GET request to a published LUIS.ai app with message as URL param
         :param query: message to be handled
         :return: JSON response from LUIS.ai
         """
-        #encoded_query = quote(query)
 
         params = {"v": "20170712",
                   "query": query,
@@ -35,8 +55,10 @@ class Interpreter(RasaNLUInterpreter):
         response = requests.get(
             "https://api.dialogflow.com/v1/query",
             params=params, headers=headers)
+
+        #for debugging
         #print(response.url)
-        print("Dialogflow response: %s" % response.content)
+        #print("Dialogflow response: %s" % response.content)
 
         return response.content
 
@@ -81,3 +103,7 @@ class Interpreter(RasaNLUInterpreter):
         data, error = schema.dump(nlu_response)
 
         return data
+
+
+if __name__ == '__main__':
+    print(Interpreter().check_connection())

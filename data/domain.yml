@@ -79,6 +79,7 @@ actions:
   - actions_inform.ActionAskLocation
   - actions_inform.ActionAskTime
   - actions_inform.ActionAskSubject
+  - actions_basic.ActionWelcomeMessage
   - actions_basic.ActionUtterGreet
   - actions_basic.ActionUtterGoodbye
   - actions_basic.ActionHowCanHelp

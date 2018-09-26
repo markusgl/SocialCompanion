@@ -3,7 +3,7 @@ from gtts import gTTS
 import pyglet
 import time
 import logging
-
+import json
 
 class TextToSpeech:
     def __init__(self):
@@ -11,8 +11,13 @@ class TextToSpeech:
         rate = self.engine.getProperty('rate')
         self.engine.setProperty('rate', rate - 30)  # words per minute
         self.engine.setProperty('volume', 0.9)
+
         # 'sapi' or 'google'
-        self.runtime = "sapi"
+        config_file = 'tts_config.json'
+        with open(config_file) as f:
+            config = json.load(f)
+        self.runtime = config['runtime']
+        #self.runtime = "sapi"
 
     def utter_voice_message(self, message):
         try:
@@ -37,4 +42,5 @@ class TextToSpeech:
 
         except:
             logging.error("Problem during TTS")
+
 

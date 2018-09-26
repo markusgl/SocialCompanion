@@ -16,6 +16,7 @@ class ActionAskTime(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        return []
 
 class ActionAskSubject(Action):
     def name(self):
@@ -27,6 +28,7 @@ class ActionAskSubject(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        return []
 
 class ActionAskLocation(Action):
     def name(self):
@@ -37,3 +39,5 @@ class ActionAskLocation(Action):
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
+
+        return []

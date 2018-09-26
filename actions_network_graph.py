@@ -145,3 +145,5 @@ class ActionAddContact(Action):
             dispatcher.utter_message("Danke, jetzt kenne ich auch " + str(contactname).title() + "!")
         else:
             dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. Willst du mir sie nochmal sagen?")
+
+        return []

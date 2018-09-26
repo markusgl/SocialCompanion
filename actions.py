@@ -46,6 +46,7 @@ class ActionSearchAppointment(Action):
                 appointment_start_time = datetime.datetime.now() + timedelta(days=2)
             else:
                 appointment_start_time = ""
+
         elif tracker.get_slot('dateperiod'):
             given_time = tracker.get_slot('dateperiod')
             if fuzz.ratio(given_time, 'nächste tage') > 85:
@@ -64,26 +65,28 @@ class ActionSearchAppointment(Action):
 
 
         # Generate reply message depending on the given entities start_time or subject
-        bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine."
+        bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
         if appointment_start_time:
             dispatcher.utter_message(
                 "Einen Augenblick. Ich sehe mal im Kalender nach.")
-            TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+            #TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
 
             events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
+            output_message_time = appointment_start_time.strftime('%d.%m.%Y')
             if events:
+                bot_reply_message = "Ich konnte folgende Termine für {} finden:\n".format(output_message_time)
                 for event in events:
                     start = event['start'].get('dateTime', event['start'].get('date'))
 
-                    if len(start) == 10:
+                    if len(start) == 10:  # full-day events without time indication
                         conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
-                        bot_reply_message = "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y')\
-                                             + " finden: \n" + event['summary']
-                    else:
+                        bot_reply_message += "{} {} (ganztägig)\n".format(conv_date.strftime('%d.%m.%Y'),
+                                                                          event['summary'])
+                    else:  # non full-day events including specific time
                         conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                        bot_reply_message = "Ich konnte folgende Termine für " + conv_date.strftime('%d.%m.%Y') + " finden: \n" \
-                                             + conv_date.strftime('%H:%M') + " "\
-                                             + event['summary']
+                        bot_reply_message += "{} {} {}\n".format(conv_date.strftime('%d.%m.%Y'),
+                                                                 conv_date.strftime('%H:%M'),
+                                                                 event['summary'])
 
             else:
                 bot_reply_message = "Du hast heute keine Termine."
@@ -99,7 +102,12 @@ class ActionSearchAppointment(Action):
                 bot_reply_message = "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        #TextToSpeech().utter_voice_message(bot_reply_message)
+
+        print("Current slot-values %s" % tracker.current_slot_values())
+        print("Current state %s" % tracker.current_state())
+        #tracker.clear_follow_up_action()
+        #print("Tracker follow up actions {}".format(tracker.follow_up_action()))
 
         return []
 
@@ -109,13 +117,17 @@ class ActionSearchAppointment(Action):
         :param end_time: days to be parsed
         :return:
         """
+        print("start time : " + str(start_time))
+        print("end time : " + str(end_time))
+
         # calculate max time for one day
         time_max = start_time + timedelta(days=end_time)
         time_max = time_max.replace(hour=23, minute=59, second=59, microsecond=0)
         time_max = time_max.isoformat() + 'Z'
 
+        print("time max: " + str(time_max))
         #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
-        start_time = start_time.replace(hour=0, minute=0, second=0, microsecond=0)
+        start_time = start_time.replace(hour=0, minute=0, second=1, microsecond=0)
         start_time = start_time.isoformat() + 'Z'
 
         # Setup the Calendar API

@@ -32,3 +32,33 @@
     - slot{"appointment": "termine"}
     - slot{"relativedate": "morgen"}
     - action_search_appointment
+    
+## Generated Story 1219538156069456132
+* greet
+    - action_utter_greet
+* find_appointment{"appointment": "termine", "relativedate": "morgen"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "morgen"}
+    - action_search_appointment
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* agree
+    - utter_howcanhelp
+* find_appointment{"appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - utter_ask_time
+* inform{"relativedate": "heute"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+
+    
+## Story welcome message triggered by /init
+* start
+    - action_welcome_message
