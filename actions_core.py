@@ -80,12 +80,10 @@ class ActionSearchAppointment(Action):
 
                     if len(start) == 10:  # full-day events without time indication
                         conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
-                        bot_reply_message += "{} {} (ganztägig)\n".format(conv_date.strftime('%d.%m.%Y'),
-                                                                          event['summary'])
+                        bot_reply_message += "(Ganztägig) {}\n".format(event['summary'])
                     else:  # non full-day events including specific time
                         conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                        bot_reply_message += "{} {} {}\n".format(conv_date.strftime('%d.%m.%Y'),
-                                                                 conv_date.strftime('%H:%M'),
+                        bot_reply_message += "{} {}\n".format(conv_date.strftime('%H:%M'),
                                                                  event['summary'])
 
             else:
@@ -104,7 +102,7 @@ class ActionSearchAppointment(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
-        #print("Current slot-values %s" % tracker.current_slot_values())
+        print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
 
         return []
@@ -196,7 +194,7 @@ class ActionMakeAppointment(Action):
         return 'action_make_appointment'
 
     def run(self, dispatcher, tracker, domain):
-
+        print("Current slot-values %s" % tracker.current_slot_values())
         if tracker.get_slot('time') and tracker.get_slot('activity'):
             if tracker.get_slot('relativedate'):
                 start_date = self.convert_date(tracker.get_slot('relativedate'), 'relativedate')

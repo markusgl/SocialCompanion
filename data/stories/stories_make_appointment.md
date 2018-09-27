@@ -106,3 +106,13 @@
     - slot{"activity": "kino"}
     - slot{"time": "20 uhr"}
     - action_make_appointment
+    
+## Generated Story 3102257396424295275
+* make_appointment{"relativedate": "morgen", "appointment": "termin", "activity": "arzt"}
+    - slot{"appointment": "termin"}
+    - slot{"relativedate": "morgen"}
+    - slot{"activity": "arzt"}
+    - utter_ask_time
+* inform{"time": "9 uhr"}
+    - slot{"time": "20 uhr"}
+    - action_make_appointment

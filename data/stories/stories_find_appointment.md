@@ -210,3 +210,11 @@
 * read_news{"news": "nachrichten"}
     - slot{"news": "nachrichten"}
     - action_read_news
+    
+## Generated Story -599900253432680093
+* find_appointment{"appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - utter_ask_time
+* inform{"relativedate": "heute"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment

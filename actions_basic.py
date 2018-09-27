@@ -25,9 +25,11 @@ class ActionWelcomeMessage(Action):
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
+        # Schedule a reminder after welcome message
         trigger_date = datetime.datetime.now() + datetime.timedelta(seconds=10)
         trigger_date = trigger_date.isoformat()
         print("Reminderdate {}".format(trigger_date))
+
         #print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
         #tracker.clear_follow_up_action()

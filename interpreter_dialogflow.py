@@ -58,7 +58,7 @@ class Interpreter(RasaNLUInterpreter):
 
         #for debugging
         #print(response.url)
-        #print("Dialogflow response: %s" % response.content)
+        print("Dialogflow response: %s" % response.content)
 
         return response.content
 
@@ -80,6 +80,7 @@ class Interpreter(RasaNLUInterpreter):
             intent_schema.name = "greet"
             intent_schema.confidence = 0.0
         nlu_response.intent = intent_schema
+        print("Recognized Intent by Dialogflow {}".format(intent_schema.name ))
 
         try:
             entities = resp["result"]["parameters"]

@@ -41,6 +41,21 @@ class TextToSpeech:
             else:
                 print('no speech output')
         except Exception as err:
-            print(err)
-            logging.error("Problem during TTS")
+            print("Error during TTS {}".format(err))
+            logging.error("Error during TTS")
 
+    def check_google_connection(self):
+        try:
+            message = "Hallo"
+            filename = 'temp_voice.mp3'
+            tts = gTTS(text=message, lang='de')
+            tts.save(filename)
+            os.remove(filename)
+            return True
+        except Exception as err:
+            print(err)
+            logging.error("Error during Google TTS testing {}".format(err))
+            return False
+
+
+#TextToSpeech().check_google_connection()

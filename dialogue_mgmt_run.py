@@ -102,6 +102,7 @@ def clean_telegram_update_queue():
     # TODO
     return None
 
+
 def run_telegram_bot(webhook_url, train=False, interpreter=None):
     logging.basicConfig(level="INFO")
 
@@ -117,20 +118,21 @@ def run_telegram_bot(webhook_url, train=False, interpreter=None):
     try:
         NetworkGraph()
         print('Neo4j connection successful.')
-    except ServiceUnavailable:
-        print('Neo4j connection failed. Program stopped.')
+    except ServiceUnavailable as service_err:
+        print('Neo4j connection failed. Program stopped: {}'.format(service_err))
         return
 
     # set webhook of telegram bot
     try:
-        print("setting webhook")
-        telegram_url = 'https://api.telegram.org/bot' + telegram_api_key + '/setWebhook?url=' + webhook_url + '&max_connections=1' + 'allowed_updates=[message]'
+        print("Setting Telegram webhook to {}".format(webhook_url))
+        telegram_url = 'https://api.telegram.org/bot' + telegram_api_key + '/setWebhook?url=' + webhook_url + \
+                       '&max_connections=1' + 'allowed_updates=[message]'
         urllib.request.urlopen(telegram_url)
-    except:
-        print("Error setting Telegram webhook")
+    except Exception as err:
+        print("Error setting Telegram webhook: {}".format(err))
         return
 
-    # Set Interpreter (NLU)
+    # Set Interpreter (NLU) to given engine
     if interpreter:
         if interpreter == 'luis':
             interpreter = LuisInterpreter()
@@ -140,35 +142,28 @@ def run_telegram_bot(webhook_url, train=False, interpreter=None):
             interpreter = WitInterpreter()
         elif interpreter == 'rasa':
             interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
-    # set interpreter to dialogflow if connection is possible
+    # set Interpreter to Dialogflow if connection is possible
     elif DialogflowInterpreter().check_connection():
         interpreter = DialogflowInterpreter()
-        print("Interpreter set to Dialogflow.")
-    # set interpreter to rasa nlu if no connection to dialoflow is possible
+        print("Interpreter (NLU) set to Dialogflow.")
+    # set Interpreter to RASA NLU if no connection to Dialoflow is possible and none explicitly given
     else:
         interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
-        print("Interpreter set to Rasa NLU.")
+        print("Interpreter (NLU) set to Rasa NLU.")
 
     agent = Agent.load('./models/dialogue', interpreter)
     print('Agent loaded.')
 
-    # set TTS runtime to sapi or google tts depending on internet connection
-    # test internet connection
-    try:
-        requests.get("https://cloud.google.com/")
-        tts_engine = 'google'
-    except:
-        tts_engine = 'sapi'
-    tts_engine = 'sapi'
-    TextToSpeech.runtime = tts_engine
-    tts = TextToSpeech()
-    print("TTS Runtime {}".format(tts.runtime))
+    # set TTS runtime to Google if available otherwise use Windows local SAPI engine
+    gtts_available = TextToSpeech().check_google_connection()
+    if gtts_available:
+        TextToSpeech.runtime = 'google'
+        print("Setting TTS to Google TTS")
+    else:
+        TextToSpeech.runtime = 'sapi'
+        print("Setting TTS to Microsoft Speech Engine")
 
-    #trigger_date = datetime.datetime.now() + datetime.timedelta(minutes=1)
-    #trigger_date = trigger_date.isoformat()
-    #ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)
-
-    print('Starting Telegram Channel...')
+    print('Starting Telegram channel...')
     input_channel = (TelegramInput(access_token=telegram_api_key,
                                    verify='careina1234_bot',
                                    webhook_url=webhook_url,
@@ -183,7 +178,7 @@ if __name__ == '__main__':
     #    config = json.load(f)
     #webhook = config['telegram_webhook']
 
-    webhook = 'https://  /app/webhook'
-    run_telegram_bot(webhook, train=True, interpreter='rasa')
+    webhook = 'https://   /app/webhook'
+    run_telegram_bot(webhook, train=False)
     #run_cli_bot(train=False, interpreter='rasa')
 
