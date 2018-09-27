@@ -16,16 +16,12 @@ class TextToSpeech:
                 # Google Text-to-Speech API - needs internet connectivity
                 filename = ROOT_DIR + '\\temp_voice.mp3'
                 tts = gTTS(text=message, lang='de')
-                #if os.path.isfile(filename):
-                #    os.remove(filename)
                 tts.save(filename)
 
                 media = pyglet.media.load(filename, streaming=False)
                 media.play()
-
                 time.sleep(media.duration)
                 os.remove(filename)
-
                 print('TTS finished')
             # Sapi Microsoft speech engine - works offline
             elif self.runtime == "sapi":
@@ -39,10 +35,9 @@ class TextToSpeech:
                 print('TTS finished')
             # No speech output
             else:
-                print('no speech output')
+                logging.warning('No tts engine set. Speech output cancelled.')
         except Exception as err:
-            print("Error during TTS {}".format(err))
-            logging.error("Error during TTS")
+            logging.error("Error during TTS {}".format(err))
 
     def check_google_connection(self):
         try:
@@ -53,9 +48,6 @@ class TextToSpeech:
             os.remove(filename)
             return True
         except Exception as err:
-            print(err)
             logging.error("Error during Google TTS testing {}".format(err))
             return False
 
-
-#TextToSpeech().check_google_connection()

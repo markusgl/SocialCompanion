@@ -1,41 +1,20 @@
 """ NLU using Dialogflow (formerly API.ai) and maps it for Rasa dialogue management"""
 
-from rasa_core.interpreter import RasaNLUInterpreter
 import requests
 import json
+import logging
+
+from rasa_core.interpreter import RasaNLUInterpreter
 from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSchema
 
 
 class Interpreter(RasaNLUInterpreter):
     def __init__(self):
-        #super(Interpreter, self)__init__()
         keys_file = 'keys.json'
         with open(keys_file) as f:
             data = json.load(f)
         self.session_id = data['dialogflow-session-id']
         self.bearer_token = data['dialogflow-bearer-token']
-
-    def check_connection(self):
-        query = 'hall%20hola'
-        params = {"v": "20170712",
-                  "query": query,
-                  "lang": "de",
-                  "sessionId": self.session_id,
-                  "timezone": "Europe/Berlin"
-                  }
-        headers = {"Authorization": self.bearer_token}
-
-        try:
-            response = requests.get(
-                "https://api.dialogflow.com/v1/query",
-                params=params, headers=headers)
-        except:
-            return False
-
-        if response.status_code == 200:
-            return True
-        else:
-            return False
 
     def send_api_request(self, query):
         """
@@ -97,14 +76,32 @@ class Interpreter(RasaNLUInterpreter):
                     nlu_response.entities.append(entity_schema)
                     #print("Key: {}, Value: {}".format(key, value))
         except Exception as err:
-            print(err)
-            print('No Entites extracted')
+            logging.info('No Entites extracted {}'.format(err))
 
         schema = RasaNLUSchema()
         data, error = schema.dump(nlu_response)
 
         return data
 
+    def check_connection(self):
+        query = 'hallo%20hola'
+        params = {"v": "20170712",
+                  "query": query,
+                  "lang": "de",
+                  "sessionId": self.session_id,
+                  "timezone": "Europe/Berlin"
+                  }
+        headers = {"Authorization": self.bearer_token}
 
-if __name__ == '__main__':
-    print(Interpreter().check_connection())
+        try:
+            response = requests.get(
+                "https://api.dialogflow.com/v1/query",
+                params=params, headers=headers)
+        except Exception as err:
+            logging.warning("Connection to Dialogflow failed {}".format(err))
+            return False
+
+        if response.status_code == 200:
+            return True
+        else:
+            return False

@@ -113,15 +113,11 @@ class ActionSearchAppointment(Action):
         :param end_time: days to be parsed
         :return:
         """
-        print("start time : " + str(start_time))
-        print("end time : " + str(end_time))
-
         # calculate max time for one day
         time_max = start_time + timedelta(days=end_time)
         time_max = time_max.replace(hour=23, minute=59, second=59, microsecond=0)
         time_max = time_max.isoformat() + 'Z'
 
-        print("time max: " + str(time_max))
         #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
         start_time = start_time.replace(hour=0, minute=0, second=1, microsecond=0)
         start_time = start_time.isoformat() + 'Z'
@@ -378,7 +374,7 @@ class ActionMakeAppointment(Action):
 
             # Call the Calendar API
             event = service.events().insert(calendarId='primary', body=event).execute()
-            print('Event created: %s' % (event.get('htmlLink')))
+            logging.info('Calendar event created: %s' % (event.get('htmlLink')))
         else:
             return None
 
@@ -433,8 +429,9 @@ class ActionClearSlots(Action):
     def run(self, dispatcher, tracker, domain):
         tracker.clear_follow_up_action()
 
-        print("Current slot-values %s" % tracker.current_slot_values())
-        print("Current state %s" % tracker.current_state())
+        logging.info("All Slots reset.")
+        logging.debug("Current slot-values %s" % tracker.current_slot_values())
+        logging.debug("Current state %s" % tracker.current_state())
 
         return [AllSlotsReset()]
 
@@ -446,24 +443,4 @@ class ActionRestarted(Action):
     def run(self, dispatcher, tracker, domain):
         return[Restarted()]
 
-
-# for testing
-#if __name__ == '__main__':
-    # test search_calendar by time
-    """
-    today = datetime.datetime.now()
-    today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-    ActionSearchAppointment().search_google_calendar_by_time(today, 2)
-    """
-    """
-    # test search calendar by subject
-    ActionSearchAppointment().search_google_calendar_by_subject('Arzt')
-
-    
-    # test create calendar event
-    start_time = datetime.datetime.strptime('31 08 2018 13 00', '%d %m %Y %H %M')
-    end_time = datetime.datetime.strptime('31 08 2018 14 00', '%d %m %Y %H %M')
-
-    ActionMakeAppointment().create_event_in_google_calendar(start_time, end_time, 'Test')
-    """
 

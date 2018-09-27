@@ -9,7 +9,6 @@ import datetime
 
 from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
-
 from speech_handling.text_to_speech import TextToSpeech
 
 
