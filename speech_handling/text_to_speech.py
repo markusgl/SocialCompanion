@@ -22,7 +22,8 @@ class TextToSpeech:
                 media.play()
                 time.sleep(media.duration)
                 os.remove(filename)
-                print('TTS finished')
+
+                return 'TTS finished'
             # Sapi Microsoft speech engine - works offline
             elif self.runtime == "sapi":
                 self.engine = pyttsx3.init('sapi5')  # use SAPI5 engine
@@ -32,12 +33,15 @@ class TextToSpeech:
 
                 self.engine.say(message)
                 self.engine.runAndWait()
-                print('TTS finished')
+
+                return 'TTS finished'
             # No speech output
             else:
                 logging.warning('No tts engine set. Speech output cancelled.')
+                
         except Exception as err:
             logging.error("Error during TTS {}".format(err))
+            return None
 
     def check_google_connection(self):
         try:

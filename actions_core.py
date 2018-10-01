@@ -111,7 +111,7 @@ class ActionSearchAppointment(Action):
         """
         :param start_time: datetime object
         :param end_time: days to be parsed
-        :return:
+        :return: list of events
         """
         # calculate max time for one day
         time_max = start_time + timedelta(days=end_time)

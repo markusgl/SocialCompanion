@@ -12,6 +12,8 @@ class SpeechHandler:
             message = None
             try:
                 message = self.recognizer.recognize_google(audio, language="de_DE")
+                #message = self.recognizer.recognize_bing(audio, key=BING_KEY, language="de-DE")
+                #message = self.recognizer.recognize_sphinx(audio, language="de-DE"))
                 print("You said: " + message)
             except sr.UnknownValueError:
                 print("Could not understand audio")
