@@ -19,7 +19,7 @@ def load_data_into_graph(input, session):
             tx.query(graql_insert_query)
             tx.commit()
 
-# import the data
+
 def build_phone_call_graph(input):
     client = grakn.Grakn(uri='localhost:48555')
     with client.session(keyspace='phone_calls') as session:
