@@ -30,6 +30,7 @@ def build_phone_call_graph(input):
 def company_template(company):
     return 'insert $company isa company has name "' + company["name"] + '";'
 
+
 def person_template(person):
     graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
     if "first_name" in person:
@@ -45,6 +46,7 @@ def person_template(person):
     graql_insert_query += ";"
 
     return graql_insert_query
+
 
 def contract_template(contract):
     # match company

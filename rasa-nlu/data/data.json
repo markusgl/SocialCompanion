@@ -764,54 +764,6 @@
         ]
       },
       {
-        "text": "Ich möchte meine Tochter anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 24,
-            "value": "Tochter",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Kannst du meinen Sohn anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 21,
-            "value": "Sohn",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Bitte meine Schwester anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 12,
-            "end": 21,
-            "value": "Schwester",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich will mit meiner Enkelin telefonieren",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 20,
-            "end": 27,
-            "value": "Enkelin",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
         "text": "Einen neuen Termin einstellen bitte",
         "intent": "make_appointment",
         "entities": [
@@ -2366,487 +2318,6 @@
         ]
       },
       {
-        "text": "Ich möchte mit meinem Enkel sprechen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 22,
-            "end": 27,
-            "value": "Enkel",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich will Emil anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 9,
-            "end": 13,
-            "value": "Emil",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Ich will Elisabeth anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 9,
-            "end": 18,
-            "value": "Elisabeth",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Rufe Hans an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 5,
-            "end": 9,
-            "value": "Hans",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Ruf meinen Arzt an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 11,
-            "end": 15,
-            "value": "Arzt",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich will mit Lukas telefonieren",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 13,
-            "end": 18,
-            "value": "Lukas",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Ich will mit meinem Sohn telefonieren",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 20,
-            "end": 24,
-            "value": "Sohn",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich will mit meiner Tochter telefonieren",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 20,
-            "end": 27,
-            "value": "Tochter",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich möchte jemanden anrufen",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Ich möchte telefonieren",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Ich will telefonieren",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Ich will einen Anruf tätigen",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Kannst du Markus anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 10,
-            "end": 16,
-            "value": "Markus",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Ruf Markus an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 4,
-            "end": 10,
-            "value": "Markus",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Rufe die Nummer 0800123 an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 16,
-            "end": 23,
-            "value": "0800123",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Wähle die Nummer 012345",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 23,
-            "value": "012345",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Rufe 012345 an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 5,
-            "end": 11,
-            "value": "012345",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Die Nummer lautet 102412",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 18,
-            "end": 24,
-            "value": "102412",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Kannst du meinen Schwester anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 26,
-            "value": "Schwester",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ich will das Telefon nutzen",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Mach einen Anruf",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Telefonieren bitte",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Mache einen Anruf zur Nummer 0911123455",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 29,
-            "end": 39,
-            "value": "0911123455",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Rufe meine Pfleger an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 11,
-            "end": 18,
-            "value": "Pfleger",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Rufe den Arzt Müller an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 9,
-            "end": 13,
-            "value": "Arzt",
-            "entity": "relationship"
-          },
-          {
-            "start": 14,
-            "end": 20,
-            "value": "Müller",
-            "entity": "lastname"
-          }
-        ]
-      },
-      {
-        "text": "Ruf bitte meinen Enkel an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 22,
-            "value": "Enkel",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Rufe meinen Sohn an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 12,
-            "end": 16,
-            "value": "Sohn",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Meine Tochter anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 6,
-            "end": 13,
-            "value": "Tochter",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Bitte anrufen",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Das Telefon benutzen",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Ruf Elisabeth an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 4,
-            "end": 13,
-            "value": "Elisabeth",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Rufe Lukas an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 5,
-            "end": 10,
-            "value": "Lukas",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Rufe 0911214324 an",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 5,
-            "end": 15,
-            "value": "0911214324",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Wähle die Nummer 080012345",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 17,
-            "end": 26,
-            "value": "080012345",
-            "entity": "phone_number"
-          }
-        ]
-      },
-      {
-        "text": "Wähle die letzte Nummer",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
-        "text": "Telefonieren mit meiner Enkelin",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 24,
-            "end": 31,
-            "value": "Enkelin",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Ein Telefonat mit Herrn Huber führen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 24,
-            "end": 29,
-            "value": "Huber",
-            "entity": "lastname"
-          }
-        ]
-      },
-      {
-        "text": "Ein Telefonat mit meiner Tochter führen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 25,
-            "end": 32,
-            "value": "Tochter",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Meinen Mann anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 7,
-            "end": 11,
-            "value": "Mann",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Telefonanruf zu Ingrid",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 16,
-            "end": 22,
-            "value": "Ingrid",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Telefonanruf zu meiner Tochter",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 23,
-            "end": 30,
-            "value": "Tochter",
-            "entity": "relationship"
-          }
-        ]
-      },
-      {
-        "text": "Anruf zu Horst",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 9,
-            "end": 14,
-            "value": "Horst",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Herbert anrufen",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 0,
-            "end": 7,
-            "value": "Herbert",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Detlef telefonieren",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 0,
-            "end": 6,
-            "value": "Detlef",
-            "entity": "firstname"
-          }
-        ]
-      },
-      {
-        "text": "Telefonat mit Frau Schmidt",
-        "intent": "phone_call",
-        "entities": [
-          {
-            "start": 19,
-            "end": 26,
-            "value": "Schmidt",
-            "entity": "lastname"
-          }
-        ]
-      },
-      {
-        "text": "Telefonieren will ich ",
-        "intent": "phone_call",
-        "entities": []
-      },
-      {
         "text": "tach",
         "intent": "greet",
         "entities": []
@@ -4169,6 +3640,162 @@
             "end": 11,
             "value": "Wagner",
             "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Ich war mit meinem Enkel heute im Tiergarten",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 19,
+            "end": 24,
+            "value": "Enkel",
+            "entity": "relationship"
+          },
+          {
+            "start": 25,
+            "end": 30,
+            "value": "heute",
+            "entity": "relativedate"
+          },
+          {
+            "start": 34,
+            "end": 44,
+            "value": "Tiergarten",
+            "entity": "place"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe zwei Kinder",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 14,
+            "end": 20,
+            "value": "Kinder",
+            "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 13,
+            "value": "zwei",
+            "entity": "number"
+          }
+        ]
+      },
+      {
+        "text": "Mein Sohn heißt Markus",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 5,
+            "end": 9,
+            "value": "Sohn",
+            "entity": "relationship"
+          },
+          {
+            "start": 5,
+            "end": 9,
+            "value": "Sohn",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe einen Sohn und eine Tochter",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 15,
+            "end": 19,
+            "value": "Sohn",
+            "entity": "relationship"
+          },
+          {
+            "start": 29,
+            "end": 36,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Das ist mein Mann",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 13,
+            "end": 17,
+            "value": "Mann",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe zwei Söhne Markus und Michael",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 20,
+            "end": 26,
+            "value": "Markus",
+            "entity": "firstname"
+          },
+          {
+            "start": 31,
+            "end": 38,
+            "value": "Michael",
+            "entity": "firstname"
+          },
+          {
+            "start": 14,
+            "end": 19,
+            "value": "Söhne",
+            "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 13,
+            "value": "zwei",
+            "entity": "number"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe zwei Töchter",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 14,
+            "end": 21,
+            "value": "Töchter",
+            "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 13,
+            "value": "zwei",
+            "entity": "number"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe zwei Enkelkinder",
+        "intent": "chatting",
+        "entities": [
+          {
+            "start": 14,
+            "end": 25,
+            "value": "Enkelkinder",
+            "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 13,
+            "value": "zwei",
+            "entity": "number"
           }
         ]
       }

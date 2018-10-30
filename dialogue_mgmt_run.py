@@ -42,8 +42,8 @@ def train_bot():
     model_path = './models/dialogue'
     domain_file = './data/domain.yml'
 
-    # core_threshold: min confidence needed to accept an action prediction from Rasa Core
-    # nlu_threshold: min confidence needed to accept an NLU prediction
+    # core_threshold: min confidence needed to accept an action predicted by Rasa Core
+    # nlu_threshold: min confidence needed to accept an intent predicted by the interpreter (NLU)
     fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
                               core_threshold=0.5,
                               nlu_threshold=0.4)
@@ -67,18 +67,13 @@ def train_bot():
 def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     logging.basicConfig(level="INFO")
 
-    try:
-        NetworkGraph()
-    except ServiceUnavailable:
-        logging.info('Neo4j connection failed. Program stopped.')
+    if not test_neo4j_connection():
         return
 
     if train:
         train_bot()
 
     interpreter = select_interpreter(nlu_name)
-    if not interpreter:
-        return ("Please provide one of these interpreters: luis, dialogflow, witai, rasa")
 
     agent = Agent.load('./models/dialogue', interpreter)
 
@@ -88,8 +83,10 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     return agent
 
 
-def run_telegram_bot(webhook_url, train=False, nlu_name=None, bot_name=None):
+def run_telegram_bot(train=False, nlu_name=None):
     logging.basicConfig(level="INFO")
+
+    webhook_url, bot_name = load_telegram_config()
 
     if train:
         train_bot()
@@ -99,16 +96,11 @@ def run_telegram_bot(webhook_url, train=False, nlu_name=None, bot_name=None):
         data = json.load(f)
     telegram_api_key = data['telegram-api-key']
 
-    # test neo4j connection
-    try:
-        NetworkGraph()
-        logging.info('Neo4j connection successful.')
-    except ServiceUnavailable as service_err:
-        logging.error('Neo4j connection failed. Program stopped: {}'.format(service_err))
+    if not test_neo4j_connection():
         return
 
     # set webhook of telegram bot
-    try:
+    """try:
         logging.info("Setting Telegram webhook to {}".format(webhook_url))
         telegram_url = 'https://api.telegram.org/bot' + telegram_api_key + '/setWebhook?url=' + webhook_url + \
                        '&max_connections=1' + 'allowed_updates=[message]'
@@ -116,23 +108,16 @@ def run_telegram_bot(webhook_url, train=False, nlu_name=None, bot_name=None):
     except Exception as err:
         logging.error("Error setting Telegram webhook: {}".format(err))
         return
+    """
 
-    # Set Interpreter (NLU) to given engine
+    # Set Interpreter (NLU) to th given engine
     interpreter = select_interpreter(nlu_name)
-    if not interpreter:
-        # set Interpreter to Dialogflow if connection is possible and no interpreter was given
-        if DialogflowInterpreter().check_connection():
-            interpreter = DialogflowInterpreter()
-            logging.info("Interpreter (NLU) set to Dialogflow.")
-        # set Interpreter to RASA NLU if no connection to Dialoflow is possible and none explicitly given
-        else:
-            interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
-            logging.info("Interpreter (NLU) set to Rasa NLU.")
 
+    # load the trained agent model
     agent = Agent.load('./models/dialogue', interpreter)
     logging.info('Agent model loaded.')
 
-    # set TTS runtime to Google if available otherwise use Windows local SAPI engine
+    # set TTS runtime to Google if available otherwise use the local Windows SAPI engine
     gtts_available = TextToSpeech().check_google_connection()
     if gtts_available:
         TextToSpeech.runtime = 'google'
@@ -152,6 +137,17 @@ def run_telegram_bot(webhook_url, train=False, nlu_name=None, bot_name=None):
         logging.error("Error starting Telegram Channel: {}".format(err))
 
 
+def test_neo4j_connection():
+    try:
+        NetworkGraph()
+        logging.info('Neo4j connection successful.')
+    except ServiceUnavailable as service_err:
+        logging.error('Neo4j connection failed. Program stopped: {}'.format(service_err))
+        return False
+
+    return True
+
+
 def select_interpreter(nlu_name):
     if nlu_name == NLU.luis:
         interpreter = LuisInterpreter()
@@ -162,18 +158,28 @@ def select_interpreter(nlu_name):
     elif nlu_name == NLU.rasanlu:
         interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
-        return None
+        # set Interpreter to Dialogflow if connection is possible and no interpreter was provided
+        if DialogflowInterpreter().check_connection():
+            interpreter = DialogflowInterpreter()
+            logging.info("Interpreter (NLU) set automatically to Dialogflow because on interpeter was provided.")
+        # set Interpreter to RASA NLU if no connection to Dialoflow is possible and none was explicitly provided
+        else:
+            interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
+            logging.info("Interpreter (NLU) set automatically to Rasa NLU because on interpeter was provided.")
 
     return interpreter
 
 
-if __name__ == '__main__':
-    keys_file = 'dm_config.json'
+def load_telegram_config():
+    keys_file = 'telegram_config.json'
     with open(keys_file) as f:
         config = json.load(f)
     webhook = config['telegram_webhook']
     bot_name = config['telegram-bot-name']
 
-    run_telegram_bot(webhook_url=webhook, train=False, nlu_name="blub", bot_name=bot_name)
-    #run_cli_bot(train=False, interpreter='rasa')
+    return webhook, bot_name
+
+
+if __name__ == '__main__':
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu)
 

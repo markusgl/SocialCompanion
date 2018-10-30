@@ -29,6 +29,9 @@ class ActionWelcomeMessage(Action):
         trigger_date = trigger_date.isoformat()
         print("Reminderdate {}".format(trigger_date))
 
+        buttons = [{"title": '1', "payload": "blub"}, {"title": '2', "payload": "bla"}]
+        dispatcher.utter_button_message(text="Was möchtest du tun?", buttons=buttons)
+
         #print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
         #tracker.clear_follow_up_action()
