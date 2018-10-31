@@ -99,17 +99,6 @@ def run_telegram_bot(train=False, nlu_name=None):
     if not test_neo4j_connection():
         return
 
-    # set webhook of telegram bot
-    """try:
-        logging.info("Setting Telegram webhook to {}".format(webhook_url))
-        telegram_url = 'https://api.telegram.org/bot' + telegram_api_key + '/setWebhook?url=' + webhook_url + \
-                       '&max_connections=1' + 'allowed_updates=[message]'
-        urllib.request.urlopen(telegram_url)
-    except Exception as err:
-        logging.error("Error setting Telegram webhook: {}".format(err))
-        return
-    """
-
     # Set Interpreter (NLU) to th given engine
     interpreter = select_interpreter(nlu_name)
 
@@ -171,7 +160,7 @@ def select_interpreter(nlu_name):
 
 
 def load_telegram_config():
-    keys_file = 'telegram_config.json'
+    keys_file = 'dm_config.json'
     with open(keys_file) as f:
         config = json.load(f)
     webhook = config['telegram_webhook']

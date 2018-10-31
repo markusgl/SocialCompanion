@@ -29,88 +29,115 @@ class ActionSearchAppointment(Action):
         return 'action_search_appointment'
 
     def run(self, dispatcher, tracker, domain):
+        # utter wait message
+        dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+        TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+
         # check if time was given by the user and convert relative dates and time periods
-        appointment_start_time = ""
-        appointment_end_time = 0
-
         if tracker.get_slot('date'):
-            appointment_start_time = tracker.get_slot('date')
+            given_date = tracker.get_slot('date')
+            start_time = given_date
+            end_time = 0
+            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
         elif tracker.get_slot('relativedate'):
-            given_time = tracker.get_slot('relativedate')
-
-            if given_time == 'heute':
-                appointment_start_time = datetime.datetime.now()
-            elif given_time == 'morgen':
-                appointment_start_time = datetime.datetime.now() + timedelta(days=1)
-            elif given_time == 'übermorgen':
-                appointment_start_time = datetime.datetime.now() + timedelta(days=2)
-            else:
-                appointment_start_time = ""
-
+            given_date = tracker.get_slot('relativedate')
+            start_time, end_time = self.convert_relativedate(given_date)
+            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
         elif tracker.get_slot('dateperiod'):
-            given_time = tracker.get_slot('dateperiod')
-            if fuzz.ratio(given_time, 'nächste tage') > 85:
-                appointment_start_time = datetime.datetime.now()
-                appointment_end_time = 4
-            elif fuzz.ratio(given_time, 'wochenende') > 85:
-                # calculate days until weekend depending on weekday
-                weekno = datetime.datetime.now().weekday()
-                if weekno < 4:
-                    delta = 4 - weekno
-                    appointment_start_time = datetime.datetime.now() + timedelta(days=delta)
-                else:
-                    appointment_start_time = datetime.datetime.now()
-
-                appointment_end_time = appointment_start_time + timedelta(days=2)
-
-
-        # Generate reply message depending on the given entities start_time or subject
-        bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
-        if appointment_start_time:
-            dispatcher.utter_message(
-                "Einen Augenblick. Ich sehe mal im Kalender nach.")
-            TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
-
-            events = self.search_google_calendar_by_time(appointment_start_time, appointment_end_time)
-            output_message_time = appointment_start_time.strftime('%d.%m.%Y')
-            if events:
-                bot_reply_message = "Ich konnte folgende Termine für {} finden:\n".format(output_message_time)
-                for event in events:
-                    start = event['start'].get('dateTime', event['start'].get('date'))
-
-                    if len(start) == 10:  # full-day events without time indication
-                        conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
-                        bot_reply_message += "(Ganztägig) {}\n".format(event['summary'])
-                    else:  # non full-day events including specific time
-                        conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                        bot_reply_message += "{} {}\n".format(conv_date.strftime('%H:%M'),
-                                                                 event['summary'])
-
-            else:
-                bot_reply_message = "Du hast heute keine Termine."
-
-        # if only activity (subject) is given search an event by activity name
-        elif tracker.get_slot('activity'):
+            given_date = tracker.get_slot('dateperiod')
+            start_time, end_time = self.convert_dateperiod(given_date)
+            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
+        elif tracker.get_slot('activity'): # if only activity (subject) is given search an event by activity name
             subject = tracker.get_slot('activity')
-            dispatcher.utter_message("Ich sehe mal nach ob ich einen Termin zum Thema " + subject.title() + "finden kann.")
-            event = self.search_google_calendar_by_subject(subject)
-            if event:
-                bot_reply_message = "Ich konnte folgende Termine finden " + event
-            else:
-                bot_reply_message = "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
+
+            bot_reply_message = self.generate_reply_message_with_subject(subject)
+        else:
+            bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
-        print("Current slot-values %s" % tracker.current_slot_values())
+        #print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
 
         return []
 
-    def search_google_calendar_by_time(self, start_time, end_time):
+    def generate_reply_message_with_subject(self, subject):
+        bot_reply_message = "Ich sehe mal nach ob ich einen Termin zum Thema " + subject.title() + "finden kann. \n"
+
+        event = self.search_google_calendar_by_subject(subject)
+        if event:
+            bot_reply_message += "Ich konnte folgende Termine finden " + event
+        else:
+            bot_reply_message += "Ich konnte leider keinen Termin zum Thema " + subject.title() + " finden."
+
+        return bot_reply_message
+
+
+    def generate_reply_message_with_date(self, start_time, end_time):
+        events = self.search_google_calendar_by_time(start_time, end_time)
+        date_format = start_time.strftime('%d.%m.%Y')
+        if events:
+            bot_reply_message = "Ich konnte folgende Termine für {} finden:\n".format(date_format)
+            for event in events:
+                start = event['start'].get('dateTime', event['start'].get('date'))
+
+                if len(start) == 10:  # full-day events without time indication
+                    conv_date = datetime.datetime.strptime(start, '%Y-%m-%d')
+                    bot_reply_message += "(Ganztägig) {}\n".format(conv_date.strftime('%d.%m.%Y'), event['summary'])
+                else:  # non full-day events including specific time
+                    conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
+                    bot_reply_message += "{} {}\n".format(conv_date.strftime('%H:%M'),
+                                                          event['summary'])
+        else:
+            bot_reply_message = "Du hast heute keine Termine."
+
+        return bot_reply_message
+
+    @staticmethod
+    def convert_relativedate(relativedate):
+        appointment_end_time = 0
+        if relativedate == 'heute':
+            appointment_start_time = datetime.datetime.now()
+        elif relativedate == 'morgen':
+            appointment_start_time = datetime.datetime.now() + timedelta(days=1)
+        elif relativedate == 'übermorgen':
+            appointment_start_time = datetime.datetime.now() + timedelta(days=2)
+        else:
+            appointment_start_time = ""
+
+        return appointment_start_time, appointment_end_time
+
+
+    @staticmethod
+    def convert_dateperiod(dateperiod):
+        # check the fuzzy ratio (edit distance with respect of the length) of the two terms
+        if fuzz.ratio(dateperiod, 'nächste tage') > 85 or fuzz.ratio(dateperiod, 'nächste zeit') > 85:
+            appointment_start_time = datetime.datetime.now()
+            appointment_end_time = 4
+        elif fuzz.ratio(dateperiod, 'wochenende') > 85:
+            # calculate days until weekend depending on weekday
+            weekno = datetime.datetime.now().weekday()
+            if weekno < 4:
+                delta = 4 - weekno
+                appointment_start_time = datetime.datetime.now() + timedelta(days=delta)
+            else:
+                appointment_start_time = datetime.datetime.now()
+
+            appointment_end_time = appointment_start_time + timedelta(days=2)
+
+        else:
+            appointment_start_time = 0
+            appointment_end_time = 0
+
+        return appointment_start_time, appointment_end_time
+
+
+    @staticmethod
+    def search_google_calendar_by_time(start_time, end_time):
         """
         :param start_time: datetime object
-        :param end_time: days to be parsed
+        :param end_time: days to be parsed as integer
         :return: list of events
         """
         # calculate max time for one day
@@ -144,7 +171,6 @@ class ActionSearchAppointment(Action):
         return events
 
     def search_google_calendar_by_subject(self, subject):
-        #logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
         # search the next ten appointments for the corresponding subject
         today = datetime.datetime.now()
         event_time = today.isoformat() + 'Z'
@@ -167,7 +193,7 @@ class ActionSearchAppointment(Action):
 
         appointment = None
         if not events:
-            print('No upcoming events found.')
+            logging.debug('No upcoming events found.')
             return None
         for event in events:
             event_subject = event['summary']
@@ -179,7 +205,6 @@ class ActionSearchAppointment(Action):
                 end = event['start'].get('dateTime', event['start'].get('date'))
                 converted_start_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
                 converted_end_date = datetime.datetime.strptime(start[:(len(end) - 6)], '%Y-%m-%dT%H:%M:%S')
-                print(str(converted_start_date) + " - " + str(converted_end_date) + ": " + event_subject)
                 appointment = str(converted_start_date) + " - " + str(converted_end_date) + ": " + event_subject
 
         return appointment
