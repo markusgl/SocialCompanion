@@ -63,6 +63,7 @@ entities:
   #  - 'Bis später!'
   #  - 'Tschüss!'
 
+
 actions:
   - actions_inform.ActionAskLocation
   - actions_inform.ActionAskTime
@@ -73,6 +74,8 @@ actions:
   - actions_basic.ActionHowCanHelp
   - actions_basic.ActionRemindToDrink
   - actions_basic.ActionNotUnderstood
+  - actions_basic.ActionOfferFeatures
+  - actions_basic.ActionGetToKnow
   - actions_core.ActionClearSlots
   - actions_core.ActionSearchAppointment
   - actions_core.ActionMakeAppointment

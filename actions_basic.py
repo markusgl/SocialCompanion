@@ -6,6 +6,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import datetime
+import logging
 
 from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
@@ -17,26 +18,55 @@ class ActionWelcomeMessage(Action):
         return 'action_welcome_message'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Guten Tag, ich bin Carina. Ich kann für dich Termine finden oder dich über aktuelle " \
-                            "Nachrichten informieren. Sag mir einfach was du tun möchtest.\n" \
-                            "Um uns besser kennen zu lernen würde ich gerne deinen Namen erfahren. Wie heißt du?"
-
-        dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        bot_reply_message = "Guten Tag, mein Name ist Carina Ihr persönlicher Begleiter. " \
+                            "Ich kann Ihnen Informationen anzeigen oder einfach für eine nette " \
+                            "Unterhaltung bereitstehen." \
+                            "Was möchten Sie tun?"
 
         # Schedule a reminder after welcome message
+        """
         trigger_date = datetime.datetime.now() + datetime.timedelta(seconds=10)
         trigger_date = trigger_date.isoformat()
-        print("Reminderdate {}".format(trigger_date))
+        logging.info("Reminderdate {}".format(trigger_date))
+        """
 
-        buttons = [{"title": 'Smalltalk', "payload": "smalltalk"}, {"title": 'Informationen', "payload": "information"}]
-        dispatcher.utter_button_message(text="Was möchtest du tun?", buttons=buttons)
+        buttons = [{"title": 'Aktuelle Informationen', "payload": "/information"},
+                   {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
+        dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
         #print("Current slot-values %s" % tracker.current_slot_values())
         #print("Current state %s" % tracker.current_state())
         #tracker.clear_follow_up_action()
 
-        return [ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)]
+        #return [ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)]
+        return []
+
+
+class ActionOfferFeatures(Action):
+    def name(self):
+        return 'action_offer_features'
+
+    def run(self, dispatcher, tracker, domain):
+        bot_reply_message = "Sie möchten aktulle Informationen erhalten." \
+                            "Ich kann Ihre Termine verwalten oder Sie über aktuelle Nachrichten informieren. " \
+                            "Was möchten Sie tun."
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
+
+
+class ActionGetToKnow(Action):
+    def name(self):
+        return 'action_gettoknow'
+
+    def run(self, dispatcher, tracker, domain):
+        bot_reply_message = "Sie möchten eine Unterhaltung beginnen, gerne. " \
+                            "Bevor wir unsere Unterhaltung beginnen, würde ich Sie gerne besser kennen lernen. " \
+                            "Wie heißen Sie?"
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionUtterGreet(Action):

@@ -35,6 +35,11 @@ class NLU(enum.Enum):
     witai = 4
 
 
+class TTS(enum.Enum):
+    google = 'google'
+    sapi = 'sapi'
+
+
 def train_bot():
     logging.basicConfig(level='INFO')
 
@@ -83,7 +88,7 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     return agent
 
 
-def run_telegram_bot(train=False, nlu_name=None):
+def run_telegram_bot(train=False, nlu_name=None, tts=None):
     logging.basicConfig(level="INFO")
 
     webhook_url, bot_name = load_telegram_config()
@@ -107,13 +112,16 @@ def run_telegram_bot(train=False, nlu_name=None):
     logging.info('Agent model loaded.')
 
     # set TTS runtime to Google if available otherwise use the local Windows SAPI engine
-    gtts_available = TextToSpeech().check_google_connection()
-    if gtts_available:
-        TextToSpeech.runtime = 'google'
-        logging.info("Setting TTS to Google TTS")
+    if tts and tts in TTS:
+        TextToSpeech.runtime = tts.value
     else:
-        TextToSpeech.runtime = 'sapi'
-        logging.info("Setting TTS to Microsoft Speech Engine")
+        gtts_available = TextToSpeech().check_google_connection()
+        if gtts_available:
+            TextToSpeech.runtime = 'google'
+            logging.info("Setting TTS to Google TTS")
+        else:
+            TextToSpeech.runtime = 'sapi'
+            logging.info("Setting TTS to Microsoft Speech Engine")
 
     logging.info('Starting Telegram channel...')
     try:
@@ -170,5 +178,5 @@ def load_telegram_config():
 
 
 if __name__ == '__main__':
-    run_telegram_bot(train=False, nlu_name=NLU.rasanlu)
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
 
