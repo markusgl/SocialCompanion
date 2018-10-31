@@ -1,73 +1,62 @@
+""" Knowledge Graph represenation of GRAKN.AI """
 import grakn
 import logging
+import knowledge_graph.relationship_templates as templates
+
 
 class KnowledgeGraph:
     def __init__(self):
         self.client = grakn.Grakn(uri='localhost:48555')
 
-    def load_data_into_graph(self, query):
-        try:
-            with self.client.session(keyspace='socialnetwork') as session:
-                with session.transaction(grakn.TxType.WRITE) as tx:
-                    graql_query = query
-                    tx.query(graql_query)
-                    tx.commit()
-        except Exception as exc:
-            logging.error("Error loading data into graph: {}".format(exc))
+    def add_person(self, _given_name=None, _family_name=None):
+        with self.client.session(keyspace='socialnetwork') as session:
+            with session.transaction(grakn.TxType.WRITE) as tx:
+                person_type = tx.get_schema_concept("person")  # retrieve person schema
+                person = person_type.create()  # instantiate new person
 
+                if _given_name:
+                    given_name_type = tx.get_schema_concept("givenName")
+                    given_name = given_name_type.create(_given_name)
+                    person.has(given_name)
 
-    def add_me_by_given_name(self, first_name):
-        person = self.person_template(given_name=first_name)
-        self.load_data_into_graph(person)
+                if _family_name:
+                    family_name_type = tx.get_schema_concept("familyName")
+                    family_name = family_name_type.create(_family_name)
+                    person.has(family_name)
 
+                if not _family_name and not _given_name:
+                    return
 
-    def add_me_by_family_name(self, family_name):
-        person = self.person_template(family_name=family_name)
-        self.load_data_into_graph(person)
+                tx.commit()
 
+    def add_child(self, parent_name, child_name):
+        self.add_person(_given_name=child_name)  # add child as new person
+        parentship_query = templates.parentship_query_template(parent_name, child_name)
+        self.insert_query(parentship_query)
 
-    def add_child(self, me_name, child_name):
-        
-        parentship = self.parentship_template(parent_name=me_name, child_name=child_name)
+    def add_grandchild(self, grandparent_name, grandchild_name):
+        self.add_person(_given_name=grandchild_name)  # add grandchild as new person
+        grandparentship_query = templates.grandparentship_template(grandparent_name, grandchild_name)
+        self.insert_query(grandparentship_query)
 
+    def add_friend(self, me_name, friend_name):
+        self.add_person(_given_name=friend_name)  # add friend as new person
+        parentship_query = templates.friendship_template(me_name, friend_name)
+        self.insert_query(parentship_query)
 
-    # Entities
-    def person_template(self, given_name=None, family_name=None, gender=None):
-        graql_query = 'insert $person isa person has givenName "' + given_name + '"'
+    def insert_query(self, query):
+        with self.client.session(keyspace='socialnetwork') as session:
+            with session.transaction(grakn.TxType.WRITE) as tx:
+                tx.query(query)
+                tx.commit()
 
-        if family_name:
-            graql_query += ' has familyName "' + family_name + '"'
-        if gender:
-            graql_query += ' has gender "' + gender + '"'
-
-        graql_query += ";"
-
-        return graql_query
-
-    # Relationships
-    def parentship_template(self, parent_name, child_name):
-        graql_insert_query = 'match $parent isa person has givenName "' + parent_name + '";'
-        graql_insert_query += ' child isa person has givenName "' + child_name + '";'
-        graql_insert_query += ' insert (parent: $parent, child: $child) isa parentship;'
-
-        return graql_insert_query
-
-    def grandparentship_template(self, grandparent_name, grandchild_name):
-        graql_insert_query = 'match $grandparent isa person has givenName "' + grandparent_name + '";'
-        graql_insert_query += ' grandchild isa person has givenName "' + grandchild_name + '";'
-        graql_insert_query += ' insert (grandparent: $grandparent, grandchild: $grandchild) isa grandparentship;'
-
-        return graql_insert_query
-
-    def knows_template(self, me_name, contact_name):
-        graql_insert_query = 'match $me isa person has givenName "' + me_name + '";'
-        graql_insert_query += ' $contact isa person has givenName "' + contact_name + '";'
-        graql_insert_query += ' insert (grandparent: $grandparent, grandchild: $grandchild) isa grandparentship;'
-
-        return graql_insert_query
-
+    def delete_person_by_givenName(self, given_name):
+        with self.client.session(keyspace='socialnetwork') as session:
+            with session.transaction(grakn.TxType.WRITE) as tx:
+                query = 'match $x isa person has givenName "' + given_name + '"; delete $x;'
+                tx.query(query)
+                tx.commit()
 
 if __name__ == '__main__':
     kg = KnowledgeGraph()
-    kg.add_me_by_given_name('Hubert')
-    kg.add
+    kg.add_child(parent_name='Markus', child_name='Thorsten')
