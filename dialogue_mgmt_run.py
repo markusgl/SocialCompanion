@@ -49,7 +49,7 @@ def train_bot():
 
     # core_threshold: min confidence needed to accept an action predicted by Rasa Core
     # nlu_threshold: min confidence needed to accept an intent predicted by the interpreter (NLU)
-    fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
+    fallback = FallbackPolicy(fallback_action_name="action_not_understood",
                               core_threshold=0.5,
                               nlu_threshold=0.4)
 
@@ -178,5 +178,5 @@ def load_telegram_config():
 
 
 if __name__ == '__main__':
-    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
+    run_telegram_bot(train=False, nlu_name=NLU.dialogflow, tts=TTS.sapi)
 

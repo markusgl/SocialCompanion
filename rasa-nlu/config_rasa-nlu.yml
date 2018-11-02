@@ -8,6 +8,3 @@ pipeline:
 - name: "ner_crf"
 - name: "ner_synonyms"
 - name: "intent_classifier_sklearn"
-
-#cors_origins:
-# - name: ['*.ngrok.io']

@@ -122,6 +122,7 @@ corpus/keys.json
 .png
 corpus/*.png
 dm_config.json
+analytics_engine/models
 
 speech_handling/*.mp3
 speech_handling/*.json

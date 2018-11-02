@@ -3,6 +3,7 @@
 import requests
 import json
 import logging
+import pprint
 
 from rasa_core.interpreter import RasaNLUInterpreter
 from rasa_nlu_schema import RasaNLUSchema, NLUResponse, EntitiesSchema, IntentSchema
@@ -61,11 +62,14 @@ class Interpreter(RasaNLUInterpreter):
         nlu_response.intent = intent_schema
         print("Recognized Intent by Dialogflow {}".format(intent_schema.name ))
 
+        pp = pprint.PrettyPrinter(indent=4)
+        #pp.pprint(resp)
+
         try:
+            nlu_response.entities = []
             entities = resp["result"]["parameters"]
             resolved_query = resp["result"]["resolvedQuery"]
 
-            nlu_response.entities = []
             for key, value in entities.items():
                 if value:
                     entity_schema = EntitiesSchema()
@@ -76,7 +80,7 @@ class Interpreter(RasaNLUInterpreter):
                     nlu_response.entities.append(entity_schema)
                     #print("Key: {}, Value: {}".format(key, value))
         except Exception as err:
-            logging.info('No Entites extracted {}'.format(err))
+            logging.warning('No Entites extracted {}'.format(err))
 
         schema = RasaNLUSchema()
         data, error = schema.dump(nlu_response)
