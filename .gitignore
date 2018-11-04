@@ -131,3 +131,6 @@ network_graph/neo4j_creds.json
 *.json
 
 setup.py
+
+# NLP model
+analytics_engine/models

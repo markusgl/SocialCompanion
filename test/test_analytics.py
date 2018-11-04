@@ -13,5 +13,5 @@ class TestAnalyticsEngine(TestCase):
                                          u'Und meine Schwester heißt Ursula.')
 
     def test_extract_person_entity(self):
-        names = self.text_analyzer.extract_person_entity(u'Mein Name ist Hans.')
+        names = self.text_analyzer.extract_entities(u'Mein Name ist Hans.')
         assert names.pop() == 'Hans'
