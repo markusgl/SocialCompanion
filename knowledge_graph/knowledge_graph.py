@@ -57,6 +57,4 @@ class KnowledgeGraph:
                 tx.query(query)
                 tx.commit()
 
-if __name__ == '__main__':
-    kg = KnowledgeGraph()
-    kg.add_child(parent_name='Markus', child_name='Thorsten')
+

@@ -32,6 +32,7 @@ class AnalyticsEngine:
 
 
 class TextAnalyzer(ABC):
+
     @abstractmethod
     def extract_entities(self, utterance):
         pass
@@ -72,7 +73,6 @@ class SpacyAnalyzer(TextAnalyzer):
             elif token.pos_ == 'NOUN':
                 nouns.append(token)
 
-
         return nouns, verbs
 
 
@@ -106,8 +106,9 @@ if __name__ == '__main__':
     analyzer = StanfordAnalyzer()
     analyzer2 = SpacyAnalyzer()
     utterance1 = u'Ich war heute mit meinem Enkel im Zoo.'
-    utterance2 = u'Meine Tochter Lisa fliegt morgen nach London.'
+    utterance2 = u'Meine Enkelin Lisa fliegt morgen nach London. Sie ist zum ersten Mal in England.'
     utterance3 = u'Mein Sohn hat mich heute angerufen.'
+    #analyzer2.display_dependencies(utterance2)
     per, loc = analyzer.extract_entities(utterance3)
     print(per)
     print(loc)
