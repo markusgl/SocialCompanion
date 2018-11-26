@@ -5,8 +5,10 @@ from abc import ABC, abstractmethod
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
 from knowledge_graph.knowledge_graph import KnowledgeGraph
+from network_core.network_graph import NetworkGraph
 from analytics_engine import models
 from spacy import displacy
+from analytics_engine.relationship_extraction import RelationshipExtractor
 
 java_path = "C:/Program Files/Java/jdk1.8.0_181/bin/java.exe"
 os.environ['JAVAHOME'] = java_path
@@ -14,21 +16,35 @@ os.environ['JAVAHOME'] = java_path
 
 class AnalyticsEngine:
     def __init__(self):
-        self.text_analyzer = StanfordAnalyzer()
+        #self.text_analyzer = StanfordAnalyzer()
         self.kg = KnowledgeGraph()
+        self.ng = NetworkGraph()
+        self.re = RelationshipExtractor()
 
     def analyze_utterance(self, utterance):
-        names = self.text_analyzer.extract_entities(utterance)
-        response = "Ich habe Sie leider nicht verstanden."
+        relation_tuples = self.re.extract_relationships(utterance)
+        for relation_tuple in relation_tuples:
+            ent1 = relation_tuple[0][0]
+            ent2 = relation_tuple[2][0]
+
+            self.ng.add_rel_tuple(ent1, ent2)
+
+        # TODO extract relationship type
+
+
+        #names = self.text_analyzer.extract_entities(utterance)
+        #response = "Ich habe Sie leider nicht verstanden."
 
         # add names to knowledge graph
+        """
         if len(names) > 0:
             response = "Wer ist: "
             for name in names:
                 self.kg.add_person(_given_name=name)
                 response += name + " "
+        """
 
-        return response
+        #return response
 
 
 class TextAnalyzer(ABC):
@@ -102,13 +118,3 @@ class StanfordAnalyzer(TextAnalyzer):
         return people, locations
 
 
-if __name__ == '__main__':
-    analyzer = StanfordAnalyzer()
-    analyzer2 = SpacyAnalyzer()
-    utterance1 = u'Ich war heute mit meinem Enkel im Zoo.'
-    utterance2 = u'Meine Enkelin Lisa fliegt morgen nach London. Sie ist zum ersten Mal in England.'
-    utterance3 = u'Mein Sohn hat mich heute angerufen.'
-    #analyzer2.display_dependencies(utterance2)
-    per, loc = analyzer.extract_entities(utterance3)
-    print(per)
-    print(loc)

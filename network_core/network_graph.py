@@ -2,10 +2,9 @@
 knowledge graph representation using neo4j
 this class uses py2neo with will be the final version
 """
-from py2neo import Graph, Node, Relationship, NodeMatcher
+from py2neo import Graph, Relationship
 import json
-from ogm.social_objects import Me
-from ogm.social_objects import Contact
+from network_core.ogm.node_objects import Me, Contact, Misc
 
 USERTYPE = "User"
 CONTACTTYPE = "Contact"
@@ -22,12 +21,36 @@ relationships = {'freund': 'FRIEND',
 
 
 class NetworkGraph:
-    def __init__(self, path='./network_graph/neo4j_creds.json'):
+    # TODO evaluate current path
+    def __init__(self, path='./network_core/neo4j_creds.json'):
         with open(path) as f:
             data = json.load(f)
         username = data['username']
         password = data['password']
         self.graph = Graph(host="localhost", username=username, password=password)
+
+    def add_rel_tuple(self, ent1, ent2, rel=None):
+        """
+        Pushes a new central user 'Me' to the graph
+        Gets a username, creats an Me object and pushes it to the graph
+        :param username: string username
+        :return: me object (see ogm pkg)
+        """
+        # define nodes
+        node1 = Misc()
+        node1.name = ent1
+
+        node2 = Misc()
+        node2.name = ent2
+
+        # add relationship to nodes
+        node1.related_ent.add(node2)
+        node2.related_ent.add(node1)
+
+        # save to neo4j
+        self.graph.create(node1)
+        self.graph.create(node2)
+
 
     def add_me_w_firstname(self, username, age="", gender=""):
         """
@@ -164,9 +187,7 @@ class NetworkGraph:
 
         return contactname
 
-"""
-if __name__ == '__main__':
-    kg = NetworkGraph('neo4j_creds.json')
-    kg.get_me_by_firstname('marggus')
-    kg.add_me_w_lastname('Glas')
-"""
+
+#if __name__ == '__main__':
+#    ng = NetworkGraph('neo4j_creds.json')
+#    ng.add_rel_tuple('Luke', 'Darth', 'KNOWS')

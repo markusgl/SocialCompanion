@@ -21,7 +21,7 @@ from rasa_core.featurizers import (MaxHistoryTrackerFeaturizer,
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
-from network_graph.network_graph import NetworkGraph
+from network_core.network_graph import NetworkGraph
 from speech_handling.text_to_speech import TextToSpeech
 
 logger = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ def train_bot():
     # nlu_threshold: min confidence needed to accept an intent predicted by the interpreter (NLU)
     fallback = FallbackPolicy(fallback_action_name="action_not_understood",
                               core_threshold=0.5,
-                              nlu_threshold=0.4)
+                              nlu_threshold=0.3)
 
     featurizer = MaxHistoryTrackerFeaturizer(BinarySingleStateFeaturizer(), max_history=3)
     agent = Agent(domain=domain_file,
@@ -178,5 +178,5 @@ def load_telegram_config():
 
 
 if __name__ == '__main__':
-    run_telegram_bot(train=False, nlu_name=NLU.dialogflow, tts=TTS.sapi)
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
 

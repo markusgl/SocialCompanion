@@ -18,7 +18,7 @@ from rasa_core.policies.memoization import MemoizationPolicy
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
-from network_graph.network_graph import NetworkGraph
+from network_core.network_graph import NetworkGraph
 
 logger = logging.getLogger(__name__)
 

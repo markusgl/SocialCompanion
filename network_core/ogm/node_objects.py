@@ -31,3 +31,10 @@ class Contact(GraphObject):
     sister = RelatedTo("Me")
     mother = RelatedTo("Me")
     father = RelatedTo("Me")
+
+
+class Misc(GraphObject):
+    name = Property()
+
+    related_ent = RelatedTo("Misc")
+

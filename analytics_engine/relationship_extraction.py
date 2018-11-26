@@ -10,7 +10,7 @@ class RelationshipExtractor:
 
         # grammar for spaCy POS Tags
         # extracts noun phrases (NP) and relationships (REL)
-        self.grammar = r"""NP: {<DT>?<JJ>*<PROPN|NOUN|PRON>}
+        self.grammar = r"""NP: {<DT>?<ADJ>*<PROPN|NOUN|PRON>}
                       V: {<VERB>}
                       W: {<NOUN|ADJ|ADV|PROPN|DET>}
                       P: {<ADP|PART|PUNCT>}
@@ -66,7 +66,7 @@ class RelationshipExtractor:
 
         return left_np, right_np
 
-    def find_relationships(self, utterance):
+    def extract_relationships(self, utterance):
         relations = []
 
         sentences = sent_tokenize(utterance)
@@ -87,10 +87,17 @@ class RelationshipExtractor:
         for relation in relations:
             relation_tuple = []
             for tree in relation:
-                words = [w for w, t in tree.leaves()]
-                relation_tuple.append(tuple(words))
+                if tree:
+                    words = [w for w, t in tree.leaves()]
+                    relation_tuple.append(tuple(words))
 
-            relation_tuples.append(relation_tuple)
+            if len(relation_tuple) == 3:  # add only relation triples (entity, relation, entity)
+                relation_tuples.append(relation_tuple)
 
         return relation_tuples
+
+
+if __name__ == '__main__':
+    re = RelationshipExtractor()
+    print(re.extract_relationships('Ich gehe mit meinem Sohn zum Fußball. Und morgen mit'))
 

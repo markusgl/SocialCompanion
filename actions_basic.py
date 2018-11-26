@@ -12,6 +12,8 @@ from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
 from speech_handling.text_to_speech import TextToSpeech
 from analytics_engine.analytics import AnalyticsEngine
+from action_base_class import ActionBaseClass
+
 
 class ActionWelcomeMessage(Action):
     def name(self):
@@ -69,7 +71,7 @@ class ActionGetToKnow(Action):
         TextToSpeech().utter_voice_message(bot_reply_message)
 
 
-class ActionUtterGreet(Action):
+class ActionUtterGreet(Action, ActionBaseClass):
     def name(self):
         return 'action_utter_greet'
 
@@ -153,8 +155,7 @@ class ActionNotUnderstood(Action):
             # Try to get further information out of the utterance
             logging.debug("No intent recognized. Trying further analytics.")
             bot_reply_message = AnalyticsEngine().analyze_utterance(user_utterance)
-
-            #bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
+            bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)

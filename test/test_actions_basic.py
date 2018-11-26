@@ -4,7 +4,7 @@ from rasa_core.dispatcher import Dispatcher
 from rasa_core.domain import Domain
 from rasa_core.trackers import DialogueStateTracker
 
-from actions_basic import ActionNotUnderstood
+from actions_basic import ActionNotUnderstood, ActionUtterGreet
 from rasa_core.agent import Agent
 from rasa_core.channels.console import ConsoleInputChannel, ConsoleOutputChannel
 
@@ -24,6 +24,15 @@ class TestActionNotUnderstood(TestCase):
         self.tracker = DialogueStateTracker()
         self.domain = Domain()
 
-    def test_utter_not_understood(self):
+    #def test_utter_not_understood(self):
         # TODO
-        self.not_undestood.run()
+     #   self.not_undestood.run()
+
+
+class TestActionUtterGreet(TestCase):
+    def setUp(self):
+        self.action_utter_greet = ActionUtterGreet()
+
+    def test_analyze_utterance(self):
+        self.action_utter_greet.analyze_utterance('Hans ist der Vater von Hubert.')
+
