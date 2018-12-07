@@ -2,12 +2,15 @@
 knowledge graph representation using neo4j
 this class uses py2neo with will be the final version
 """
-from py2neo import Graph, Relationship
+import os
 import json
+
+from py2neo import Graph, Relationship, NodeMatcher, Node
 from network_core.ogm.node_objects import Me, Contact, Misc
 
 USERTYPE = "User"
 CONTACTTYPE = "Contact"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 relationships = {'freund': 'FRIEND',
                  'schwester': 'SISTER',
@@ -21,15 +24,39 @@ relationships = {'freund': 'FRIEND',
 
 
 class NetworkGraph:
-    # TODO evaluate current path
-    def __init__(self, path='./network_core/neo4j_creds.json'):
+    def __init__(self):
+        path = os.path.realpath(ROOT_DIR + '/neo4j_creds.json')
         with open(path) as f:
             data = json.load(f)
         username = data['username']
         password = data['password']
         self.graph = Graph(host="localhost", username=username, password=password)
 
-    def add_rel_tuple(self, ent1, ent2, rel=None):
+    def add_node_by_name(self, name, node_type="PERSON"):
+        node = Node(node_type, name=name)
+        self.graph.create(node)
+
+        return node
+
+    def get_node_by_name(self, name):
+        matcher = NodeMatcher(self.graph)
+        node = matcher.match(name=name).first()
+
+        return node
+
+    def add_relationship(self, node1, node2, rel_type='KNOWS'):
+        first_node = self.get_node_by_name(node1)
+        second_node = self.get_node_by_name(node2)
+
+        if not first_node:
+            first_node = self.add_node_by_name(node1)
+        if not second_node:
+            second_node = self.add_node_by_name(node2)
+
+        self.graph.create(Relationship(first_node, second_node, name=rel_type))
+
+
+    def add_rel_tuple(self, ent1, ent2):
         """
         Pushes a new central user 'Me' to the graph
         Gets a username, creats an Me object and pushes it to the graph
@@ -51,6 +78,21 @@ class NetworkGraph:
         self.graph.create(node1)
         self.graph.create(node2)
 
+    def search_node_by_name(self, node_name):
+        # replace white spaces
+        _node_name = node_name.replace(" ", "")
+
+        query = 'MATCH (n) WHERE n.name={node_name} RETURN n;'
+        result = self.graph.run(query,
+                                node_name=_node_name,
+                                ).data()
+        print(result)
+        if result:
+            node = result[0]['n.name']
+        else:
+            node = None
+
+        return node
 
     def add_me_w_firstname(self, username, age="", gender=""):
         """
@@ -116,8 +158,6 @@ class NetworkGraph:
         else:
             return None
 
-
-    ### CURRENTLY NOT USED ###
     def add_contact(self, me_name, contactname, relationship):
         """
         adds a new contact to the central user i.e. 'Me' in graph
@@ -154,8 +194,8 @@ class NetworkGraph:
             me.daughter.add(contact)
             #TODO other relationships
 
-
         self.graph.push(me)
+
 
     def search_relationship_by_contactname(self, me_name, contact_name):
         mename = me_name.replace(" ", "")
@@ -188,6 +228,6 @@ class NetworkGraph:
         return contactname
 
 
-#if __name__ == '__main__':
-#    ng = NetworkGraph('neo4j_creds.json')
-#    ng.add_rel_tuple('Luke', 'Darth', 'KNOWS')
+if __name__ == '__main__':
+    ng = NetworkGraph()
+    print(ng.search_node_by_name('Hans'))

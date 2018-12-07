@@ -10,7 +10,7 @@ class TestRelationshipExtractor(TestCase):
     def test_find_relationships(self):
         test_utterance = u'''Peter und Maria gehen morgen ins Kino.'''
 
-        rel = self.rel_ex.extract_relationships(test_utterance)
+        rel = self.rel_ex.print_relationships(test_utterance)
         self.assertEqual(rel[0][0][0], 'Peter')
         self.assertEqual(rel[0][2][0], 'Maria')
 

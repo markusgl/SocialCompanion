@@ -1,5 +1,20 @@
 from py2neo.ogm import GraphObject, Property, RelatedTo, RelatedFrom
 
+class Person(GraphObject):
+    __primarykey__ = id
+
+    firstname = Property()
+    lastname = Property()
+    gender = Property()
+    age = Property()
+
+    friend = RelatedTo("Contact")
+    brother = RelatedTo("Contact")
+    sister = RelatedTo("Contact")
+    mother = RelatedTo("Contact")
+    father = RelatedTo("Contact")
+    son = RelatedTo("Contact")
+    daughter = RelatedTo("Contact")
 
 class Me(GraphObject):
     #__primarykey__ = id

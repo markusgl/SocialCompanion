@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from rasa_core.actions.action import Action
 from speech_handling.text_to_speech import TextToSpeech
+from analytics_engine.analytics import AnalyticsEngine
 
 
 class ActionAskTime(Action):
@@ -12,6 +13,8 @@ class ActionAskTime(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "An welchem Tag oder zu welcher Uhrzeit?"
+
+        AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
@@ -25,6 +28,7 @@ class ActionAskSubject(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "Wie lautet der Betreff?"
+        AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
@@ -38,6 +42,7 @@ class ActionAskLocation(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "An welchem Ort?"
+        AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)

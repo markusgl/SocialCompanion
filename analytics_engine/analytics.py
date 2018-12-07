@@ -13,38 +13,41 @@ from analytics_engine.relationship_extraction import RelationshipExtractor
 java_path = "C:/Program Files/Java/jdk1.8.0_181/bin/java.exe"
 os.environ['JAVAHOME'] = java_path
 
+relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin', 'nichte',
+                     'neffe', 'onkel', 'tante']
+
 
 class AnalyticsEngine:
     def __init__(self):
         #self.text_analyzer = StanfordAnalyzer()
-        self.kg = KnowledgeGraph()
-        self.ng = NetworkGraph()
+        #self.kg = KnowledgeGraph()
+        self.ng = NetworkGraph()  # neo4j
         self.re = RelationshipExtractor()
 
     def analyze_utterance(self, utterance):
-        relation_tuples = self.re.extract_relationships(utterance)
+        relation_tuples = self.re.extract_relation_tuples(utterance)
+
         for relation_tuple in relation_tuples:
+
             ent1 = relation_tuple[0][0]
             ent2 = relation_tuple[2][0]
+            rel = relation_tuple[1][0]
 
-            self.ng.add_rel_tuple(ent1, ent2)
+            # add entites to neo4j
+            self.ng.add_relationship(ent1, ent2, rel_type=rel)
 
         # TODO extract relationship type
+        # TODO generate response
 
-
-        #names = self.text_analyzer.extract_entities(utterance)
         #response = "Ich habe Sie leider nicht verstanden."
 
-        # add names to knowledge graph
-        """
-        if len(names) > 0:
-            response = "Wer ist: "
-            for name in names:
-                self.kg.add_person(_given_name=name)
-                response += name + " "
-        """
 
         #return response
+
+
+if __name__ == '__main__':
+    ae = AnalyticsEngine()
+    ae.analyze_utterance(u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.')
 
 
 class TextAnalyzer(ABC):

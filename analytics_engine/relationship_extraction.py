@@ -2,24 +2,29 @@ import spacy
 import nltk
 
 from nltk.tokenize import sent_tokenize
-
+from network_core.ogm.node_objects import Me, Contact
 
 class RelationshipExtractor:
+    RELATIONSHIPS = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin', 'nichte',
+                         'neffe', 'onkel', 'tante']
+    ME = ['ich', 'meine', 'mein']
+
     def __init__(self):
         self.nlp = spacy.load('de')
 
         # grammar for spaCy POS Tags
         # extracts noun phrases (NP) and relationships (REL)
-        self.grammar = r"""NP: {<DT>?<ADJ>*<PROPN|NOUN|PRON>}
+        self.grammar = r"""NP: {<DET>?<ADJ>*<NOUN>?<PROPN|PRON>*}
                       V: {<VERB>}
-                      W: {<NOUN|ADJ|ADV|PROPN|DET>}
+                      W: {<NOUN|ADJ|ADV|PRON|DET>}
                       P: {<ADP|PART|PUNCT>}
                       C: {<CONJ>}
                       REL: {<V><W>*<P>|<V><P>|<V>|<C>}
                       """
 
-    def pos_tagging(self, sentences):
+    def pos_tagging(self, utterance):
         pos_tagged_sentences = []
+        sentences = sent_tokenize(utterance)
 
         for sentence in sentences:
             doc = self.nlp(sentence)
@@ -33,9 +38,11 @@ class RelationshipExtractor:
 
         return pos_tagged_sentences
 
-    def extract_chunk_trees(self, pos_tagged_sentences):
+    def extract_chunk_trees(self, utterance):
         sentence_trees = []
         cp = nltk.RegexpParser(self.grammar)
+
+        pos_tagged_sentences = self.pos_tagging(utterance)
 
         for sentence in pos_tagged_sentences:
             sentence_trees.append(cp.parse(sentence))
@@ -66,13 +73,10 @@ class RelationshipExtractor:
 
         return left_np, right_np
 
-    def extract_relationships(self, utterance):
+    def find_relations_tree_in_utterance(self, utterance):
+        sentence_trees = self.extract_chunk_trees(utterance)
+
         relations = []
-
-        sentences = sent_tokenize(utterance)
-        pos_tagged_sentences = self.pos_tagging(sentences)
-        sentence_trees = self.extract_chunk_trees(pos_tagged_sentences)
-
         for sent_tree in sentence_trees:
             for i, sub_tree in enumerate(sent_tree):
                 if type(sub_tree) is nltk.tree.Tree and sub_tree.label() == 'REL':
@@ -83,21 +87,49 @@ class RelationshipExtractor:
 
                     relations.append([left_np, rel, right_np])
 
-        relation_tuples = []
-        for relation in relations:
-            relation_tuple = []
-            for tree in relation:
-                if tree:
-                    words = [w for w, t in tree.leaves()]
-                    relation_tuple.append(tuple(words))
+        return relations
 
-            if len(relation_tuple) == 3:  # add only relation triples (entity, relation, entity)
-                relation_tuples.append(relation_tuple)
+
+    def extract_relation_tuples(self, utterance):
+
+        relations = self.find_relations_tree_in_utterance(utterance)
+
+        relation_tuples = []
+        for i, relation in enumerate(relations):
+            ne1_tree = relation[0]
+            ne2_tree = relation[2]
+            rel_tree = relation[1]
+
+            # search for PROPN - if not found search for NOUN
+            ne1 = [w for w, t in ne1_tree.leaves() if t == 'PROPN']
+            if not ne1:
+                ne1 = [w for w, t in ne1_tree.leaves() if t == 'NOUN']
+
+            # search for PROPN - if not found search for NOUN
+            ne2 = [w for w, t in ne2_tree.leaves() if t == 'PROPN']
+            if not ne2:
+                ne2 = [w for w, t in ne2_tree.leaves() if t == 'NOUN']
+
+                # search for VERB - if not found search for CONJ
+            rel = [w for w, t in rel_tree.leaves() if t == 'VERB']
+            if not rel:
+                rel = [w for w, t in rel_tree.leaves() if t == 'CONJ']
+
+            if ne1 and ne2 and rel:
+                relation_tuples.append((ne1, rel, ne2))
 
         return relation_tuples
 
+    def print_relationships(self, utterance):
+        relation_tuples = self.extract_relation_tuples(utterance)
 
-if __name__ == '__main__':
-    re = RelationshipExtractor()
-    print(re.extract_relationships('Ich gehe mit meinem Sohn zum Fußball. Und morgen mit'))
+        # convert relation tuples to objects
+        for relation in relation_tuples:
+            print(relation)
+
+
+#if __name__ == '__main__':
+#    re = RelationshipExtractor()
+    #re.extract_relationships('Ich und mein Sohn gehen heute zum Fußball')
+#    re.print_relationships(u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.')
 

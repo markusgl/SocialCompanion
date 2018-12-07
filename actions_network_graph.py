@@ -13,7 +13,7 @@ import logging
 
 gender_dict = {"frau": "female", "fr.": "female", "herr": "male", "hr.": "male"}
 
-
+## DEPRECATED
 class ActionSearchMe(Action):
     def name(self):
         return 'action_search_me'
