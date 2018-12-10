@@ -1,3 +1,8 @@
+""" Approach using NLTK and a predefined grammar based on ReVerb System (Fader et al. 2011)
+* run POS tagger and entity chunker over each sentence
+* for every verb chunk, find the nearest noun chunk to the left and the right of the verb
+"""
+
 import spacy
 import nltk
 
@@ -126,10 +131,4 @@ class RelationshipExtractor:
         # convert relation tuples to objects
         for relation in relation_tuples:
             print(relation)
-
-
-#if __name__ == '__main__':
-#    re = RelationshipExtractor()
-    #re.extract_relationships('Ich und mein Sohn gehen heute zum Fußball')
-#    re.print_relationships(u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.')
 

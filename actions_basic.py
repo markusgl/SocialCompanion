@@ -134,7 +134,7 @@ class ActionNotUnderstood(Action):
         intent_name = latest_message.intent['name']
         logging.debug("latest intent {}, confidence {}".format(intent_name, confidence_score))
 
-        if confidence_score > 0.3:
+        if confidence_score > 0.35:
             bot_reply_message = "Ich glaube Sie wollten "
             if intent_name == 'introduce':
                 bot_reply_message += 'sich vorstellen. Ist das korrekt?'
@@ -152,8 +152,8 @@ class ActionNotUnderstood(Action):
                 bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
         else:
             # Try to get further information out of the utterance
-            logging.debug("No intent recognized. Trying further analytics.")
-            bot_reply_message = AnalyticsEngine().analyze_utterance(user_utterance)
+            logging.debug("No intent recognized.")
+            AnalyticsEngine().analyze_utterance(user_utterance)
             bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
 
         dispatcher.utter_message(bot_reply_message)

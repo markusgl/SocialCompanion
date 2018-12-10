@@ -13,7 +13,6 @@ class ActionAskTime(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "An welchem Tag oder zu welcher Uhrzeit?"
-
         AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)

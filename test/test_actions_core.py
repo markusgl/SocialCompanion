@@ -11,17 +11,17 @@ class TestActionSearchAppointment(TestCase):
     def test_convert_relativedate(self):
         relativedate = 'heute'
         today = datetime.datetime.now()
-        start_time, end_time = self.asa.convert_relativedate(relativedate)
+        start_time, end_time = self.asa._convert_relativedate(relativedate)
         self.assertEqual(start_time, today)
         self.assertEqual(end_time, 0)
 
     def test_convert_dateperiod_next_days(self):
         dateperiod = 'nächsten Tage'
         today = datetime.datetime.now()
-        start_time, end_time = self.asa.convert_dateperiod(dateperiod)
+        start_time, end_time = self.asa._convert_dateperiod(dateperiod)
         self.assertEqual(start_time, today)
         self.assertEqual(end_time, 4)
 
     def test_search_google_calendar_by_time(self):
         start_time = datetime.datetime.now()
-        self.asa.search_google_calendar_by_time(start_time, 2)
+        self.asa._search_google_calendar_by_time(start_time, 2)

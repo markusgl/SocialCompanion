@@ -16,6 +16,7 @@ import logging
 import re
 from google_news_searcher import GoogleNewsSearcher
 from speech_handling.text_to_speech import TextToSpeech
+from analytics_engine.analytics import AnalyticsEngine
 
 
 class ActionSearchAppointment(Action):
@@ -30,6 +31,7 @@ class ActionSearchAppointment(Action):
 
     def run(self, dispatcher, tracker, domain):
         # utter wait message
+        AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
         dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
         TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
 
@@ -38,19 +40,19 @@ class ActionSearchAppointment(Action):
             given_date = tracker.get_slot('date')
             start_time = given_date
             end_time = 0
-            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
         elif tracker.get_slot('relativedate'):
             given_date = tracker.get_slot('relativedate')
-            start_time, end_time = self.convert_relativedate(given_date)
-            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
+            start_time, end_time = self._convert_relativedate(given_date)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
         elif tracker.get_slot('dateperiod'):
             given_date = tracker.get_slot('dateperiod')
-            start_time, end_time = self.convert_dateperiod(given_date)
-            bot_reply_message = self.generate_reply_message_with_date(start_time, end_time)
+            start_time, end_time = self._convert_dateperiod(given_date)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
         elif tracker.get_slot('activity'): # if only activity (subject) is given search an event by activity name
             subject = tracker.get_slot('activity')
 
-            bot_reply_message = self.generate_reply_message_with_subject(subject)
+            bot_reply_message = self._generate_reply_message_with_subject(subject)
         else:
             bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
 
@@ -62,7 +64,7 @@ class ActionSearchAppointment(Action):
 
         return []
 
-    def generate_reply_message_with_subject(self, subject):
+    def _generate_reply_message_with_subject(self, subject):
         bot_reply_message = "Ich sehe mal nach ob ich einen Termin zum Thema " + subject.title() + "finden kann. \n"
 
         event = self.search_google_calendar_by_subject(subject)
@@ -73,9 +75,8 @@ class ActionSearchAppointment(Action):
 
         return bot_reply_message
 
-
-    def generate_reply_message_with_date(self, start_time, end_time):
-        events = self.search_google_calendar_by_time(start_time, end_time)
+    def _generate_reply_message_with_date(self, start_time, end_time):
+        events = self._search_google_calendar_by_time(start_time, end_time)
         date_format = start_time.strftime('%d.%m.%Y')
         if events:
             bot_reply_message = "Ich konnte folgende Termine für {} finden:\n".format(date_format)
@@ -95,7 +96,7 @@ class ActionSearchAppointment(Action):
         return bot_reply_message
 
     @staticmethod
-    def convert_relativedate(relativedate):
+    def _convert_relativedate(relativedate):
         appointment_end_time = 0
         if relativedate == 'heute':
             appointment_start_time = datetime.datetime.now()
@@ -108,9 +109,8 @@ class ActionSearchAppointment(Action):
 
         return appointment_start_time, appointment_end_time
 
-
     @staticmethod
-    def convert_dateperiod(dateperiod):
+    def _convert_dateperiod(dateperiod):
         # check the fuzzy ratio (edit distance with respect of the length) of the two terms
         if fuzz.ratio(dateperiod, 'nächste tage') > 85 or fuzz.ratio(dateperiod, 'nächste zeit') > 85:
             appointment_start_time = datetime.datetime.now()
@@ -132,9 +132,8 @@ class ActionSearchAppointment(Action):
 
         return appointment_start_time, appointment_end_time
 
-
     @staticmethod
-    def search_google_calendar_by_time(start_time, end_time):
+    def _search_google_calendar_by_time(start_time, end_time):
         """
         :param start_time: datetime object
         :param end_time: days to be parsed as integer
@@ -164,7 +163,7 @@ class ActionSearchAppointment(Action):
                                               orderBy='startTime').execute()
         events = events_result.get('items', [])
 
-        # for debugging
+        # FOR DEBUGGING
         #for event in events:
         #    print(event['summary'])
 
@@ -215,7 +214,7 @@ class ActionMakeAppointment(Action):
         return 'action_make_appointment'
 
     def run(self, dispatcher, tracker, domain):
-        print("Current slot-values %s" % tracker.current_slot_values())
+        #print("Current slot-values %s" % tracker.current_slot_values())
         if tracker.get_slot('time') and tracker.get_slot('activity'):
             if tracker.get_slot('relativedate'):
                 start_date = self.convert_date(tracker.get_slot('relativedate'), 'relativedate')

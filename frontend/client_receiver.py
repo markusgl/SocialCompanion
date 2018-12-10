@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, session
 
 app = Flask(__name__)
 
-@app.route("/respond", methods=['POST'])
+@app.route("/webhook", methods=['POST'])
 def receive_bot_response():
     payload = request.json
     message = payload.get("message", None)

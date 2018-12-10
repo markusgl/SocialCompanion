@@ -53,7 +53,7 @@ class NetworkGraph:
         if not second_node:
             second_node = self.add_node_by_name(node2)
 
-        self.graph.create(Relationship(first_node, second_node, name=rel_type))
+        self.graph.create(Relationship(first_node, rel_type, second_node))
 
 
     def add_rel_tuple(self, ent1, ent2):

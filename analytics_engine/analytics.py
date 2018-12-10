@@ -1,5 +1,6 @@
 import spacy
 import os
+import logging
 
 from abc import ABC, abstractmethod
 from nltk.tag import StanfordNERTagger
@@ -8,7 +9,8 @@ from knowledge_graph.knowledge_graph import KnowledgeGraph
 from network_core.network_graph import NetworkGraph
 from analytics_engine import models
 from spacy import displacy
-from analytics_engine.relationship_extraction import RelationshipExtractor
+from analytics_engine.relation_extraction_verb import RelationshipExtractor
+from analytics_engine.relation_extraction_dep import RelExtractorDep
 
 java_path = "C:/Program Files/Java/jdk1.8.0_181/bin/java.exe"
 os.environ['JAVAHOME'] = java_path
@@ -22,9 +24,11 @@ class AnalyticsEngine:
         #self.text_analyzer = StanfordAnalyzer()
         #self.kg = KnowledgeGraph()
         self.ng = NetworkGraph()  # neo4j
-        self.re = RelationshipExtractor()
+        #self.re = RelationshipExtractor()
+        self.re = RelExtractorDep()
 
     def analyze_utterance(self, utterance):
+        logging.info(f"Start analyzing utterance {utterance}")
         relation_tuples = self.re.extract_relation_tuples(utterance)
 
         for relation_tuple in relation_tuples:
@@ -35,14 +39,10 @@ class AnalyticsEngine:
 
             # add entites to neo4j
             self.ng.add_relationship(ent1, ent2, rel_type=rel)
+            logging.info(f'Relation extracted: {ent1}, {ent2}, {rel}')
 
         # TODO extract relationship type
         # TODO generate response
-
-        #response = "Ich habe Sie leider nicht verstanden."
-
-
-        #return response
 
 
 if __name__ == '__main__':
