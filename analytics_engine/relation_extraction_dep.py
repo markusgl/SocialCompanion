@@ -81,3 +81,10 @@ class RelExtractorDep:
                     self.iterate(elem, head, features)
 
         return self.rel_tuples
+
+
+if __name__ == '__main__':
+    #text = u'''Herbert ist der Vater von Hans'''
+    text = u'''Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'''
+    re = RelExtractorDep()
+    print(re.extract_relation_tuples(text))
