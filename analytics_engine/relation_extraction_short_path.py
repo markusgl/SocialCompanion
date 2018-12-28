@@ -158,11 +158,11 @@ class RelExtractorDepPath:
             for j, second_entity in enumerate(entities):
                 if not i == j and second_entity not in me_list:
                     sp, sp_len = self.find_shortest_path(first_entity, second_entity, graph)
-                    print(f'SP: {sp}')
+                    print(f'Shortest Path (undirected): {sp}')
                     pathes = self.search_longest_possible_path(sp, di_graph)
-                    sub_graph = di_graph.subgraph(sp)
-                    print(f'Subgraph edges: {sub_graph.edges}')
-                    print(f'Longest possible path: {pathes}')
+                    #sub_graph = di_graph.subgraph(sp)
+                    #print(f'Subgraph edges: {sub_graph.edges}')
+                    print(f'Longest possible path (directed): {pathes}')
 
 
     def plot_graph(self, graph):
@@ -188,6 +188,7 @@ if __name__ == '__main__':
     text = u'''Hans, welcher der Sohn von Hubert ist, geht mit Peter ins Kino.'''
     #text = u'''Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'''
     #text = u'''Potesters seized several pumping stations, holding 127 Shell workers hostage.'''
+    #text = u'''Troops recently have raided churches, warning ministers to stop preaching.'''
 
     re = RelExtractorDepPath(LANG.DE)
     re.extract_relation(text, plot=True)
