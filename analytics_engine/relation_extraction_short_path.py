@@ -20,7 +20,7 @@ model = '../models/dewac_175m_600.crf.ser.gz'
 
 relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin', 'nichte',
                      'neffe', 'onkel', 'tante']
-me_list = ['ich', 'meine', 'mein', 'meiner', 'meinem']
+me_list = ['ich', 'meine', 'mein', 'meiner', 'meinem', 'meinen']
 
 
 class LANG(enum.Enum):
@@ -49,7 +49,6 @@ class RelExtractorDepPath:
 
         return entities
 
-
     def tag_label(self, entities, doc):
         entities_w_labels = []
         for token in doc:
@@ -64,26 +63,13 @@ class RelExtractorDepPath:
             if ent.label_ == 'PER':
                 entities.append(ent.text.lower())
 
-        #for token in doc:
-        #    if token.text.lower() in me_list:
-        #        entities.append(token.text.lower())
+        for token in doc:
+            if token.text.lower() in me_list:
+                entities.append(token.text.lower())
 
         labeled_entities = self.tag_label(entities, doc)
+
         return labeled_entities
-
-    def find_shortest_path(self, source, target, graph):
-        shortest_path_length = None
-        shortest_path = None
-
-        try:
-            shortest_path_length = nx.shortest_path_length(graph, source=source, target=target)
-            shortest_path = nx.shortest_path(graph, source=source, target=target)
-        except NodeNotFound as err:
-            logging.warning(f'Node not found: {err}')
-        except NetworkXNoPath as err:
-            logging.warning(f'No path found: {err}')
-
-        return shortest_path, shortest_path_length
 
     def build_edges(self, doc):
         edges = []
@@ -101,6 +87,21 @@ class RelExtractorDepPath:
 
         return graph, di_graph
 
+    def find_shortest_path(self, source, target, graph):
+        shortest_path_length = None
+        shortest_path = None
+
+        try:
+            shortest_path_length = nx.shortest_path_length(graph, source=source, target=target)
+            shortest_path = nx.shortest_path(graph, source=source, target=target)
+        except NodeNotFound as err:
+            logging.warning(f'Node not found: {err}')
+        except NetworkXNoPath as err:
+            logging.warning(f'No path found: {err}')
+
+        return shortest_path, shortest_path_length
+
+
     def search_longest_possible_path(self, entities, di_graph):
         """
         Search longest possible path between the first and last entity of the list inside the directed graph.
@@ -117,7 +118,7 @@ class RelExtractorDepPath:
         for i in range(len(entities)):
             first_entity = entities[0]
             second_entity = entities[-1 - i]
-            if not first_entity == second_entity:
+            if not first_entity == second_entity and second_entity.split('-')[0] not in me_list:
                 try:
                     path = nx.shortest_path(di_graph, source=first_entity, target=second_entity)
                     pathes.append(path)
@@ -127,11 +128,11 @@ class RelExtractorDepPath:
                 except NodeNotFound as err:
                     logging.debug(err)
 
-        # earch longest possible directed route from last to first entity in the list
+        # search longest possible directed route from last to first entity in the list
         for i in range(len(entities)):
             first_entity = entities[-1]
             second_entity = entities[i]
-            if not first_entity == second_entity:
+            if not first_entity == second_entity and second_entity.split('-')[0] not in me_list:
                 try:
                     path = nx.shortest_path(di_graph, source=first_entity, target=second_entity)
                     pathes.append(path)
@@ -142,6 +143,24 @@ class RelExtractorDepPath:
                     logging.debug(err)
 
         return pathes
+
+    def get_edge_direction(self, di_graph, node_a, node_b):
+        path = None
+        try:
+            path = nx.shortest_path(di_graph, source=node_a, target=node_b)
+        except NetworkXNoPath as err:
+            logging.debug(err)
+        except NodeNotFound as err:
+            logging.debug(err)
+
+        try:
+            path = nx.shortest_path(di_graph, source=node_b, target=node_a)
+        except NetworkXNoPath as err:
+            logging.debug(err)
+        except NodeNotFound as err:
+            logging.debug(err)
+
+        return path
 
     def extract_relation(self, sentence, plot=False):
         doc = self.nlp(sentence)
@@ -159,6 +178,7 @@ class RelExtractorDepPath:
                 if not i == j and second_entity not in me_list:
                     sp, sp_len = self.find_shortest_path(first_entity, second_entity, graph)
                     print(f'Shortest Path (undirected): {sp}')
+                    #print(self.get_edge_direction(di_graph, 'hans-sb', 'ist-rc'))
                     pathes = self.search_longest_possible_path(sp, di_graph)
                     #sub_graph = di_graph.subgraph(sp)
                     #print(f'Subgraph edges: {sub_graph.edges}')
@@ -185,8 +205,9 @@ if __name__ == '__main__':
     #text = u'''Herbert sein Sohn und ich gehen heute ins Kino'''
     # text = u'''Ich gehe mit Johann in den Zoo'''
     #text = u'''Hans und sein Sohn Hubert gehen in den Zoo.'''
-    text = u'''Hans, welcher der Sohn von Hubert ist, geht mit Peter ins Kino.'''
+    #text = u'''Hans, welcher der Sohn von Hubert ist, geht mit Peter ins Kino.'''
     #text = u'''Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'''
+    text = u'''Ich fahre mit meinen Enkeln Lukas und Lisa in den Urlaub.'''
     #text = u'''Potesters seized several pumping stations, holding 127 Shell workers hostage.'''
     #text = u'''Troops recently have raided churches, warning ministers to stop preaching.'''
 
