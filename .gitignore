@@ -136,4 +136,6 @@ setup.py
 # NLP model
 analytics_engine/models
 
+analytics_engine/old
+
 playground/

@@ -5,12 +5,9 @@ import logging
 from abc import ABC, abstractmethod
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
-from knowledge_graph.knowledge_graph import KnowledgeGraph
 from network_core.network_graph import NetworkGraph
-from analytics_engine import models
 from spacy import displacy
-from analytics_engine.relation_extraction_verb import RelationshipExtractor
-from analytics_engine.relation_extraction_dep import RelExtractorDep
+from analytics_engine.old.relation_extraction_dep import RelExtractorDep
 
 java_path = "C:/Program Files/Java/jdk1.8.0_181/bin/java.exe"
 os.environ['JAVAHOME'] = java_path

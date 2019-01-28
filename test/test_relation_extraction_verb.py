@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analytics_engine.relation_extraction_verb import RelationshipExtractor
+from analytics_engine.old.relation_extraction_verb import RelationshipExtractor
 
 
 class TestRelationshipExtractor(TestCase):

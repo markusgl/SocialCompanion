@@ -1,5 +1,5 @@
 from unittest import TestCase
-from analytics_engine.relation_extraction_dep import RelExtractorDep
+from analytics_engine.old.relation_extraction_dep import RelExtractorDep
 
 class TestRelExtractorDep(TestCase):
     def setUp(self):
