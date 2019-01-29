@@ -1,120 +1,47 @@
-import spacy
-import os
 import logging
 
-from abc import ABC, abstractmethod
-from nltk.tag import StanfordNERTagger
-from nltk.tokenize import word_tokenize
 from network_core.network_graph import NetworkGraph
-from spacy import displacy
-from analytics_engine.old.relation_extraction_dep import RelExtractorDep
+from analytics_engine.relation_extractor import RelationExtractor
+from analytics_engine.relation_extractor import LANG
 
-java_path = "C:/Program Files/Java/jdk1.8.0_181/bin/java.exe"
-os.environ['JAVAHOME'] = java_path
-
-relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin', 'nichte',
-                     'neffe', 'onkel', 'tante']
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class AnalyticsEngine:
-    def __init__(self):
+    def __init__(self, lang):
         #self.text_analyzer = StanfordAnalyzer()
         #self.kg = KnowledgeGraph()
         self.ng = NetworkGraph()  # neo4j
-        #self.re = RelationshipExtractor()
-        self.re = RelExtractorDep()
+        self.re = RelationExtractor(lang=lang)
 
-    def analyze_utterance(self, utterance):
-        logging.info(f"Start analyzing utterance {utterance}")
-        relation_tuples = self.re.extract_relation_tuples(utterance)
+    def analyze_utterance(self, utterance, store=False):
+        logging.debug(f"Start analyzing utterance {utterance}")
+        # extract possible relations within utterance
+        relation_triples = self.re.extract_relations(text=utterance)
 
-        for relation_tuple in relation_tuples:
+        # add relations to graph database
+        for relation_triple in relation_triples:
+            ent1 = relation_triple[0]
+            rel = relation_triple[1]
+            ent2 = relation_triple[2]
 
-            ent1 = relation_tuple[0][0]
-            ent2 = relation_tuple[2][0]
-            rel = relation_tuple[1][0]
+            logging.debug(f'Relation extracted: {ent1}, {ent2}, {rel}')
+            #print(f'Relation extracted: {ent1}, {rel}, {ent1}')
 
             # add entites to neo4j
-            self.ng.add_relationship(ent1, ent2, rel_type=rel)
-            logging.info(f'Relation extracted: {ent1}, {ent2}, {rel}')
+            if store:
+                self.ng.add_relationship(ent1, ent2, rel_type=rel)
 
-        # TODO extract relationship type
         # TODO generate response
 
 
 if __name__ == '__main__':
-    ae = AnalyticsEngine()
-    ae.analyze_utterance(u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.')
+    utterance1 = u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'
+    utterance2 = u'''Hey, y'know, Mon, if things wrong out between you and Richard's son, you'd be able to tell your kids, that you slept with their grandfather.'''
+    utterance3 = u'''"So uh, Monica is Ross's sister."'''
+    utterance4 = "I'll be playing Drake Remoray's twin brother, Stryker!"
 
-
-class TextAnalyzer(ABC):
-
-    @abstractmethod
-    def extract_entities(self, utterance):
-        pass
-
-    def display_dependecies(self, utterance):
-        SpacyAnalyzer().display_dependencies(utterance)
-
-
-class SpacyAnalyzer(TextAnalyzer):
-    def __init__(self):
-        self.nlp = spacy.load('de_core_news_sm')
-
-    def extract_entities(self, utterance):
-        people = set()
-        locations = set()
-
-        doc = self.nlp(utterance)
-        for ent in doc.ents:
-            print("Entity: {}, Label: {}".format(ent, ent.label_))
-            if ent.label_ == 'PER':
-                people.add(ent.text)
-            if ent.label_ == 'LOC':
-                locations.add(ent.text)
-
-        return people, locations
-
-    def display_dependencies(self, utterance):
-        doc = self.nlp(utterance)
-        displacy.serve(doc, style='dep')
-
-    def tag_pos(self, utterance):
-        doc = self.nlp(utterance)
-        nouns = []
-        verbs = []
-        for token in doc:
-            if token.pos_ == 'VERB' and not token.is_stop:
-                verbs.append(token)
-            elif token.pos_ == 'NOUN':
-                nouns.append(token)
-
-        return nouns, verbs
-
-
-class StanfordAnalyzer(TextAnalyzer):
-    def __init__(self):
-        model = 'models/dewac_175m_600.crf.ser.gz'
-        #model = 'models/hgc_175m_600.crf.ser.gz'
-        self.st = StanfordNERTagger(model,
-                                    'models/stanford-ner.jar',
-                                    encoding='utf-8')
-
-    def extract_entities(self, utterance):
-        people = set()
-        locations = set()
-        tokenized_text = word_tokenize(utterance)
-        classified = self.st.tag(tokenized_text)
-
-        for entity in classified:
-            entity_text = entity[0]
-            entity_label = entity[1]
-            print("Entity: {}, Label: {}".format(entity_text, entity_label))
-            if entity_label == 'I-PER':
-                people.add(entity_text)
-            elif entity_label == 'I-LOC':
-                locations.add(entity_text)
-
-        return people, locations
-
+    ae = AnalyticsEngine(lang=LANG.EN)
+    ae.analyze_utterance(utterance3, store=False)
 

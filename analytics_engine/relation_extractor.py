@@ -41,16 +41,14 @@ class RelationExtractor:
         else:
             self.lex = LexAnalyzer(LANG.EN)
             self.nlp = en_core_web_md.load()
-            self.entity_extractor = SpacyEntityExtractor
+            self.entity_extractor = SpacyEntityExtractor()
             self.embeddings_model = KeyedVectors.load_word2vec_format('../../Data/word_embeddings/GoogleNews-vectors-negative300.bin',
                                                               binary=True, limit=30000)
 
             self.relationship_list = ['father', 'mother', 'dad', 'daddy', 'mom', 'son', 'daughter', 'brother', 'sister',
                                  'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',
                                  'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife']
-
-    def extract_entities(self, sentence):
-        return self.entity_extractor.extract_entities(sentence)
+            self.me_list = ['i', 'my']
 
     def build_undirected_graph(self, sentence, plot=False):
         doc = self.nlp(sentence)
@@ -125,7 +123,6 @@ class RelationExtractor:
 
         for rel in self.relationship_list:
             try:
-                #score = self.w2vmodel.n_similarity(shortest_path, [rel])
                 score = self.embeddings_model.n_similarity(shortest_path, [rel])
 
                 if score > highest_score:
@@ -159,7 +156,8 @@ class RelationExtractor:
         extracted_relations = []
 
         for sentence in sent_tokenize(text):
-            entities = self.extract_entities(sentence)
+            #entities = self.extract_entities(sentence)
+            entities = self.entity_extractor.extract_entities(sentence)
 
             logger.info(f'Extracted entities: {entities}')
             if len(entities) > 1:  # PER-PER or USER-PER

@@ -33,6 +33,9 @@ class NetworkGraph:
         self.graph = Graph(host="localhost", username=username, password=password)
 
     def add_node_by_name(self, name, node_type="PERSON"):
+        if name == 'USER':
+            node_type = 'user'
+
         node = Node(node_type, name=name)
         self.graph.create(node)
 
