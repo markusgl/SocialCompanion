@@ -18,20 +18,30 @@ class AnalyticsEngine:
     def analyze_utterance(self, utterance, store=False):
         logging.debug(f"Start analyzing utterance {utterance}")
         # extract possible relations within utterance
-        relation_triples = self.re.extract_relations(text=utterance)
+        relations = self.re.extract_relations(text=utterance)
 
         # add relations to graph database
-        for relation_triple in relation_triples:
-            ent1 = relation_triple[0]
-            rel = relation_triple[1]
-            ent2 = relation_triple[2]
+        for relation in relations:
+            if len(relation) == 3:
+                ent1 = relation[0]
+                rel = relation[1]
+                ent2 = relation[2]
+                logging.debug(f'Relation extracted: {ent1}, {ent2}, {rel}')
 
-            logging.debug(f'Relation extracted: {ent1}, {ent2}, {rel}')
-            #print(f'Relation extracted: {ent1}, {rel}, {ent1}')
+                # add entites to neo4j
+                if store:
+                    self.ng.add_relationship(ent1, ent2, rel_type=rel)
 
-            # add entites to neo4j
-            if store:
-                self.ng.add_relationship(ent1, ent2, rel_type=rel)
+            elif len(relation) == 2:
+                ent1 = relation[0]
+                rel = relation[1]
+                logging.debug(f'Relation extracted: {ent1}, {rel}')
+
+        with open('C:\\Users\\marku\\develop\\TextAnalytics\\RelationshipDetection\\data\\validation\\extracted_result_012019.txt',
+                  'a', encoding='utf-8') as f:
+            validated = f'{relations}; {utterance}'
+            f.write(validated)
+
 
         # TODO generate response
 
@@ -43,5 +53,8 @@ if __name__ == '__main__':
     utterance4 = "I'll be playing Drake Remoray's twin brother, Stryker!"
 
     ae = AnalyticsEngine(lang=LANG.EN)
-    ae.analyze_utterance(utterance3, store=False)
+    with open('C:\\Users\\marku\\develop\\TextAnalytics\\RelationshipDetection\\data\\validation\\training_set\\training_set_per-per_me-per.txt',
+              'r', encoding='utf-8') as f:
+        for line in f.readlines():
+            ae.analyze_utterance(line, store=False)
 

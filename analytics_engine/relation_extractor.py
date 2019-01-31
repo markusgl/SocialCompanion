@@ -32,25 +32,25 @@ class RelationExtractor:
             #self.w2vmodel = KeyedVectors.load_word2vec_format('../models/german.model', binary=True)
             self.embeddings_model = FlairEmbeddings()
 
-            self.relationship_list = ['vater', 'mutter', 'papa', 'papi', 'mama', 'mami', 'sohn', 'tochter', 'bruder',
+            self.relationship_list = ['vater', 'mutter', 'papa', 'mama', 'sohn', 'tochter', 'bruder',
                                  'schwester', 'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa', 'oma',
                                  'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann', 'frau',
-                                 'ehemann', 'ehefrau']
+                                 'ehemann', 'ehefrau', 'freund']
             self.me_list = ['ich', 'mein', 'meine']
 
         else:
             self.lex = LexAnalyzer(LANG.EN)
             self.nlp = en_core_web_md.load()
             self.entity_extractor = SpacyEntityExtractor()
-            self.embeddings_model = KeyedVectors.load_word2vec_format('../../Data/word_embeddings/GoogleNews-vectors-negative300.bin',
+            self.embeddings_model = KeyedVectors.load_word2vec_format('../../Models/word_embeddings/word2vec/GoogleNews-vectors-negative300.bin',
                                                               binary=True, limit=30000)
 
-            self.relationship_list = ['father', 'mother', 'dad', 'daddy', 'mom', 'son', 'daughter', 'brother', 'sister',
+            self.relationship_list = ['father', 'mother', 'dad', 'mom', 'son', 'daughter', 'brother', 'sister',
                                  'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',
-                                 'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife']
+                                 'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife', 'friend']
             self.me_list = ['i', 'my']
 
-    def build_undirected_graph(self, sentence, plot=False):
+    def __build_undirected_graph(self, sentence, plot=False):
         doc = self.nlp(sentence)
         edges = []
         for token in doc:
@@ -83,9 +83,9 @@ class RelationExtractor:
         plt.axis('off')  # disable axis
         plt.show()
 
-    def search_shortest_dep_path(self, entities, sentence, plot_graph):
+    def __search_shortest_dep_path(self, entities, sentence, plot_graph):
         path_dict = {}
-        graph = self.build_undirected_graph(sentence, plot_graph)
+        graph = self.__build_undirected_graph(sentence, plot_graph)
 
         for i, first_entity in enumerate(entities):
             first_entity = first_entity.split('_')[0]  # use only first name of multi-word entities
@@ -112,7 +112,7 @@ class RelationExtractor:
 
         return path_dict
 
-    def measure_sp_rel_similarity(self, shortest_path):
+    def __measure_sp_rel_similarity(self, shortest_path):
         """
         :param shortest_path: dict of sp values
         :return:
@@ -137,7 +137,7 @@ class RelationExtractor:
 
         return relation
 
-    def extract_relation_type(self, sp_dict):
+    def __extract_relation_type(self, sp_dict):
         extracted_relations = []
 
         for key, value in sp_dict.items():
@@ -145,7 +145,7 @@ class RelationExtractor:
             e2 = key.split('-')[1]
 
             if len(value) > 0:
-                rel = self.measure_sp_rel_similarity(value)
+                rel = self.__measure_sp_rel_similarity(value)
                 if rel:
                     extracted_relation = e1, rel, e2
                     extracted_relations.append(extracted_relation)
@@ -159,10 +159,10 @@ class RelationExtractor:
             #entities = self.extract_entities(sentence)
             entities = self.entity_extractor.extract_entities(sentence)
 
-            logger.info(f'Extracted entities: {entities}')
+            logger.debug(f'Extracted entities: {entities}')
             if len(entities) > 1:  # PER-PER or USER-PER
-                paths = self.search_shortest_dep_path(entities, sentence, plot_graph)
-                extracted_relations = self.extract_relation_type(paths)
+                paths = self.__search_shortest_dep_path(entities, sentence, plot_graph)
+                extracted_relations = self.__extract_relation_type(paths)
 
             # Lexical analysis
             if len(extracted_relations) < 1:  # USER-REL

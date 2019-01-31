@@ -85,8 +85,8 @@ class LexAnalyzer:
 
                     if sub_tree[0][-1][1] == 'PROPN':
                         rel_person = sub_tree[0][-1][0]
-                        extracted_relations.append(f'<USER, {relation[0]}, {rel_person}>')
+                        extracted_relations.append(f'USER, {relation[0]}, {rel_person}')
                     else:
-                        extracted_relations.append(f'<USER, {relation[0]}>')
+                        extracted_relations.append(f'USER, {relation[0]}')
 
         return extracted_relations
