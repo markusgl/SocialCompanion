@@ -39,6 +39,9 @@ intents:
   - read_news
   - inform
   - introduce
+  - information
+  - chatting
+  - start
 
 entities:
   - activity

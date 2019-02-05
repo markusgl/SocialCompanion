@@ -3,7 +3,7 @@
 * for every verb chunk, find the nearest noun chunk to the left and the right of the verb
 """
 
-import spacy
+import de_core_news_sm
 import nltk
 
 from nltk.tokenize import sent_tokenize
@@ -15,7 +15,7 @@ class RelationshipExtractor:
     ME = ['ich', 'meine', 'mein']
 
     def __init__(self):
-        self.nlp = spacy.load('de')
+        self.nlp = de_core_news_sm.load()
 
         # grammar for spaCy POS Tags
         # extracts noun phrases (NP) and relationships (REL)

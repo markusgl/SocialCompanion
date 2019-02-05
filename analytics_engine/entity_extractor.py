@@ -87,7 +87,8 @@ class FlairEntityExtractor(EntityExtractor):
                 if len(entity.tokens) > 1:
                     entities.append(str(entity.text.lower()).replace(' ', '_'))
                 else:
-                    entities.append(entity.text.lower())
+                    entity_name = re.sub(r"'s?", '', entity.text.lower())
+                    entities.append(entity_name)
 
         return entities
 

@@ -1,4 +1,4 @@
-import spacy
+import en_core_web_md
 import pandas as pd
 
 
@@ -10,7 +10,7 @@ class RelExtractorDep:
     rel_tuples = []
 
     def __init__(self):
-        self.nlp = spacy.load('de')
+        self.nlp = en_core_web_md.load()
 
     def extract_features(self, sentence):
         feature_columns = ['ne', 'ne_type', 'ne_head', 'ne_dep']

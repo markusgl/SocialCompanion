@@ -34,3 +34,13 @@ def test_extract_relations_german():
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
     assert(result == [('USER', 'enkelin', 'lisa'), ('USER', 'enkel', 'lukas'), ('lisa', 'KNOWS', 'lukas')])
+
+
+# passive sentence
+def test_extract_relations_5():
+    utterance = u"So uh, Monica is Ross's sister."
+
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert(result == [('monica', 'sister', 'ross')])
+

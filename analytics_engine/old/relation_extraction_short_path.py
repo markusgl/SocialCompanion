@@ -5,7 +5,8 @@ Relation Extraction following the shortest path between two entities in the depe
 
 import enum
 import networkx as nx
-import spacy
+import en_core_web_md
+import de_core_news_sm
 import matplotlib.pyplot as plt
 import logging
 
@@ -31,9 +32,9 @@ class LANG(enum.Enum):
 class RelExtractorDepPath:
     def __init__(self, lang):
         if lang == LANG.EN:
-            self.nlp = spacy.load('en')
+            self.nlp = en_core_web_md.load()
         else:
-            self.nlp = spacy.load('de')
+            self.nlp = de_core_news_sm.load()
 
         self.stanford_ner = StanfordNERTagger(model,
                                '../models/stanford-ner.jar',

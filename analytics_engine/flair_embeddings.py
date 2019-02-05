@@ -33,7 +33,7 @@ class FlairEmbeddings:
 
     def n_similarity(self, words1, words2):
         """
-        cosine similarity betwee words1 and words2
+        Returns cosine similarity between words1 and words2 as a float (i.e. '100.0' means identical)
         :param words1: array of words as strings
         :param words2: array of words as strings
         :return: cosine similarity between the two word arrays
@@ -49,7 +49,7 @@ class FlairEmbeddings:
         words1_embeddings = self.get_word_embeddings(text1)
         words2_embeddings = self.get_word_embeddings(text2)
 
-        # measure cosine similarity between both embedding summaries
+        # measure cosine similarity between both embedding summaries (tensors)
         cos = nn.CosineSimilarity(dim=0)
         result = cos(words1_embeddings, words2_embeddings)
 

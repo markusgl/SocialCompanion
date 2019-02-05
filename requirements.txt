@@ -86,7 +86,7 @@ lxml==4.2.5
 Markdown==2.6.11
 MarkupSafe==1.0
 marshmallow==2.16.0
-matplotlib==3.0.0
+matplotlib==2.2.3
 mattermostwrapper==2.1
 more-itertools==4.3.0
 mpld3==0.3

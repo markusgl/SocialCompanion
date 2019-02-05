@@ -20,7 +20,7 @@ class ActionWelcomeMessage(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "Guten Tag, mein Name ist Carina Ihr persönlicher Begleiter. " \
-                            "Ich kann Ihnen Informationen wie Nachrichten oder Ihre Termine anzeigen " \
+                            "Ich kann Ihnen aktuelle Nachrichten anzeigen " \
                             "oder einfach eine nette Unterhaltung führen. " \
                             "Was möchten Sie tun?"
 
@@ -31,8 +31,8 @@ class ActionWelcomeMessage(Action):
         logging.info("Reminderdate {}".format(trigger_date))
         """
 
-        buttons = [{"title": 'Aktuelle Informationen', "payload": "/information"},
-                   {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
+        buttons = [{"title": 'Informationen abrufen', "payload": "/information"},
+                   {"title": 'Eine Unterhaltung beginnen (Smalltalk)', "payload": "/chatting"}]
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
         TextToSpeech().utter_voice_message(bot_reply_message)
 

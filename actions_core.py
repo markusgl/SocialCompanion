@@ -16,7 +16,7 @@ import logging
 import re
 from google_news_searcher import GoogleNewsSearcher
 from speech_handling.text_to_speech import TextToSpeech
-from analytics_engine.analytics import AnalyticsEngine
+from analytics_engine.analytics import AnalyticsEngine, LANG
 
 
 class ActionSearchAppointment(Action):
@@ -31,7 +31,7 @@ class ActionSearchAppointment(Action):
 
     def run(self, dispatcher, tracker, domain):
         # utter wait message
-        AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
+        AnalyticsEngine(lang=LANG.DE).analyze_utterance(tracker.latest_message.text)
         dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
         TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
 

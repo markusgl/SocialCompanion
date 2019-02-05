@@ -43,8 +43,8 @@ def run_eventbot_online(input_channel, interpreter,
     else:
         return ("Please provide one of these interpreters: luis, dialogflow, witai or rasa")
 
-    fallback = FallbackPolicy(fallback_action_name="utter_not_understood",
-                              core_threshold=0.3, nlu_threshold=0.3)
+    fallback = FallbackPolicy(fallback_action_name="action_not_understood",
+                              core_threshold=0.5, nlu_threshold=0.35)
     agent = Agent(domain_file,
                   policies=[MemoizationPolicy(), KerasPolicy(), fallback],
                   interpreter=interpreter)

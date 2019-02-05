@@ -1,5 +1,4 @@
 import networkx as nx
-import spacy
 import logging
 import matplotlib.pyplot as plt
 import en_core_web_md
@@ -32,10 +31,10 @@ class RelationExtractor:
             #self.w2vmodel = KeyedVectors.load_word2vec_format('../models/german.model', binary=True)
             self.embeddings_model = FlairEmbeddings()
 
-            self.relationship_list = ['vater', 'mutter', 'papa', 'mama', 'sohn', 'tochter', 'bruder',
-                                 'schwester', 'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa', 'oma',
-                                 'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann', 'frau',
-                                 'ehemann', 'ehefrau', 'freund']
+            self.relationship_list = ['vater', 'mutter', 'papa', 'mama', 'sohn', 'tochter', 'bruder', 'schwester',
+                                      'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa',
+                                    'oma', 'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann', 'frau',
+                                    'ehemann', 'ehefrau', 'freund']
             self.me_list = ['ich', 'mein', 'meine']
 
         else:
@@ -68,12 +67,14 @@ class RelationExtractor:
         graph = nx.Graph(edges)
 
         if plot:
-            self.plot_graph(graph)
+            di_graph = nx.DiGraph(edges)
+            self.__plot_graph(di_graph)
+            #self.__plot_graph(graph)
 
         return graph
 
     @staticmethod
-    def plot_graph(graph):
+    def __plot_graph(graph):
         # nx.draw_networkx(graph, node_size=100, ode_color=range(len(graph)))
         pos = nx.spring_layout(graph)  # positions for all nodes
         nx.draw_networkx_nodes(graph, pos, node_size=200)  # nodes
@@ -108,12 +109,13 @@ class RelationExtractor:
                     except NodeNotFound as err:
                         logger.warning(f'Node not found: {err}')
                     except NetworkXNoPath as err:
-                        logger.warning(f'No path found: {err}')
+                        logger.warning(f'Path not found: {err}')
 
         return path_dict
 
     def __measure_sp_rel_similarity(self, shortest_path):
         """
+        Measures the cosine similarity between word embeddings
         :param shortest_path: dict of sp values
         :return:
         """

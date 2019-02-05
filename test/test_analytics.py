@@ -1,13 +1,12 @@
 from unittest import TestCase
 
-from analytics_engine.analytics import AnalyticsEngine, StanfordAnalyzer
+from analytics_engine.analytics import AnalyticsEngine, LANG
 
 
 class TestAnalyticsEngine(TestCase):
     def setUp(self):
-        self.analytics = AnalyticsEngine()
-        #self.text_analyzer = StanfordAnalyzer()
+        self.analytics = AnalyticsEngine(lang=LANG.DE)
 
     def test_analyze_utterance(self):
-        self.analytics.analyze_utterance(u'Hans und sein Sohn Hubert.')
+        result = self.analytics.analyze_utterance(u'Hans und sein Sohn Hubert.')
 
