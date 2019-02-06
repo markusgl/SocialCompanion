@@ -1,4 +1,6 @@
-""" Custom Actions for API calls etc """
+"""
+Actions for task related to the network graph, e.g. adding/deleting user to/from the network
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals

@@ -1,6 +1,3 @@
-## LexAnalyzer based on ReVerb (Etzioni et al. 2008)
-
-import spacy
 import re
 import nltk
 import enum
@@ -21,7 +18,7 @@ class LexAnalyzer:
             self.nlp = de_core_news_sm.load()
             self.grammar = r"""
                     PP: {<PRON><AUX><DET><ADJ>?<NOUN>}
-                    NP: {<DET><ADJ>?<NOUN><PROPN>*}            
+                    NP: {<DET><ADJ>?<NOUN>}            
                     REL: {<PP>|<NP>}"""
 
             self.relationship_list = ['vater', 'mutter', 'papa', 'papi', 'mama', 'mami', 'sohn', 'tochter', 'bruder',
@@ -32,10 +29,10 @@ class LexAnalyzer:
         else:
             self.nlp = en_core_web_md.load()
             # PP: e.g. 'I have a son', 'I have a smaller brother', 'I have a 9 year old son'
-            # NP: e.g. 'My (little) sister (Lisa)'
+            # NP: e.g. 'My (little) sister'
             self.grammar = r"""
-                        PP: {<PRON><VERB><DET><ADJ>?<NOUN>}
-                        NP: {<ADJ><ADJ>?<NOUN><PROPN>*}            
+                        PP: {<PRON><VERB><NUM>?<DET>?<ADJ>?<NOUN>}
+                        NP: {<ADJ><ADJ>?<NOUN>}            
                         REL: {<PP>|<NP>}"""
 
             self.relationship_list = ['father', 'mother', 'dad', 'daddy', 'mom', 'son', 'daughter', 'brother', 'sister',
@@ -63,18 +60,18 @@ class LexAnalyzer:
 
     def chunk_sentence(self, pos_tagged_sentence, draw=False):
         cp = nltk.RegexpParser(self.grammar)
-        result = cp.parse(pos_tagged_sentence)
+        chunk_tree = cp.parse(pos_tagged_sentence)
 
         if draw:
-            result.draw()
+            chunk_tree.draw()
 
-        return result
+        return chunk_tree
 
-    def extract_rel(self, sentence):
+    def extract_rel(self, sentence, plot_tree=False):
         extracted_relations = []
 
         # build chunks
-        chunk_tree = self.chunk_sentence(self.pos_tag_sentence(sentence))
+        chunk_tree = self.chunk_sentence(self.pos_tag_sentence(sentence), draw=plot_tree)
 
         for i, sub_tree in enumerate(chunk_tree):
             if type(sub_tree) is nltk.tree.Tree and sub_tree.label() == 'REL':
@@ -90,3 +87,4 @@ class LexAnalyzer:
                         extracted_relations.append(f'USER, {relation[0]}')
 
         return extracted_relations
+

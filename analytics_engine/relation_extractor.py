@@ -167,7 +167,7 @@ class RelationExtractor:
                 extracted_relations = self.__extract_relation_type(paths)
 
             # Lexical analysis
-            if len(extracted_relations) < 1:  # USER-REL
+            else:  # USER-REL
                 extracted_relation = self.lex.extract_rel(sentence)
                 if extracted_relation:
                     extracted_relations.append(extracted_relation)

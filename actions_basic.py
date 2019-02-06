@@ -19,8 +19,8 @@ class ActionWelcomeMessage(Action):
         return 'action_welcome_message'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Guten Tag, mein Name ist Carina Ihr persönlicher Begleiter. " \
-                            "Ich kann Ihnen aktuelle Nachrichten anzeigen " \
+        bot_reply_message = "Guten Tag, mein Name ist Carina. " \
+                            "Ich kann aktuelle Nachrichten vorlesen " \
                             "oder einfach eine nette Unterhaltung führen. " \
                             "Was möchten Sie tun?"
 
@@ -32,7 +32,7 @@ class ActionWelcomeMessage(Action):
         """
 
         buttons = [{"title": 'Informationen abrufen', "payload": "/information"},
-                   {"title": 'Eine Unterhaltung beginnen (Smalltalk)', "payload": "/chatting"}]
+                   {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
@@ -49,11 +49,11 @@ class ActionOfferFeatures(Action):
         return 'action_offer_features'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Sie möchten aktulle Informationen erhalten. " \
-                            "Ich kann Ihre Termine verwalten oder Sie über aktuelle Nachrichten informieren. \n" \
-                            "Was möchten Sie tun?"
+        buttons = [{"title": '5 aktuelle Schlagzeilen', "payload": "/read_news"},
+                   {"title": 'Bestimmtes Thema', "payload": "/ask_topic"}]
+        bot_reply_message = "Wollen Sie die fünf aktuellen Schlagzeilen hören oder ein bestimmtes Thema suchen?"
 
-        dispatcher.utter_message(bot_reply_message)
+        dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
 
@@ -65,6 +65,17 @@ class ActionGetToKnow(Action):
         bot_reply_message = "Sie möchten eine Unterhaltung beginnen. " \
                             "Bevor wir unsere Unterhaltung beginnen, würde ich Sie gerne besser kennen lernen. " \
                             "Wie heißen Sie?"
+
+        dispatcher.utter_message(bot_reply_message)
+        TextToSpeech().utter_voice_message(bot_reply_message)
+
+
+class ActionAskTopic(Action):
+    def name(self):
+        return 'action_ask_topic'
+
+    def run(self, dispatcher, tracker, domain):
+        bot_reply_message = "Zu welchem Thema möchte Sie Nachrichten hören?"
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
@@ -101,7 +112,7 @@ class ActionHowCanHelp(Action):
         return 'utter_howcanhelp'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Wie kann ich dir helfen?"
+        bot_reply_message = "Wie kann ich Ihnen helfen?"
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)

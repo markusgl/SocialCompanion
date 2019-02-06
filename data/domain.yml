@@ -42,6 +42,7 @@ intents:
   - information
   - chatting
   - start
+  - ask_topic
 
 entities:
   - activity
@@ -79,9 +80,11 @@ actions:
   - actions_basic.ActionNotUnderstood
   - actions_basic.ActionOfferFeatures
   - actions_basic.ActionGetToKnow
+  - actions_basic.ActionAskTopic
   - actions_core.ActionClearSlots
   - actions_core.ActionSearchAppointment
   - actions_core.ActionMakeAppointment
   - actions_core.ActionReadNews
   - actions_network_graph.ActionSearchContact
   - actions_network_graph.ActionSearchMe
+

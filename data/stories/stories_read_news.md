@@ -38,3 +38,6 @@
     - slot{"news": "neuigkeiten"}
     - action_read_news
     - export
+    
+* ask_topic
+    - action_ask_topic
