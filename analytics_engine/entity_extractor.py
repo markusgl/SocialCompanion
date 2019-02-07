@@ -20,7 +20,6 @@ from flair.models import SequenceTagger
 
 
 class EntityExtractor(ABC):
-
     @abstractmethod
     def extract_entities(self, utterance):
         pass
@@ -55,9 +54,22 @@ class SpacyEntityExtractor(EntityExtractor):
 
 
 class FlairEntityExtractor(EntityExtractor):
-    def __init__(self):
-        self.flair_tagger = SequenceTagger.load('de-ner')
-        self.me_list = ['ich', 'mein', 'meine']
+    def __init__(self, flair_tagger=None, me_list=None):
+            self.flair_tagger = flair_tagger
+            self.me_list = me_list
+
+    # Factory methods for language selection
+    @classmethod
+    def de(cls):
+        flair_tagger = SequenceTagger.load('de-ner')
+        me_list = ['ich', 'mein', 'meine']
+        return cls(flair_tagger, me_list)
+
+    @classmethod
+    def en(cls):
+        flair_tagger = SequenceTagger.load('ner')
+        me_list = ['i', 'my']
+        return cls(flair_tagger, me_list)
 
     def __extract_pronoun_entities(self, text):
         entities = []

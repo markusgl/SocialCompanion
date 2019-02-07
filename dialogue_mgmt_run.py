@@ -145,7 +145,7 @@ def test_neo4j_connection():
     return True
 
 
-def select_interpreter(nlu_name):
+def select_interpreter(nlu_name):  # TODO use factory methods instead
     if nlu_name == NLU.luis:
         interpreter = LuisInterpreter()
     elif nlu_name == NLU.dialogflow:

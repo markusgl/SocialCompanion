@@ -9,23 +9,18 @@ def test_extract_relations_1():
     assert(result == [('USER', 'daughter', 'lisa')])
 
 
-def test_extract_relations_2():
-    utterance = u'''Hey, y'know, Mon, if things wrong out between you and Richard's son, you'd be able to tell your kids, that you slept with their grandfather.'''
-    re = RelationExtractor(lang=LANG.EN)
-    result = re.extract_relations(utterance, plot_graph=False)
-    print(result)
-
-
 def test_extract_relations_3():
     utterance = "I'll be playing Drake Remoray's twin brother, Stryker!"
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
+    assert result == [('drake', 'brother', 'stryker')]
 
 
 def test_extract_relations_4():
     utterance = u'''"So uh, Monica is Ross's sister."'''
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
+    assert result == [('monica', 'sister', 'ross')]
 
 
 def test_extract_relations_german():
@@ -44,3 +39,11 @@ def test_extract_relations_5():
     result = re.extract_relations(utterance, plot_graph=False)
     assert(result == [('monica', 'sister', 'ross')])
 
+
+# unknown relation type
+def test_extract_relations_6():
+    utterance = u"Steve's girlfriend Monica is on the way back home."
+
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert(result == [('steve', 'wife', 'monica')])

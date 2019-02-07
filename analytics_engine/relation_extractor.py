@@ -10,7 +10,7 @@ from gensim.models import KeyedVectors
 from nltk.tokenize import sent_tokenize
 
 from analytics_engine.lex_analyzer import LexAnalyzer
-from analytics_engine.entity_extractor import EntityExtractor, SpacyEntityExtractor, FlairEntityExtractor
+from analytics_engine.entity_extractor import FlairEntityExtractor
 from analytics_engine.flair_embeddings import FlairEmbeddings
 
 logger = logging.getLogger(__name__)
@@ -27,9 +27,8 @@ class RelationExtractor:
         if lang == LANG.DE:
             self.lex = LexAnalyzer('de')
             self.nlp = de_core_news_sm.load()
-            self.entity_extractor = FlairEntityExtractor()
-            #self.w2vmodel = KeyedVectors.load_word2vec_format('../models/german.model', binary=True)
-            self.embeddings_model = FlairEmbeddings()
+            self.entity_extractor = FlairEntityExtractor().de()
+            self.embeddings_model = FlairEmbeddings().de()
 
             self.relationship_list = ['vater', 'mutter', 'papa', 'mama', 'sohn', 'tochter', 'bruder', 'schwester',
                                       'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa',
@@ -40,9 +39,10 @@ class RelationExtractor:
         else:
             self.lex = LexAnalyzer(LANG.EN)
             self.nlp = en_core_web_md.load()
-            self.entity_extractor = SpacyEntityExtractor()
-            self.embeddings_model = KeyedVectors.load_word2vec_format('../../Models/word_embeddings/word2vec/GoogleNews-vectors-negative300.bin',
-                                                              binary=True, limit=30000)
+            self.entity_extractor = FlairEntityExtractor().en()
+            self.embeddings_model = FlairEmbeddings().en()
+            #self.embeddings_model = KeyedVectors.load_word2vec_format('../../Models/word_embeddings/word2vec/GoogleNews-vectors-negative300.bin',
+            #                                                 binary=True, limit=30000)
 
             self.relationship_list = ['father', 'mother', 'dad', 'mom', 'son', 'daughter', 'brother', 'sister',
                                  'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',

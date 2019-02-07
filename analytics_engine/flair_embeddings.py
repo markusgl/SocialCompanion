@@ -1,6 +1,7 @@
-'''
-Build flair embeddings
-'''
+"""
+Handle Flair embeddings
+(https://github.com/zalandoresearch/flair/blob/master/resources/docs/TUTORIAL_3_WORD_EMBEDDING.md)
+"""
 
 import re
 
@@ -10,10 +11,26 @@ from torch import nn
 
 
 class FlairEmbeddings:
-    def __init__(self):
-        self.glove_embedding = WordEmbeddings('de')
-        # self.glove_embedding = WordEmbeddings('de-crawl')  # FastText embeddings
+    def __init__(self, glove_embedding=None):
+        self.glove_embedding = glove_embedding
         self.flair_embeddings = {}
+
+    @classmethod
+    def de(cls):
+        """
+        Factory method for german embeddings
+        """
+        glove_embedding = WordEmbeddings('de')
+        # self.glove_embedding = WordEmbeddings('de-crawl')  # FastText embeddings
+        return cls(glove_embedding)
+
+    @classmethod
+    def en(cls):
+        """
+        Factory method for english embeddings
+        """
+        glove_embedding = WordEmbeddings('en-glove')
+        return cls(glove_embedding)
 
     def get_word_embeddings(self, text):
         """
