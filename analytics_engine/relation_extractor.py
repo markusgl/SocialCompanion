@@ -6,12 +6,12 @@ import de_core_news_sm
 import enum
 
 from networkx.exception import NodeNotFound, NetworkXNoPath
-from gensim.models import KeyedVectors
 from nltk.tokenize import sent_tokenize
+from gensim.models import KeyedVectors
 
 from analytics_engine.lex_analyzer import LexAnalyzer
 from analytics_engine.entity_extractor import FlairEntityExtractor
-from analytics_engine.flair_embeddings import FlairEmbeddings
+from analytics_engine.flair_embeddings import FlairEmbeddingModels
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -27,26 +27,23 @@ class RelationExtractor:
         if lang == LANG.DE:
             self.lex = LexAnalyzer('de')
             self.nlp = de_core_news_sm.load()
-            self.entity_extractor = FlairEntityExtractor().de()
-            self.embeddings_model = FlairEmbeddings().de()
+            self.entity_extractor = FlairEntityExtractor().de_ner()
+            self.embeddings_model = FlairEmbeddingModels().de()
 
-            self.relationship_list = ['vater', 'mutter', 'papa', 'mama', 'sohn', 'tochter', 'bruder', 'schwester',
-                                      'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa',
-                                    'oma', 'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann', 'frau',
-                                    'ehemann', 'ehefrau', 'freund']
+            self.relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin',
+                                      'großvater', 'großmutter', 'ehemann', 'ehefrau', 'freund']
             self.me_list = ['ich', 'mein', 'meine']
 
         else:
             self.lex = LexAnalyzer(LANG.EN)
             self.nlp = en_core_web_md.load()
-            self.entity_extractor = FlairEntityExtractor().en()
-            self.embeddings_model = FlairEmbeddings().en()
+            self.entity_extractor = FlairEntityExtractor().en_ner()
+            self.embeddings_model = FlairEmbeddingModels().en()
             #self.embeddings_model = KeyedVectors.load_word2vec_format('../../Models/word_embeddings/word2vec/GoogleNews-vectors-negative300.bin',
             #                                                 binary=True, limit=30000)
 
-            self.relationship_list = ['father', 'mother', 'dad', 'mom', 'son', 'daughter', 'brother', 'sister',
-                                 'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',
-                                 'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife', 'friend']
+            self.relationship_list = ['father', 'mother', 'sister', 'brother', 'son', 'daughter', 'husband', 'wife',
+                                      'grandson', 'granddaughter', 'grandmother', 'grandfather', 'friend']
             self.me_list = ['i', 'my']
 
     def __build_undirected_graph(self, sentence, plot=False):
@@ -126,7 +123,7 @@ class RelationExtractor:
         for rel in self.relationship_list:
             try:
                 score = self.embeddings_model.n_similarity(shortest_path, [rel])
-
+                print(f'{rel} {score}')
                 if score > highest_score:
                     highest_score = score
                     highest_rel = rel
@@ -135,7 +132,7 @@ class RelationExtractor:
 
         if highest_score > 0.5:
             logger.debug(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
-            relation = highest_rel
+            relation = highest_rel + '-of'
 
         return relation
 
@@ -158,7 +155,6 @@ class RelationExtractor:
         extracted_relations = []
 
         for sentence in sent_tokenize(text):
-            #entities = self.extract_entities(sentence)
             entities = self.entity_extractor.extract_entities(sentence)
 
             logger.debug(f'Extracted entities: {entities}')

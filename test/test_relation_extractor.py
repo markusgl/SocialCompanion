@@ -22,15 +22,6 @@ def test_extract_relations_4():
     result = re.extract_relations(utterance, plot_graph=False)
     assert result == [('monica', 'sister', 'ross')]
 
-
-def test_extract_relations_german():
-    utterance = u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'
-
-    re = RelationExtractor(lang=LANG.DE)
-    result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('USER', 'enkelin', 'lisa'), ('USER', 'enkel', 'lukas'), ('lisa', 'KNOWS', 'lukas')])
-
-
 # passive sentence
 def test_extract_relations_5():
     utterance = u"So uh, Monica is Ross's sister."
@@ -47,3 +38,30 @@ def test_extract_relations_6():
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
     assert(result == [('steve', 'wife', 'monica')])
+
+
+def test_extract_relations_7():
+    utterance = u"Rose is the grandma of Monica."
+
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert(result == [('rose', 'grandmother-of', 'monica')])
+
+
+""" 
+  ***** GERMAN UTTERANCES ***** 
+"""
+def test_extract_relations_german1():
+    utterance = u'Meine kleine Enkelin Lisa und mein Enkel Lukas fliegen morgen nach London.'
+
+    re = RelationExtractor(lang=LANG.DE)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert(result == [('USER', 'enkelin', 'lisa'), ('USER', 'enkel', 'lukas'), ('lisa', 'KNOWS', 'lukas')])
+
+
+def test_extract_relations_german2():
+    utterance = u"Elfriede ist die Oma von Monica."
+
+    re = RelationExtractor(lang=LANG.DE)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert(result == [('elfriede', 'großmutter-of', 'monica')])

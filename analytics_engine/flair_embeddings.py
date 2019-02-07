@@ -6,13 +6,13 @@ Handle Flair embeddings
 import re
 
 from flair.data import Sentence
-from flair.embeddings import WordEmbeddings
+from flair.embeddings import WordEmbeddings, FlairEmbeddings, BertEmbeddings
 from torch import nn
 
 
-class FlairEmbeddings:
-    def __init__(self, glove_embedding=None):
-        self.glove_embedding = glove_embedding
+class FlairEmbeddingModels:
+    def __init__(self, embeddings=None):
+        self.embeddings = embeddings
         self.flair_embeddings = {}
 
     @classmethod
@@ -20,17 +20,23 @@ class FlairEmbeddings:
         """
         Factory method for german embeddings
         """
-        glove_embedding = WordEmbeddings('de')
-        # self.glove_embedding = WordEmbeddings('de-crawl')  # FastText embeddings
-        return cls(glove_embedding)
+        embeddings = WordEmbeddings('de')
+        # embeddings = WordEmbeddings('de-crawl')  # FastText embeddings
+        #embeddings = BertEmbeddings('bert-base-multilingual-cased')
+
+        return cls(embeddings)
 
     @classmethod
     def en(cls):
         """
         Factory method for english embeddings
         """
-        glove_embedding = WordEmbeddings('en-glove')
-        return cls(glove_embedding)
+        #embeddings = WordEmbeddings('en-glove')
+        #embeddings = WordEmbeddings('en-news')
+        #embeddings = FlairEmbeddings('news-forward')
+        embeddings = BertEmbeddings()
+
+        return cls(embeddings)
 
     def get_word_embeddings(self, text):
         """
@@ -40,7 +46,7 @@ class FlairEmbeddings:
         """
         text = re.sub(r'\s{2,}', ' ', text)
         sentence = Sentence(text)
-        self.glove_embedding.embed(sentence)
+        self.embeddings.embed(sentence)
 
         words_embeddings = []
         for token in sentence:

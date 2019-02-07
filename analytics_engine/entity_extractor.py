@@ -55,18 +55,18 @@ class SpacyEntityExtractor(EntityExtractor):
 
 class FlairEntityExtractor(EntityExtractor):
     def __init__(self, flair_tagger=None, me_list=None):
-            self.flair_tagger = flair_tagger
-            self.me_list = me_list
+        self.flair_tagger = flair_tagger
+        self.me_list = me_list
 
     # Factory methods for language selection
     @classmethod
-    def de(cls):
+    def de_ner(cls):
         flair_tagger = SequenceTagger.load('de-ner')
         me_list = ['ich', 'mein', 'meine']
         return cls(flair_tagger, me_list)
 
     @classmethod
-    def en(cls):
+    def en_ner(cls):
         flair_tagger = SequenceTagger.load('ner')
         me_list = ['i', 'my']
         return cls(flair_tagger, me_list)
@@ -81,13 +81,12 @@ class FlairEntityExtractor(EntityExtractor):
 
     def extract_entities(self, raw_text):
         """
-        FOR GERMAN TEXTS
         Extracts PERSON enties and pronouns defined in me_list
         :param raw_text: raw utterance
         :return: list of entites
         """
         entities = self.__extract_pronoun_entities(raw_text)
-        #raw_text = re.sub(r'\W+', ' ', raw_text)  # delete non word characters
+        raw_text = re.sub(r'\W+', ' ', raw_text)  # delete non word characters
         raw_text = re.sub('\s{2,}', ' ', raw_text)  # delete multiple consecutive spaces
 
         sentence = Sentence(raw_text)  # instantiate sentence object
