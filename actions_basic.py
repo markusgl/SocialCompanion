@@ -8,10 +8,10 @@ from __future__ import unicode_literals
 import datetime
 import logging
 
+from random import randint
 from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
 from speech_handling.text_to_speech import TextToSpeech
-from analytics_engine.analytics import AnalyticsEngine
 
 
 class ActionWelcomeMessage(Action):
@@ -23,62 +23,24 @@ class ActionWelcomeMessage(Action):
                             "Ich kann aktuelle Nachrichten vorlesen " \
                             "oder einfach eine nette Unterhaltung führen. " \
                             "Was möchten Sie tun?"
-
-        # Schedule a reminder after welcome message
-        """
-        trigger_date = datetime.datetime.now() + datetime.timedelta(seconds=10)
-        trigger_date = trigger_date.isoformat()
-        logging.info("Reminderdate {}".format(trigger_date))
-        """
-
-        buttons = [{"title": 'Informationen abrufen', "payload": "/information"},
+        buttons = [{"title": 'Informationen abrufen', "payload": "/getinformation"},
                    {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
         TextToSpeech().utter_voice_message(bot_reply_message)
 
-        #print("Current slot-values %s" % tracker.current_slot_values())
-        #print("Current state %s" % tracker.current_state())
-        #tracker.clear_follow_up_action()
+        trigger_date = None
+        if trigger_date:
+            return [ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)]
 
-        #return [ReminderScheduled('action_remind_drink', trigger_date, kill_on_user_message=True)]
         return []
 
+    @staticmethod
+    def schedule_reminder():
+        trigger_date = datetime.datetime.now() + datetime.timedelta(seconds=10)
+        trigger_date = trigger_date.isoformat()
+        logging.info("Reminderdate {}".format(trigger_date))
 
-class ActionOfferFeatures(Action):
-    def name(self):
-        return 'action_offer_features'
-
-    def run(self, dispatcher, tracker, domain):
-        buttons = [{"title": '5 aktuelle Schlagzeilen', "payload": "/read_news"},
-                   {"title": 'Bestimmtes Thema', "payload": "/ask_topic"}]
-        bot_reply_message = "Wollen Sie die fünf aktuellen Schlagzeilen hören oder ein bestimmtes Thema suchen?"
-
-        dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
-        TextToSpeech().utter_voice_message(bot_reply_message)
-
-
-class ActionGetToKnow(Action):
-    def name(self):
-        return 'action_gettoknow'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Sie möchten eine Unterhaltung beginnen. " \
-                            "Bevor wir unsere Unterhaltung beginnen, würde ich Sie gerne besser kennen lernen. " \
-                            "Wie heißen Sie?"
-
-        dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
-
-
-class ActionAskTopic(Action):
-    def name(self):
-        return 'action_ask_topic'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Zu welchem Thema möchte Sie Nachrichten hören?"
-
-        dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        return trigger_date
 
 
 class ActionUtterGreet(Action):
@@ -86,7 +48,9 @@ class ActionUtterGreet(Action):
         return 'action_utter_greet'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Guten Tag!"
+        bot_reply_messages = ["Guten Tag!", 'Hallo', 'Hi', "Wie geht's"]
+        index = randint(0, len(bot_reply_messages))
+        bot_reply_message = bot_reply_messages[index]
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
@@ -112,7 +76,7 @@ class ActionHowCanHelp(Action):
         return 'utter_howcanhelp'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Wie kann ich Ihnen helfen?"
+        bot_reply_message = "Wie geht es dir?"
 
         dispatcher.utter_message(bot_reply_message)
         TextToSpeech().utter_voice_message(bot_reply_message)
@@ -164,7 +128,7 @@ class ActionNotUnderstood(Action):
         else:
             # Try to get further information out of the utterance
             logging.debug("No intent recognized.")
-            AnalyticsEngine().analyze_utterance(user_utterance)
+
             bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
 
         dispatcher.utter_message(bot_reply_message)

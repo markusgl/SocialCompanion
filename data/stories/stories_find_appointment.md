@@ -5,6 +5,8 @@
     - action_utter_goodbye
     
 ## Story 2
+* start
+    - action_welcome_message
 * greet
     - action_utter_greet
 * find_appointment

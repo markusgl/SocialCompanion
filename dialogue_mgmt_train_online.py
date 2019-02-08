@@ -41,7 +41,7 @@ def run_eventbot_online(input_channel, interpreter,
     elif interpreter == 'rasa':
         interpreter = 'rasa-nlu/models/rasa-nlu/default/socialcompanionnlu'
     else:
-        return ("Please provide one of these interpreters: luis, dialogflow, witai or rasa")
+        return "Please provide one of these interpreters: luis, dialogflow, witai or rasa"
 
     fallback = FallbackPolicy(fallback_action_name="action_not_understood",
                               core_threshold=0.5, nlu_threshold=0.35)
@@ -56,7 +56,7 @@ def run_eventbot_online(input_channel, interpreter,
                        batch_size=50,
                        epochs=200,
                        max_training_samples=300)
-
+    #agent.persist()
     return agent
 
 

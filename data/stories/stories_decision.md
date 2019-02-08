@@ -1,5 +1,5 @@
 ## Story 1
-* information
+* getinformation
     - action_offer_features 
    
 ## Story 2

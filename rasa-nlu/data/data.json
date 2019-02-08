@@ -3642,6 +3642,192 @@
             "entity": "lastname"
           }
         ]
+      },
+      {
+        "text": "Ich bin 30 Jahre als",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 8,
+            "end": 16,
+            "value": "30 Jahre",
+            "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "Ich bin 20",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 8,
+            "end": 10,
+            "value": "20",
+            "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "ich bin neunzehn",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 8,
+            "end": 16,
+            "value": "neunzehn",
+            "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "25 jahre alt",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 0,
+            "end": 8,
+            "value": "25 jahre",
+            "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "bin 20",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 4,
+            "end": 6,
+            "value": "20",
+            "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe einen Bruder",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 15,
+            "end": 21,
+            "value": "Bruder",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe eine schwester",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 14,
+            "end": 23,
+            "value": "schwester",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Mein Bruder heißt Michael",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 5,
+            "end": 11,
+            "value": "Bruder",
+            "entity": "relationship"
+          },
+          {
+            "start": 18,
+            "end": 25,
+            "value": "Michael",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Peter ist der Vater von Tom",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 0,
+            "end": 5,
+            "value": "Peter",
+            "entity": "firstname"
+          },
+          {
+            "start": 14,
+            "end": 19,
+            "value": "Vater",
+            "entity": "relationship"
+          },
+          {
+            "start": 24,
+            "end": 27,
+            "value": "Tom",
+            "entity": "firstname"
+          }
+        ]
+      },
+      {
+        "text": "Ihr name ist Monica Krauss",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 13,
+            "end": 19,
+            "value": "Monica",
+            "entity": "firstname"
+          },
+          {
+            "start": 20,
+            "end": 26,
+            "value": "Krauss",
+            "entity": "lastname"
+          }
+        ]
+      },
+      {
+        "text": "Lisa ist die Tochter von Homer",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 0,
+            "end": 4,
+            "value": "Lisa",
+            "entity": "firstname"
+          },
+          {
+            "start": 25,
+            "end": 30,
+            "value": "Homer",
+            "entity": "firstname"
+          },
+          {
+            "start": 13,
+            "end": 20,
+            "value": "Tochter",
+            "entity": "relationship"
+          }
+        ]
+      },
+      {
+        "text": "Laura ist 15 jahre",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 0,
+            "end": 5,
+            "value": "Laura",
+            "entity": "firstname"
+          },
+          {
+            "start": 10,
+            "end": 18,
+            "value": "15 jahre",
+            "entity": "age"
+          }
+        ]
       }
     ]
   }

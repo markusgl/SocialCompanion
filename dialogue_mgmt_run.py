@@ -178,5 +178,6 @@ def load_telegram_config():
 
 
 if __name__ == '__main__':
-    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
+    train_bot()
+    #run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
 

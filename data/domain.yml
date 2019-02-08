@@ -1,6 +1,8 @@
 slots:
   activity:
     type: text
+  age:
+    type: float
   appointment:
     type: text
   date:
@@ -9,13 +11,15 @@ slots:
     type: text
   firstname:
     type: text
+  gender:
+    type: text
   lastname:
+    type: text
+  me_name:
     type: text
   news:
     type: text
   news_type:
-    type: text
-  phone_number:
     type: text
   relationship:
     type: text
@@ -23,26 +27,23 @@ slots:
     type: text
   time:
     type: text
-  me_name:
-    type: text
-  gender:
-    type: text
 
 intents:
-  - goodbye
-  - greet
   - agree
+  - ask_topic
+  - chatting
   - decline
   - find_appointment
+  - getinformation
+  - goodbye
+  - greet
+  - inform
+  - introduce
+  - introduce_relatives
   - make_appointment
   - phone_call
   - read_news
-  - inform
-  - introduce
-  - information
-  - chatting
   - start
-  - ask_topic
 
 entities:
   - activity
@@ -58,33 +59,34 @@ entities:
   - time
   - gender
 
-#templates:
-  #utter_greet:
-  #  - 'Guten Tag, ich bin SocialBot. Ich höre dir zu und kann dich über aktuelle Themen informieren oder Termine finden. Wie heißt du?'
-  #  - 'Hallo, ich bin SocialBot! Ich kann für dich Termine finden oder dich über aktuelle Nachrichten informieren. Sag mir was zu tun möchtest. Wer bist du?'
-  #  - 'Hallo, ich bin SocialBot und kann dir helfen Termine zu finden oder aktuelle Neuigkeiten vorlesen. Wie ist dein Name?'
-  #utter_goodbye:
-  #  - 'Bis später!'
-  #  - 'Tschüss!'
-
+templates:
+  utter_positive:
+    - 'Das freut mich zu hören!'
+    - 'Schön das zu hören!'
+  utter_negative:
+    - 'Das ist schade.'
 
 actions:
-  - actions_inform.ActionAskLocation
-  - actions_inform.ActionAskTime
-  - actions_inform.ActionAskSubject
+  - utter_positive
+  - utter_negative
+  - actions_appointment.ActionSearchAppointment
+  - actions_appointment.ActionMakeAppointment
   - actions_basic.ActionWelcomeMessage
   - actions_basic.ActionUtterGreet
   - actions_basic.ActionUtterGoodbye
   - actions_basic.ActionHowCanHelp
   - actions_basic.ActionRemindToDrink
   - actions_basic.ActionNotUnderstood
-  - actions_basic.ActionOfferFeatures
-  - actions_basic.ActionGetToKnow
-  - actions_basic.ActionAskTopic
   - actions_core.ActionClearSlots
-  - actions_core.ActionSearchAppointment
-  - actions_core.ActionMakeAppointment
-  - actions_core.ActionReadNews
+  - actions_chitchat.ActionGetToKnow
+  - actions_chitchat.ActionAskAge
+  - actions_chitchat.ActionAskName
+  - actions_chitchat.ActionAskRelatives
+  - actions_inform.ActionAskLocation
+  - actions_inform.ActionAskTime
+  - actions_inform.ActionAskSubject
+  - actions_news.ActionOfferFeatures
+  - actions_news.ActionReadNews
+  - actions_news.ActionAskTopic
   - actions_network_graph.ActionSearchContact
   - actions_network_graph.ActionSearchMe
-
