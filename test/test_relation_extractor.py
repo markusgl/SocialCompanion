@@ -22,14 +22,6 @@ def test_extract_relations_4():
     result = re.extract_relations(utterance, plot_graph=False)
     assert result == [('monica', 'sister-of', 'ross')]
 
-# passive sentence
-def test_extract_relations_5():
-    utterance = u"So uh, Monica is Ross's sister."
-
-    re = RelationExtractor(lang=LANG.EN)
-    result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('monica', 'sister-of', 'ross')])
-
 
 # unknown relation type
 def test_extract_relations_6():
@@ -48,6 +40,16 @@ def test_extract_relations_7():
     assert(result == [('rose', 'grandmother-of', 'monica')])
 
 
+def test_extract_relations_8():
+    utterance = u'''Well I'm thinking that Chandler's our friend and Janice makes him happy, 
+                so I say we just all be adult about it and accept her.'''
+
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance, plot_graph=False)
+    print(result)
+    assert result == [('USER', 'friend-of', 'chandler'), ('USER', 'friend-of', 'janice'), ('chandler', 'friend-of', 'janice')]
+
+
 """ 
   ***** GERMAN UTTERANCES ***** 
 """
@@ -56,7 +58,7 @@ def test_extract_relations_german1():
 
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('USER', 'granddaughter-of', 'lisa'), ('USER', 'grandson-of', 'lukas'), ('lisa', 'friend-of', 'lukas')])
+    assert(result == [('USER', 'granddaughter-of', 'lisa'), ('USER', 'grandson-of', 'lukas'), ('USER', 'friend-of', 'lukas')])
 
 
 def test_extract_relations_german2():
@@ -65,3 +67,12 @@ def test_extract_relations_german2():
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
     assert(result == [('elfriede', 'grandmother-of', 'lisa')])
+
+
+def test_extract_relations_german3():
+    utterance = u'''Sarah und Anna, von denen sie hofft, dass sie sicher sind'''
+
+    re = RelationExtractor(lang=LANG.DE)
+    result = re.extract_relations(utterance, plot_graph=False)
+    print(result)
+    assert result == [('sarah', 'KNOWS', 'anna')]

@@ -58,8 +58,7 @@ class ShortestPathRE:
                 second_entity = entities[j]
                 second_entity = second_entity.split('_')[0]  # use only first name of multi-word entities
 
-                #if not i == j and second_entity not in me_list and first_entity not in relationship_list:
-                if not i == j and not first_entity == second_entity:
+                if not i == j and not first_entity == second_entity and not second_entity in self.me_list:
                     try:
                         shortest_path = nx.shortest_path(graph, source=first_entity, target=second_entity)
                         key = first_entity + '-' + second_entity
@@ -82,10 +81,10 @@ class ShortestPathRE:
             for child in token.children:
                 source = token.lower_
                 sink = child.lower_
-                if source in self.me_list:
-                    source = 'USER'
-                elif sink in self.me_list:
-                    sink = 'USER'
+                #if source in self.me_list:
+                #    source = 'USER'
+                #elif sink in self.me_list:
+                #    sink = 'USER'
 
                 edges.append((f'{source}',
                               f'{sink}'))
@@ -116,6 +115,7 @@ class ShortestPathRE:
         relation = None
         highest_score = 0
         highest_rel = None
+        threshold = 0.6
 
         for rel in self.relationship_list:
             try:
@@ -128,13 +128,14 @@ class ShortestPathRE:
             except KeyError as err:
                 logger.debug(err)
 
-        if highest_score > 0.5:
+        #print(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
+        if highest_score > threshold:
             logger.debug(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
             relation = self.relation_types.get_relation_type(highest_rel)
 
         return relation
 
-    def extract_sp_relation(self, entities, sentence, plot_graph=False):
+    def extract_sp_relation(self, entities, per_entities, sentence, plot_graph=False):
         sp_dict = self.__search_shortest_dep_path(entities, sentence, plot_graph)
         extracted_relations = []
 
@@ -145,7 +146,12 @@ class ShortestPathRE:
             if len(value) > 0:
                 rel = self.__measure_sp_rel_similarity(value)
                 if rel:
+                    if e1 in self.me_list:
+                        e1 = 'USER'
                     extracted_relation = e1, rel, e2
+                    extracted_relations.append(extracted_relation)
+                elif len(per_entities) > 1:
+                    extracted_relation = per_entities[0], 'KNOWS', per_entities[1]
                     extracted_relations.append(extracted_relation)
 
         return extracted_relations

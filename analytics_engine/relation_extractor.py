@@ -37,12 +37,12 @@ class RelationExtractor:
         extracted_relations = []
 
         for sentence in sent_tokenize(text):
-            entities = self.entity_extractor.extract_entities(sentence)
+            entities, per_entities = self.entity_extractor.extract_entities(sentence)
             logger.debug(f'Extracted entities: {entities}')
 
             # Shortest path relation extraction
             if len(entities) > 1:  # PER-PER or USR-PER
-                extracted_relations = self.spre.extract_sp_relation(entities, sentence, plot_graph)
+                extracted_relations = self.spre.extract_sp_relation(entities, per_entities, sentence, plot_graph)
 
             # Pattern based relation extraction
             else:  # USR-REL

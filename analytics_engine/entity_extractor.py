@@ -81,18 +81,31 @@ class FlairEntityExtractor(EntityExtractor):
 
     def extract_entities(self, raw_text):
         """
-        Extracts PERSON enties and pronouns defined in me_list
+        Extracts PERSON entities and pronouns defined in me_list
         :param raw_text: raw utterance
-        :return: list of entites
+        :return: list of entities
         """
-        entities = self.__extract_pronoun_entities(raw_text)
+        #entities = self.__extract_pronoun_entities(raw_text)
         raw_text = re.sub(r'\W+', ' ', raw_text)  # delete non word characters
         raw_text = re.sub('\s{2,}', ' ', raw_text)  # delete multiple consecutive spaces
+        per_entities = []
+        entities = []
 
         sentence = Sentence(raw_text)  # instantiate sentence object
         self.flair_tagger.predict(sentence)
 
+        for token in sentence:
+            entity_tag = token.get_tag('ner')
+            entity_name = re.sub(r"'s?", '', token.text.lower())
+
+            # TODO handle multiple word entities
+            if entity_tag.value == 'S-PER' or entity_tag.value == 'I-PER' or entity_tag.value == 'B-PER':
+                entities.append(entity_name)
+            elif entity_name in self.me_list:
+                entities.append(entity_name)
+
         # NER Spans
+        """
         for entity in sentence.get_spans('ner'):
             if entity.tag == 'PER':
                 if len(entity.tokens) > 1:
@@ -100,8 +113,13 @@ class FlairEntityExtractor(EntityExtractor):
                 else:
                     entity_name = re.sub(r"'s?", '', entity.text.lower())
                     entities.append(entity_name)
+                    per_entities.append(entity_name)
+            elif entity.text.lower() in self.me_list:
+                entity_name = re.sub(r"'s?", '', entity.text.lower())
+                entities.append(entity_name)
+        """
 
-        return entities
+        return entities, per_entities
 
 
 class StanfordAnalyzer(EntityExtractor):

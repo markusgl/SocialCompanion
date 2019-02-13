@@ -32,8 +32,7 @@ class PatternBasedRE:
         relationship_list = ['vater', 'mutter', 'papa', 'papi', 'mama', 'mami', 'sohn', 'tochter', 'bruder',
                                   'schwester', 'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa',
                                   'oma', 'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann',
-                                  'frau',
-                                  'ehemann', 'ehefrau']
+                                  'frau', 'ehemann', 'ehefrau']
         me_list = ['ich', 'mein', 'meine']
 
         return cls(nlp, grammar, relationship_list, me_list)
