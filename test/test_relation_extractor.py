@@ -6,21 +6,21 @@ def test_extract_relations_1():
     utterance = u'''My daughter Lisa is moving to London next month.'''
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('USER', 'daughter', 'lisa')])
+    assert(result == [('USER', 'daughter-of', 'lisa')])
 
 
 def test_extract_relations_3():
     utterance = "I'll be playing Drake Remoray's twin brother, Stryker!"
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert result == [('drake', 'brother', 'stryker')]
+    assert result == [('drake', 'brother-of', 'stryker')]
 
 
 def test_extract_relations_4():
     utterance = u'''"So uh, Monica is Ross's sister."'''
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert result == [('monica', 'sister', 'ross')]
+    assert result == [('monica', 'sister-of', 'ross')]
 
 # passive sentence
 def test_extract_relations_5():
@@ -28,7 +28,7 @@ def test_extract_relations_5():
 
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('monica', 'sister', 'ross')])
+    assert(result == [('monica', 'sister-of', 'ross')])
 
 
 # unknown relation type
@@ -37,7 +37,7 @@ def test_extract_relations_6():
 
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('steve', 'wife', 'monica')])
+    assert(result == [('steve', 'wife-of', 'monica')])
 
 
 def test_extract_relations_7():
@@ -56,7 +56,7 @@ def test_extract_relations_german1():
 
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('USER', 'enkelin', 'lisa'), ('USER', 'enkel', 'lukas'), ('lisa', 'KNOWS', 'lukas')])
+    assert(result == [('USER', 'granddaughter-of', 'lisa'), ('USER', 'grandson-of', 'lukas'), ('lisa', 'friend-of', 'lukas')])
 
 
 def test_extract_relations_german2():
@@ -64,4 +64,4 @@ def test_extract_relations_german2():
 
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('elfriede', 'großmutter-of', 'monica')])
+    assert(result == [('elfriede', 'grandmother-of', 'monica')])

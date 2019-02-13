@@ -88,7 +88,7 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     return agent
 
 
-def run_telegram_bot(train=False, nlu_name=None, tts=None):
+def run_telegram_bot(train=False, nlu_name=None, tts=None, ):
     logging.basicConfig(level="INFO")
 
     webhook_url, bot_name = load_telegram_config()
@@ -178,6 +178,6 @@ def load_telegram_config():
 
 
 if __name__ == '__main__':
-    train_bot()
-    #run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
+    #train_bot()
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, tts=TTS.sapi)
 

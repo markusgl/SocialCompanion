@@ -16,7 +16,7 @@ class FlairEmbeddingModels:
         self.flair_embeddings = {}
 
     @classmethod
-    def de(cls):
+    def de_lang(cls):
         """
         Factory method for german embeddings
         """
@@ -27,14 +27,14 @@ class FlairEmbeddingModels:
         return cls(embeddings)
 
     @classmethod
-    def en(cls):
+    def en_lang(cls):
         """
         Factory method for english embeddings
         """
-        #embeddings = WordEmbeddings('en-glove')
+        embeddings = WordEmbeddings('en-glove')
         #embeddings = WordEmbeddings('en-news')
         #embeddings = FlairEmbeddings('news-forward')
-        embeddings = BertEmbeddings()
+        #embeddings = BertEmbeddings()
 
         return cls(embeddings)
 

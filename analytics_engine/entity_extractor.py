@@ -60,13 +60,13 @@ class FlairEntityExtractor(EntityExtractor):
 
     # Factory methods for language selection
     @classmethod
-    def de_ner(cls):
+    def de_lang(cls):
         flair_tagger = SequenceTagger.load('de-ner')
         me_list = ['ich', 'mein', 'meine']
         return cls(flair_tagger, me_list)
 
     @classmethod
-    def en_ner(cls):
+    def en_lang(cls):
         flair_tagger = SequenceTagger.load('ner')
         me_list = ['i', 'my']
         return cls(flair_tagger, me_list)
