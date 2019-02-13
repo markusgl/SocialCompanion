@@ -20,8 +20,8 @@ class FlairEmbeddingModels:
         """
         Factory method for german embeddings
         """
-        embeddings = WordEmbeddings('de')
-        # embeddings = WordEmbeddings('de-crawl')  # FastText embeddings
+        embeddings = WordEmbeddings('de')  # German FastText embeddings
+        # embeddings = WordEmbeddings('de-crawl')  # German FastText embeddings trained over crawls
         #embeddings = BertEmbeddings('bert-base-multilingual-cased')
 
         return cls(embeddings)
@@ -31,7 +31,8 @@ class FlairEmbeddingModels:
         """
         Factory method for english embeddings
         """
-        embeddings = WordEmbeddings('en-glove')
+        #embeddings = WordEmbeddings('en-glove')
+        embeddings = WordEmbeddings('en-crawl')  # FastText embeddings over web crawls
         #embeddings = WordEmbeddings('en-news')
         #embeddings = FlairEmbeddings('news-forward')
         #embeddings = BertEmbeddings()

@@ -60,8 +60,8 @@ def test_extract_relations_german1():
 
 
 def test_extract_relations_german2():
-    utterance = u"Elfriede ist die Oma von Monica."
+    utterance = u"Elfriede ist die Großmutter von Lisa."
 
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('elfriede', 'grandmother-of', 'monica')])
+    assert(result == [('elfriede', 'grandmother-of', 'lisa')])
