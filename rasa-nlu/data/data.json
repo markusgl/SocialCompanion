@@ -3712,6 +3712,12 @@
             "end": 21,
             "value": "Bruder",
             "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 14,
+            "value": "einen",
+            "entity": "relativescount"
           }
         ]
       },
@@ -3724,6 +3730,12 @@
             "end": 23,
             "value": "schwester",
             "entity": "relationship"
+          },
+          {
+            "start": 9,
+            "end": 13,
+            "value": "eine",
+            "entity": "relativescount"
           }
         ]
       },
@@ -3826,6 +3838,66 @@
             "end": 18,
             "value": "15 jahre",
             "entity": "age"
+          }
+        ]
+      },
+      {
+        "text": "Ich habe drei geschwister",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 9,
+            "end": 13,
+            "value": "drei",
+            "entity": "relativescount"
+          }
+        ]
+      },
+      {
+        "text": "ich habe keine angehörige",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "keine",
+            "entity": "relativescount"
+          }
+        ]
+      },
+      {
+        "text": "ich habe einen kleinen Sohn",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "einen",
+            "entity": "relativescount"
+          }
+        ]
+      },
+      {
+        "text": "ich habe zwei enkelkinder",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 9,
+            "end": 13,
+            "value": "zwei",
+            "entity": "relativescount"
+          }
+        ]
+      },
+      {
+        "text": "ich habe viele angehörige",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 9,
+            "end": 14,
+            "value": "viele",
+            "entity": "relativescount"
           }
         ]
       }

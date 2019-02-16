@@ -25,6 +25,8 @@ slots:
     type: text
   relativedate:
     type: text
+  relativescount:
+    type: text
   time:
     type: text
 
@@ -56,6 +58,7 @@ entities:
   - phone_number
   - relationship
   - relativedate
+  - relativescount
   - time
   - gender
 
@@ -82,6 +85,7 @@ actions:
   - actions_chitchat.ActionAskAge
   - actions_chitchat.ActionAskName
   - actions_chitchat.ActionAskRelatives
+  - actions_chitchat.ActionAskRelativesNames
   - actions_inform.ActionAskLocation
   - actions_inform.ActionAskTime
   - actions_inform.ActionAskSubject

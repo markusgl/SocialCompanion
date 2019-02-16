@@ -10,10 +10,12 @@ from network_core.network_graph import NetworkGraph
 from rasa_core.actions.action import Action
 from rasa_core.events import SlotSet
 from speech_handling.text_to_speech import TextToSpeech
+from analytics_engine.analytics import AnalyticsEngine, LANG
 
 import logging
 
 gender_dict = {"frau": "female", "fr.": "female", "herr": "male", "hr.": "male"}
+tts = False  # toggle speech output (text to speech)
 
 
 class ActionSearchMe(Action):
@@ -58,7 +60,8 @@ class ActionSearchMe(Action):
                 kg.add_me_w_lastname(me_name, gender=gender, age="")
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
@@ -80,13 +83,12 @@ class ActionAddMe(Action):
             bot_reply_message = "Hallo " + str(me_name).title() + "! Schön von dir zu hören."
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
 
-
-###!!!!!!! CURRENTLY NOT IN USE !!!!!!###
 class ActionSearchContact(Action):
     def name(self):
         return 'action_search_contact'
@@ -96,38 +98,34 @@ class ActionSearchContact(Action):
         contact_name = tracker.get_slot('firstname')
         relation_ship = tracker.get_slot('relationship')
         me_name = tracker.get_slot('me_name')
+        utterance = tracker.latest_message()
+        ae = AnalyticsEngine(lang=LANG.DE)
 
         # search relationship by contact name
         if me_name and contact_name:
             relationship = kg.search_relationship_by_contactname(me_name, contact_name)
-            if relationship is None:
-                dispatcher.utter_message("Ich kenne " + str(contact_name).title() + " nicht. Willst du mir sagen wer das ist?")
-            else:
+
+            if relationship:
                 SlotSet("relationship", relationship)
                 dispatcher.utter_message("Deine(n) " + relationship + " " + str(contact_name).title() +"?")
+            else:
+                ae.analyze_utterance(utterance, persist=True)
 
         # search contact name by given relationship
         elif me_name and relation_ship:
             contact = kg.search_contactname_by_relationship(me_name, relation_ship)
-            if contact is None:
-                if relation_ship == "vater" or relation_ship == "bruder" or relation_ship == "onkel":
-                    dispatcher.utter_message("Ich kenne deinen " + str(relation_ship).title() + " leider nicht. "
-                                                                                   "Willst du mir sagen wie er heißt?")
-                elif relation_ship == "mutter" or relation_ship == "schwester" or relation_ship == "tante":
-                    dispatcher.utter_message("Ich kenne deine " + str(relation_ship).title() + " leider."
-                                                                                  "Willst du mir sagen wie sie heißt?")
-                else:
-                    dispatcher.utter_message("Ich kenne " + str(relation_ship) + " nicht.")
-            else:
+
+            if contact:  # contact already exists in network
                 SlotSet("contactname", contact)
                 dispatcher.utter_message("Meinst du "+contact+"?")
-        elif not me_name:
+            else:
+                ae.analyze_utterance(utterance, persist=True)
+
+        elif me_name:
+            dispatcher.utter_message("Leider hab ich dich nicht ganz verstanden. Wen willst du mitnehmen?")
+        else:
             dispatcher.utter_message("Leider kenne ich dich noch nicht und auch deine Kontkate nicht. "
                                      "Willst du mir sagen wie du heißt?")
-        else:
-            dispatcher.utter_message("Leider hab ich dich nicht ganz verstanden. Wen willst du mitnehmen?")
-
-        return []
 
 
 class ActionAddContact(Action):
@@ -142,10 +140,9 @@ class ActionAddContact(Action):
         relationship = tracker.get_slot('relationship')
 
         if me_name and contactname and relationship:
-            print("try to add contact")
             kg.add_contact(me_name, contactname, relationship)
             dispatcher.utter_message("Danke, jetzt kenne ich auch " + str(contactname).title() + "!")
         else:
-            dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. Willst du mir sie nochmal sagen?")
+            dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. "
+                                     "Willst du mir sie nochmal sagen?")
 
-        return []

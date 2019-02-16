@@ -10,6 +10,8 @@ from rasa_core.actions.action import Action
 from speech_handling.text_to_speech import TextToSpeech
 from analytics_engine.analytics import AnalyticsEngine
 
+tts = False  # toggle speech output (text to speech)
+
 
 class ActionAskTime(Action):
     def name(self):
@@ -20,7 +22,8 @@ class ActionAskTime(Action):
         AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -34,7 +37,8 @@ class ActionAskSubject(Action):
         AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -48,6 +52,7 @@ class ActionAskLocation(Action):
         AnalyticsEngine().analyze_utterance(tracker.latest_message.text)
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []

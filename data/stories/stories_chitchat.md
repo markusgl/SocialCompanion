@@ -91,3 +91,45 @@
 * agree
     - utter_howcanhelp
     
+## Generated Story -9076894253082119830
+* start
+    - action_welcome_message
+* chatting
+    - action_gettoknow
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* agree
+    - utter_howcanhelp
+* inform
+    - utter_positive
+    - action_ask_age
+* introduce{"age": "20"}
+    - slot{"age": "20"}
+    - action_ask_relatives
+    
+## Generated Story -750904215651896666
+* start
+    - action_welcome_message
+* chatting
+    - action_gettoknow
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* inform
+    - utter_howcanhelp
+* inform
+    - action_ask_age
+* introduce{"age": "20"}
+    - slot{"age": "20"}
+    - action_ask_relatives
+* agree
+    - action_ask_relatives_names
+* introduce_relatives{"relationship": "bruder", "firstname": "michael"}
+    - slot{"firstname": "michael"}
+    - slot{"relationship": "bruder"}
+    - action_search_contact

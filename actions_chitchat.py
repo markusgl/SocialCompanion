@@ -1,8 +1,12 @@
-
+from random import randint
 from rasa_core.actions.action import Action
+from rasa_core.events import SlotSet
+
 from speech_handling.text_to_speech import TextToSpeech
 from analytics_engine.analytics import AnalyticsEngine, LANG
-from random import randint
+
+
+tts = False  # toogle speech output (text to speech)
 
 
 class ActionGetToKnow(Action):
@@ -14,7 +18,8 @@ class ActionGetToKnow(Action):
                             "Wie ist dein Name?"
 
         dispatcher.utter_message(bot_reply_message)
-        #TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskAge(Action):
@@ -25,7 +30,8 @@ class ActionAskAge(Action):
         bot_reply_message = 'Wie alt bist Du?'
 
         dispatcher.utter_message(bot_reply_message)
-        #TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskName(Action):
@@ -38,7 +44,8 @@ class ActionAskName(Action):
         index = randint(0, len(bot_reply_messages))
         bot_reply_message = bot_reply_messages[index]
         dispatcher.utter_message(bot_reply_message)
-        #TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskRelatives(Action):
@@ -51,6 +58,49 @@ class ActionAskRelatives(Action):
 
         index = randint(0, len(bot_reply_messages))
         dispatcher.utter_message(bot_reply_messages[index])
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_messages[index])
+
+
+relatives_count = {'einen': 1, 'eine': 1, 'keine': 0, 'viele': 10, 'mehrere': 10, 'zwei': 2, 'drei': 3, 'vier': 4,
+                   'fünf': 5, 'sechs': 6, 'sieben': 7, 'acht': 8, 'neun': 9, 'zehn': 10}
+
+
+class ActionAskRelativesNames(Action):
+    def name(self):
+        return 'action_ask_relatives_names'
+
+    def run(self, dispatcher, tracker, domain):
+        relatives_count = tracker.get_slot('relativescount')
+
+        if relatives_count < 2:
+            bot_reply_message = 'Wie heißt er oder sie?'
+        elif relatives_count < 1:
+            bot_reply_message = 'Wer steht dir sonst nahe?'
+        else:
+            bot_reply_messages = ['Wie heißen sie?',
+                                  'Wie ist deren Name?']
+            index = randint(0, len(bot_reply_messages))
+            bot_reply_message = bot_reply_messages[index]
+
+        dispatcher.utter_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
+
+        return [SlotSet('relativescount', relatives_count)]
+
+
+class ActionAskAmount(Action):
+    def name(self):
+        return 'action_ask_amount'
+
+    def run(self, dispatcher, tracker, domain):
+        bot_reply_messages = ['Wie viele?']
+
+        index = randint(0, len(bot_reply_messages))
+        dispatcher.utter_message(bot_reply_messages[index])
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_messages[index])
 
 
 class ActionExtractRelations(Action):
@@ -61,4 +111,4 @@ class ActionExtractRelations(Action):
         utterance = tracker.latest_message()
 
         ae = AnalyticsEngine(lang=LANG.DE)
-        ae.analyze_utterance(utterance)
+        ae.analyze_utterance(utterance, persist=True)

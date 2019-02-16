@@ -79,12 +79,9 @@ class ShortestPathRE:
         edges = []
         for token in doc:
             for child in token.children:
+                # TODO indicate direction of the relationship - maybe with the help of the child token 's
                 source = token.lower_
                 sink = child.lower_
-                #if source in self.me_list:
-                #    source = 'USER'
-                #elif sink in self.me_list:
-                #    sink = 'USER'
 
                 edges.append((f'{source}',
                               f'{sink}'))
@@ -110,7 +107,7 @@ class ShortestPathRE:
         """
         Measures the cosine similarity between word embeddings
         :param shortest_path: dict of sp values
-        :return:
+        :return: relation type with the highest score
         """
         relation = None
         highest_score = 0
@@ -144,16 +141,18 @@ class ShortestPathRE:
             e2 = key.split('-')[1]
 
             if len(value) > 0:
+
                 rel = self.__measure_sp_rel_similarity(value)
                 if rel:
                     if e1 in self.me_list:
                         e1 = 'USER'
-                    extracted_relation = e1, rel, e2
+                        extracted_relation = e2, rel, e1
+                    else:
+                        extracted_relation = e1, rel, e2
                     extracted_relations.append(extracted_relation)
                 elif len(per_entities) > 1:
                     extracted_relation = per_entities[0], 'KNOWS', per_entities[1]
                     extracted_relations.append(extracted_relation)
 
         return extracted_relations
-
 

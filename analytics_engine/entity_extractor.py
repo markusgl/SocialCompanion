@@ -25,34 +25,6 @@ class EntityExtractor(ABC):
         pass
 
 
-class SpacyEntityExtractor(EntityExtractor):
-    def __init__(self):
-        self.nlp = en_core_web_md.load()
-        self.spacy_per_symbol = 'PERSON'
-        self.me_list = ['i', 'my']
-
-    def extract_entities(self, raw_text):
-        """
-        FOR ENGLISH TEXTS
-        Extracts PERSON enties and pronouns defined in me_list
-        :param raw_text:
-        :return: list of found entities
-        """
-        sentence = re.sub('\s{2,}', ' ', raw_text)  # delete multiple consecutive spaces
-        doc = self.nlp(sentence)
-        entities = []
-
-        for token in doc:
-            if token.text.lower() in self.me_list:
-                entities.append('USER')
-
-        for ent in doc.ents:
-            if ent.label_ == self.spacy_per_symbol:
-                entities.append(ent.text.lower())
-
-        return entities
-
-
 class FlairEntityExtractor(EntityExtractor):
     def __init__(self, flair_tagger=None, me_list=None):
         self.flair_tagger = flair_tagger
@@ -91,16 +63,19 @@ class FlairEntityExtractor(EntityExtractor):
         per_entities = []
         entities = []
 
-        sentence = Sentence(raw_text)  # instantiate sentence object
+        sentence = Sentence(raw_text, use_tokenizer=True)  # instantiate sentence object
         self.flair_tagger.predict(sentence)
 
         for token in sentence:
             entity_tag = token.get_tag('ner')
-            entity_name = re.sub(r"'s?", '', token.text.lower())
+            entity_name = token.text.lower()
 
             # TODO handle multiple word entities
-            if entity_tag.value == 'S-PER' or entity_tag.value == 'I-PER' or entity_tag.value == 'B-PER':
+            # Person entities 'PER'
+            if entity_tag.value == 'S-PER' or entity_tag.value == 'I-PER' or entity_tag.value == 'B-PER' or entity_tag.value == 'E-PER':
                 entities.append(entity_name)
+                per_entities.append(entity_name)
+            # Personal pronoun entities 'USR'
             elif entity_name in self.me_list:
                 entities.append(entity_name)
 
@@ -120,6 +95,34 @@ class FlairEntityExtractor(EntityExtractor):
         """
 
         return entities, per_entities
+
+
+class SpacyEntityExtractor(EntityExtractor):
+    def __init__(self):
+        self.nlp = en_core_web_md.load()
+        self.spacy_per_symbol = 'PERSON'
+        self.me_list = ['i', 'my']
+
+    def extract_entities(self, raw_text):
+        """
+        FOR ENGLISH TEXTS
+        Extracts PERSON enties and pronouns defined in me_list
+        :param raw_text:
+        :return: list of found entities
+        """
+        sentence = re.sub('\s{2,}', ' ', raw_text)  # delete multiple consecutive spaces
+        doc = self.nlp(sentence)
+        entities = []
+
+        for token in doc:
+            if token.text.lower() in self.me_list:
+                entities.append('USER')
+
+        for ent in doc.ents:
+            if ent.label_ == self.spacy_per_symbol:
+                entities.append(ent.text.lower())
+
+        return entities
 
 
 class StanfordAnalyzer(EntityExtractor):

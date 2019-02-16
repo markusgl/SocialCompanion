@@ -6,6 +6,8 @@ from rasa_core.events import SlotSet
 from news_searcher import NewsSearcher
 from speech_handling.text_to_speech import TextToSpeech
 
+tts = False  # toggle speech output (text to speech)
+
 
 class ActionOfferFeatures(Action):
     def name(self):
@@ -17,7 +19,8 @@ class ActionOfferFeatures(Action):
         bot_reply_message = "Wollen Sie die fünf aktuellen Schlagzeilen hören oder ein bestimmtes Thema suchen?"
 
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskTopic(Action):
@@ -28,7 +31,8 @@ class ActionAskTopic(Action):
         bot_reply_message = "Zu welchem Thema möchte Sie Nachrichten hören?"
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_reply_message)
+        if tts:
+            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionReadNews(Action):
@@ -54,6 +58,7 @@ class ActionReadNews(Action):
         bot_voice_reply_message += news_titles
 
         dispatcher.utter_message(bot_reply_message)
-        TextToSpeech().utter_voice_message(bot_voice_reply_message)  # TODO threading
+        if tts:
+            TextToSpeech().utter_voice_message(bot_voice_reply_message)  # TODO threading
 
         return [SlotSet('news', '')]
