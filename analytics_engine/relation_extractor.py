@@ -33,7 +33,7 @@ class RelationExtractor:
             self.entity_extractor = FlairEntityExtractor().en_lang()
 
 
-    def extract_relations(self, text, plot_graph=False):
+    def extract_relations(self, text, plot_graph=False, validate=False):
         extracted_relations = []
 
         for sentence in sent_tokenize(text):
@@ -41,13 +41,17 @@ class RelationExtractor:
             logger.debug(f'Extracted entities: {entities}')
 
             # Shortest path relation extraction
-            if len(entities) > 1:  # PER-PER or USR-PER
+            if len(per_entities) > 0:  # PER-PER or USR-PER
                 extracted_relations = self.spre.extract_sp_relation(entities, per_entities, sentence, plot_graph)
-
             # Pattern based relation extraction
             else:  # USR-REL
-                extracted_relation = self.pbre.extract_rel(sentence)
-                if extracted_relation:
-                    extracted_relations.append(extracted_relation)
+                extracted_relations = self.pbre.extract_rel(sentence)
+
+            if validate:
+                with open('..\\validation\\relation_extraction\\experimental_val_set_results.txt',
+                          'a', encoding='utf-8') as f:
+                    validated = f'{extracted_relations}; {sentence}\n'
+                    f.write(validated)
 
         return extracted_relations
+

@@ -9,6 +9,7 @@ class TestAnalyticsEngineGerman(TestCase):
 
     def test_analyze_utterance_1(self):
         result = self.ae.analyze_utterance(u'Hans und sein Sohn Hubert.')
+        assert result == [('hubert', 'son-of', 'hans')]
 
 
 class TestAnalyticsEngineEnglish(TestCase):

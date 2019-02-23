@@ -6,7 +6,7 @@ def test_extract_relations_1():
     utterance = u'''My daughter Lisa is moving to London next month.'''
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    assert(result == [('USER', 'daughter-of', 'lisa')])
+    assert(result == [('lisa', 'daughter-of', 'USER')])
 
 
 def test_extract_relations_3():

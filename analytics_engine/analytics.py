@@ -18,7 +18,7 @@ class AnalyticsEngine:
         logging.debug(f"Start analyzing utterance {utterance}")
 
         # extract possible relations within utterance
-        relations = self.re.extract_relations(text=utterance, plot_graph=False)
+        relations = self.re.extract_relations(text=utterance, plot_graph=False, validate=validate)
         logging.debug(f'relations: {relations}')
 
         # add relations to graph database
@@ -39,16 +39,16 @@ class AnalyticsEngine:
                 logging.debug(f'Relation extracted: {ent1}, {rel}')
 
         # write extracted results to file
-        if validate:
-            with open('..\\validation\\relation_extraction\\experimental_val_set_results.txt',
-                      'a', encoding='utf-8') as f:
-                validated = f'{relations}; {utterance}'
-                f.write(validated)
+        #if validate:
+        #    with open('..\\validation\\relation_extraction\\experimental_val_set_results.txt',
+        #              'a', encoding='utf-8') as f:
+        #        validated = f'{relations}; {utterance}'
+        #        f.write(validated)
 
         return relations
         # TODO generate response message
 
-    def __validate(self):
+    def validate(self):
         """
         Experimental evaluation on 1000 utterances of 'Persona-Chat corpus' and 'Friends TV Corpus'
         """
@@ -57,3 +57,8 @@ class AnalyticsEngine:
                 'r', encoding='utf-8') as f:
             for line in f.readlines():
                 self.analyze_utterance(line, persist=False, validate=True)
+
+
+if __name__ == '__main__':
+    ae = AnalyticsEngine(LANG.EN)
+    ae.validate()

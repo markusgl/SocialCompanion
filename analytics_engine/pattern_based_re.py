@@ -98,9 +98,11 @@ class PatternBasedRE:
 
                     if sub_tree[0][-1][1] == 'PROPN':
                         rel_person = sub_tree[0][-1][0]
-                        extracted_relations.append(f'USER, {relation_type}, {rel_person}')
+                        extracted_relation = rel_person, relation_type, 'USER'
+                        extracted_relations.append(extracted_relation)
                     else:
-                        extracted_relations.append(f'USER, {relation_type}')
+                        extracted_relation = relation_type, 'USER'
+                        extracted_relations.append(extracted_relation)
 
         return extracted_relations
 

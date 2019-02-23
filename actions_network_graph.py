@@ -32,33 +32,37 @@ class ActionSearchMe(Action):
             me_node = kg.get_me_by_firstname(me_name)
             if not me_node:
                 kg.add_me_w_firstname(me_name)
-                bot_reply_message = "Hallo " + me_name.title() + "! Schön von dir zu hören."
+                bot_reply_message = "Hallo " + me_name.title() + "! Schön dich kennen zu lernen. \n Wie alt bist du?"
             else:
                 bot_reply_message = "Hallo " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
 
         elif tracker.get_slot('lastname'):
             me_name = tracker.get_slot('lastname')
             me_node = kg.get_me_by_lastname(me_name)
-            if me_node:
+            if me_node:  # known user
                 if me_node.gender == 'female':
-                    bot_reply_message = "Hallo Frau " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
+                    salutation = 'Frau ' + me_name.title()
                 elif me_node.gender == 'male':
-                    bot_reply_message = "Guten Tag Herr " + me_name.title() + "! Wir kennen uns bereits nicht wahr?"
+                    salutation = 'Herr ' + me_name.title()
                 else:
-                    bot_reply_message = "Guten Tag Herr oder Frau" + me_name.title() + "! Freut mich Sie kennenzulernen."
-            else:
+                    salutation = "Herr oder Frau" + me_name.title()
+                bot_reply_message = "Hallo " + salutation + "! Wir kennen uns bereits nicht wahr?"
+            else:  # unknown user
                 if tracker.get_slot('gender') and tracker.get_slot('gender') in gender_dict.keys():
                     gender = gender_dict[tracker.get_slot('gender')]
                     if gender == 'female':
-                        bot_reply_message = "Hallo Frau " + me_name.title() + "! Schön von Ihnen zu hören."
-                    elif gender == 'male':
-                        bot_reply_message = "Hallo Herr " + me_name.title() + "! Schön von Ihnen zu hören."
+                        salutation = "Frau " + me_name.title()
+                    else:
+                        salutation = "Herr " + me_name.title()
                 else:
-                    bot_reply_message = "Guten Tag Herr oder Frau " + me_name.title() + "! Freut mich Sie kennenzulernen."
+                    salutation = "Herr oder Frau " + me_name.title()
                     gender = ""
+
+                bot_reply_message = "Hallo " + salutation + "! Schön dich kennen zu lernen.\n Wie alt bist du?"
 
                 kg.add_me_w_lastname(me_name, gender=gender, age="")
 
+        # Response
         dispatcher.utter_message(bot_reply_message)
         if tts:
             TextToSpeech().utter_voice_message(bot_reply_message)
@@ -80,7 +84,7 @@ class ActionAddMe(Action):
 
         if me_name:
             kg.add_me_w_firstname(me_name)
-            bot_reply_message = "Hallo " + str(me_name).title() + "! Schön von dir zu hören."
+            bot_reply_message = "Hallo " + str(me_name).title() + "! Schön dich kennen zu lernen. Wie alt bist du?"
 
         dispatcher.utter_message(bot_reply_message)
         if tts:

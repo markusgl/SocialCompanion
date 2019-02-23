@@ -94,3 +94,5 @@ actions:
   - actions_news.ActionAskTopic
   - actions_network_graph.ActionSearchContact
   - actions_network_graph.ActionSearchMe
+  - actions_network_graph.ActionAddMe
+  - actions_network_graph.ActionAddContact
