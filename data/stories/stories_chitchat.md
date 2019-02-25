@@ -260,3 +260,20 @@
 * introduce{"firstname": "thomas"}
     - slot{"firstname": "thomas"}
     - action_search_me
+    
+## Generated Story 6421709269245843013
+* start
+    - action_welcome_message
+* chatting
+    - action_gettoknow
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* inform
+    - action_ask_relatives
+* agree
+    - action_ask_relatives_names
+* introduce
+    - action_search_contact

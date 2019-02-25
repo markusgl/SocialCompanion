@@ -82,7 +82,7 @@ class ActionHowCanHelp(Action):
         return 'utter_howcanhelp'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Wie geht es dir?"
+        bot_reply_message = "Was möchtest du gerne wissen?"
 
         dispatcher.utter_message(bot_reply_message)
         if tts:
