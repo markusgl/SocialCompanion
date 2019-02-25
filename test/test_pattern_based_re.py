@@ -41,3 +41,10 @@ def test_extract_rel_6():
     pbre = PatternBasedRE().en_lang()
     result = pbre.extract_rel(utterance, plot_tree=False)
     assert result == [('wife-of', 'USER')]
+
+
+def test_extraxt_rel_7():
+    utterance = 'no , my dad taught me good music and good work ethics.'
+    pbre = PatternBasedRE.en_lang()
+    result = pbre.extract_rel(utterance, plot_tree=False)
+    assert result == [('father-of', 'USER')]

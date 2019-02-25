@@ -137,5 +137,5 @@ setup.py
 analytics_engine/models
 
 analytics_engine/old
-
 playground/
+validation/relation_extraction/results

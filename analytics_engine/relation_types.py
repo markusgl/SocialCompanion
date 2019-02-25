@@ -7,9 +7,9 @@ class RelationTypes:
 
     def get_relation_type(self, rel):
         rel = rel.lower()
-        if rel == 'vater' or rel == 'father':
+        if rel == 'vater' or rel == 'father' or rel == 'dad':
             return 'father-of'
-        elif rel == 'mutter' or rel == 'mother':
+        elif rel == 'mutter' or rel == 'mother' or rel == 'mom':
             return 'mother-of'
         elif rel == 'sohn' or rel == 'son':
             return 'son-of'
