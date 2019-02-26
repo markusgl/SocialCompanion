@@ -2,6 +2,7 @@
 Patter based relation extraction
 """
 
+import logging
 import re
 import nltk
 import en_core_web_md
@@ -9,20 +10,26 @@ import de_core_news_sm
 
 from nltk.tokenize import word_tokenize
 
+from analytics_engine.flair_embeddings import FlairEmbeddingModels
 from analytics_engine.relation_types import RelationTypes
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class PatternBasedRE:
-    def __init__(self, nlp=None, grammar=None, relationship_list=None, me_list=None):
+    def __init__(self, nlp=None, grammar=None, relationship_list=None, me_list=None, embeddings_model=None):
         self.nlp = nlp
         self.grammar = grammar
         self.relationship_list = relationship_list
         self.me_list = me_list
         self.relation_types = RelationTypes()
+        self.embeddings_model = embeddings_model
 
     @classmethod
     def de_lang(cls):
         nlp = de_core_news_sm.load()
+        embeddings_model = FlairEmbeddingModels().de_lang()
         # PP: e.g. 'I habe einen Sohn', 'I habe einen kleinen Bruder'
         # NP: e.g. 'Meine kleine Schwester'
         grammar = r"""
@@ -35,11 +42,12 @@ class PatternBasedRE:
                                   'frau', 'ehemann', 'ehefrau']
         me_list = ['ich', 'mein', 'meine']
 
-        return cls(nlp, grammar, relationship_list, me_list)
+        return cls(nlp, grammar, relationship_list, me_list, embeddings_model)
 
     @classmethod
     def en_lang(cls):
         nlp = en_core_web_md.load()
+        embeddings_model = FlairEmbeddingModels().en_lang()
         # PP: e.g. 'I have a son', 'I have a smaller brother', 'I have a 9 year old son'
         # NP: e.g. 'My (little) sister'
         grammar = r"""
@@ -51,8 +59,7 @@ class PatternBasedRE:
                              'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife']
         me_list = ['i', 'my']
 
-        return cls(nlp, grammar, relationship_list, me_list)
-
+        return cls(nlp, grammar, relationship_list, me_list, embeddings_model)
 
     def search_rel_type(self, sentence):
         for token in word_tokenize(sentence):
@@ -81,6 +88,34 @@ class PatternBasedRE:
 
         return chunk_tree
 
+    def __measure_relation_similarity(self, extracted_relation):
+        """
+        Measures the cosine similarity between word embeddings
+        :param extracted_relation: dict of sp values
+        :return: relation type with the highest score
+        """
+        relation = None
+        highest_score = 0
+        highest_rel = None
+        threshold = 0.6
+
+        for rel in self.relationship_list:
+            try:
+                # get word embeddings representation of extracted relation and relation
+                score = self.embeddings_model.n_similarity(extracted_relation, [rel])
+                logger.debug(f'{rel} {score}')
+                if score > highest_score:
+                    highest_score = score
+                    highest_rel = rel
+            except KeyError as err:
+                logger.debug(err)
+
+        if highest_score > threshold:
+            logger.debug(f'Highest score for {extracted_relation} - {highest_rel}, Score: {highest_score}')
+            relation = self.relation_types.get_relation_type(highest_rel)
+
+        return relation
+
     def extract_rel(self, sentence, plot_tree=False):
         extracted_relations = []
 
@@ -94,7 +129,7 @@ class PatternBasedRE:
 
                 if me in self.me_list and rel:
                     relation = [item for item in rel[0]]
-                    relation_type = self.relation_types.get_relation_type(relation[0])
+                    relation_type = self.__measure_relation_similarity([relation[0]])
 
                     if sub_tree[0][-1][1] == 'PROPN':
                         rel_person = sub_tree[0][-1][0]
