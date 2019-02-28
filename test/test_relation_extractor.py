@@ -46,8 +46,21 @@ def test_extract_relations_8():
 
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance, plot_graph=False)
-    print(result)
     assert result == [('USER', 'friend-of', 'chandler'), ('USER', 'friend-of', 'janice'), ('chandler', 'friend-of', 'janice')]
+
+
+def test_extract_relations_9():
+    utterance = u''' my dad is our preacher '''
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance, plot_graph=False)
+    assert result == [('father-of', 'USER')]
+
+
+def test_extraxt_relatiosn_10():
+    utterance = u'''Tom Cruise and Nicole Kidman.'''
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance)
+    assert result == [('tom_cruise', 'KNOWS', 'nicole_kidman')]
 
 
 """ 
@@ -76,3 +89,4 @@ def test_extract_relations_german3():
     result = re.extract_relations(utterance, plot_graph=False)
     print(result)
     assert result == [('sarah', 'KNOWS', 'anna')]
+

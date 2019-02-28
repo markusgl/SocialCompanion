@@ -70,25 +70,36 @@ class FlairEntityExtractor(EntityExtractor):
             entity_tag = token.get_tag('ner')
             entity_name = token.text.lower()
 
-            # TODO handle multiple word entities
             # Person entities 'PER'
-            if entity_tag.value == 'S-PER' or entity_tag.value == 'I-PER' or entity_tag.value == 'B-PER' or entity_tag.value == 'E-PER':
+            if entity_tag.value == 'S-PER':  # single word name
                 entities.append(entity_name)
                 per_entities.append(entity_name)
+            elif entity_tag.value == 'B-PER':
+                mult_word_name = entity_name
+            elif entity_tag.value == 'I-PER':
+                mult_word_name += '_' + entity_name
+            elif entity_tag.value == 'E-PER':  # multiple word name
+                mult_word_name += '_' + entity_name
+                entities.append(mult_word_name)
+                per_entities.append(mult_word_name)
+                mult_word_name = ''
             # Personal pronoun entities 'USR'
             elif entity_name in self.me_list:
                 entities.append(entity_name)
 
-        # NER Spans
         """
+        # NER Spans
+        print(sentence.get_spans('ner'))
         for entity in sentence.get_spans('ner'):
+            # Person entities 'PER'
             if entity.tag == 'PER':
                 if len(entity.tokens) > 1:
-                    entities.append(str(entity.text.lower()).replace(' ', '_'))
+                    entity_name = str(entity.text.lower()).replace(' ', '_')
                 else:
                     entity_name = re.sub(r"'s?", '', entity.text.lower())
-                    entities.append(entity_name)
-                    per_entities.append(entity_name)
+                entities.append(entity_name)
+                per_entities.append(entity_name)
+            # Personal pronoun entities 'USR'
             elif entity.text.lower() in self.me_list:
                 entity_name = re.sub(r"'s?", '', entity.text.lower())
                 entities.append(entity_name)

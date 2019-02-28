@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from analytics_engine.analytics import AnalyticsEngine, LANG
+from analytics_engine.analytics import AnalyticsEngine
+from analytics_engine.relation_extractor import LANG
 
 
 class TestAnalyticsEngineGerman(TestCase):
@@ -36,3 +37,8 @@ class TestAnalyticsEngineEnglish(TestCase):
         utterance = u'''Peter, Tom's father, will pick us up.'''
         result = self.ae.analyze_utterance(utterance)
         assert result == [('peter', 'father-of', 'tom')]
+
+    def test_analyze_utterance_5(self):
+        utterance = u'''my sister , madonna , does too .'''
+        result = self.ae.analyze_utterance(utterance)
+        assert result == [('madonna', 'sister-of', 'USER')]

@@ -32,8 +32,7 @@ class RelationExtractor:
             self.pbre = PatternBasedRE().en_lang()
             self.entity_extractor = FlairEntityExtractor().en_lang()
 
-
-    def extract_relations(self, text, plot_graph=False, validate=False):
+    def extract_relations(self, text, plot_graph=False, validate=False, out_val_file=None):
         extracted_relations = []
 
         for sentence in sent_tokenize(text):
@@ -48,7 +47,7 @@ class RelationExtractor:
                 extracted_relations = self.pbre.extract_rel(sentence)
 
             if validate:
-                with open('..\\validation\\relation_extraction\\experimental_val_set_results.txt',
+                with open(out_val_file,
                           'a', encoding='utf-8') as f:
                     validated = f'{extracted_relations}; {sentence}\n'
                     f.write(validated)
