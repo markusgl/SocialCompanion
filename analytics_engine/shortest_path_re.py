@@ -124,7 +124,7 @@ class ShortestPathRE:
             except KeyError as err:
                 logger.debug(err)
 
-        if highest_score > threshold:y
+        if highest_score > threshold:
             logger.debug(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
             relation = self.relation_types.get_relation_type(highest_rel)
 
