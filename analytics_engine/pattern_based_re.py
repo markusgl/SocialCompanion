@@ -57,7 +57,7 @@ class PatternBasedRE:
         relationship_list = ['father', 'mother', 'dad', 'daddy', 'mom', 'son', 'daughter', 'brother', 'sister',
                              'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',
                              'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife']
-        me_list = ['i', 'my']
+        me_list = ['i', 'my', 'me']
 
         return cls(nlp, grammar, relationship_list, me_list, embeddings_model)
 

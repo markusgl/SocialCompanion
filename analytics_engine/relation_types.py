@@ -33,5 +33,9 @@ class RelationTypes:
             return 'wife-of'
         elif rel == 'freund' or rel == 'friend':
             return 'friend-of'
+        elif rel == 'onkel' or rel == 'uncle':
+            return 'uncle-of'
+        elif rel == 'tante' or rel == 'aunt':
+            return 'aunt-of'
         else:
             return None

@@ -41,8 +41,8 @@ class FlairEmbeddingModels:
 
     def get_word_embeddings(self, text):
         """
-        get the glove word embdding representation of multiple words
-        :param text: array of words as strings
+        get the glove word embdding representation of one or multiple words
+        :param text: array of one or multiple words as string
         :return: sum of word embeddings inside text
         """
         text = re.sub(r'\s{2,}', ' ', text)

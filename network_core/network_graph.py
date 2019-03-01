@@ -32,11 +32,11 @@ class NetworkGraph:
         password = data['password']
         self.graph = Graph(host="localhost", username=username, password=password)
 
-    def add_node_by_name(self, name, node_type="PERSON"):
+    def add_node_by_name(self, name, age=None, gender=None, node_type="PERSON"):
         if name == 'USER':
             node_type = 'user'
 
-        node = Node(node_type, name=name)
+        node = Node(node_type, name=name, age=age, gender=gender)
         self.graph.create(node)
 
         return node

@@ -56,12 +56,18 @@ def test_extract_relations_9():
     assert result == [('father-of', 'USER')]
 
 
-def test_extraxt_relatiosn_10():
+def test_extract_relatiosn_10():
     utterance = u'''Tom Cruise and Nicole Kidman.'''
     re = RelationExtractor(lang=LANG.EN)
     result = re.extract_relations(utterance)
     assert result == [('tom_cruise', 'KNOWS', 'nicole_kidman')]
 
+
+def test_extract_relation_11():
+    utterance = u'''Well, if you want, you can stay with Rachel and me tonight.'''
+    re = RelationExtractor(lang=LANG.EN)
+    result = re.extract_relations(utterance)
+    assert result == [('rachel', 'KNOWS', 'USER')]
 
 """ 
   ***** GERMAN UTTERANCES ***** 

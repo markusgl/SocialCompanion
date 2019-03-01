@@ -19,7 +19,7 @@ class TestAnalyticsEngineEnglish(TestCase):
 
     def test_analyze_utterance_1(self):
         utterance = u'Peter is the father of Tom.'
-        result = self.ae.analyze_utterance(utterance)
+        result = self.ae.analyze_utterance(utterance, persist=True)
         assert result == [('peter', 'father-of', 'tom')]
 
     def test_analyze_utterance_2(self):

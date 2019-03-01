@@ -40,7 +40,7 @@ class FlairEntityExtractor(EntityExtractor):
     @classmethod
     def en_lang(cls):
         flair_tagger = SequenceTagger.load('ner')
-        me_list = ['i', 'my']
+        me_list = ['i', 'my', 'me']
         return cls(flair_tagger, me_list)
 
     def __extract_pronoun_entities(self, text):

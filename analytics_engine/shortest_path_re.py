@@ -45,7 +45,6 @@ class ShortestPathRE:
 
         return cls(me_list, embeddings_model, nlp, relationship_list)
 
-
     def __search_shortest_dep_path(self, entities, sentence, plot_graph):
         path_dict = {}
         graph = self.__build_undirected_graph(sentence, plot_graph)
@@ -125,8 +124,7 @@ class ShortestPathRE:
             except KeyError as err:
                 logger.debug(err)
 
-        #print(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
-        if highest_score > threshold:
+        if highest_score > threshold:y
             logger.debug(f'Highest score for {shortest_path} - {highest_rel}, Score: {highest_score}')
             relation = self.relation_types.get_relation_type(highest_rel)
 
@@ -142,13 +140,13 @@ class ShortestPathRE:
 
             if len(value) > 0:
 
-                rel = self.__measure_sp_rel_similarity(value)
-                if rel:
+                most_likely_relation = self.__measure_sp_rel_similarity(value)
+                if most_likely_relation:
                     if e1 in self.me_list:
                         e1 = 'USER'
-                        extracted_relation = e2, rel, e1
+                        extracted_relation = e2, most_likely_relation, e1
                     else:
-                        extracted_relation = e1, rel, e2
+                        extracted_relation = e1, most_likely_relation, e2
                     extracted_relations.append(extracted_relation)
                 elif len(per_entities) > 1:
                     extracted_relation = per_entities[0], 'KNOWS', per_entities[1]
