@@ -36,10 +36,8 @@ class PatternBasedRE:
                 PP: {<PRON><AUX><DET><ADJ>?<NOUN>}
                 NP: {<DET><ADJ>?<NOUN>}            
                 REL: {<PP>|<NP>}"""
-        relationship_list = ['vater', 'mutter', 'papa', 'papi', 'mama', 'mami', 'sohn', 'tochter', 'bruder',
-                                  'schwester', 'enkel', 'enkelin', 'nichte', 'neffe', 'großvater', 'großmutter', 'opa',
-                                  'oma', 'onkel', 'tante', 'cousin', 'cousine', 'schwager', 'schwägerin', 'mann',
-                                  'frau', 'ehemann', 'ehefrau']
+        relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin',
+                             'großvater', 'großmutter', 'ehemann', 'ehefrau', 'onkel', 'tante', 'freund']
         me_list = ['ich', 'mein', 'meine']
 
         return cls(nlp, grammar, relationship_list, me_list, embeddings_model)
@@ -54,9 +52,8 @@ class PatternBasedRE:
                     PP: {<PRON><VERB><NUM>?<DET>?<ADJ>?<NOUN>}
                     NP: {<ADJ><ADJ>?<NOUN>}            
                     REL: {<PP>|<NP>}"""
-        relationship_list = ['father', 'mother', 'dad', 'daddy', 'mom', 'son', 'daughter', 'brother', 'sister',
-                             'grandchild', 'grandson', 'granddaughter', 'grandfather', 'grandmother',
-                             'niece', 'nephew', 'uncle', 'aunt', 'cousin', 'husband', 'wife']
+        relationship_list = ['father', 'mother', 'sister', 'brother', 'son', 'daughter', 'husband', 'wife',
+                             'grandson', 'granddaughter', 'grandmother', 'grandfather', 'uncle', 'aunt', 'friend']
         me_list = ['i', 'my', 'me']
 
         return cls(nlp, grammar, relationship_list, me_list, embeddings_model)
@@ -88,10 +85,10 @@ class PatternBasedRE:
 
         return chunk_tree
 
-    def __measure_relation_similarity(self, extracted_relation):
+    def __measure_relation_similarity(self, rel_tree_words):
         """
         Measures the cosine similarity between word embeddings
-        :param extracted_relation: dict of sp values
+        :param rel_tree_words: dict of sp values
         :return: relation type with the highest score
         """
         relation = None
@@ -102,7 +99,7 @@ class PatternBasedRE:
         for rel in self.relationship_list:
             try:
                 # get word embeddings representation of extracted relation and relation
-                score = self.embeddings_model.n_similarity(extracted_relation, [rel])
+                score = self.embeddings_model.n_similarity(rel_tree_words, [rel])
                 logger.debug(f'{rel} {score}')
                 if score > highest_score:
                     highest_score = score
@@ -111,7 +108,7 @@ class PatternBasedRE:
                 logger.debug(err)
 
         if highest_score > threshold:
-            logger.debug(f'Highest score for {extracted_relation} - {highest_rel}, Score: {highest_score}')
+            logger.debug(f'Highest score for {rel_tree_words} - {highest_rel}, Score: {highest_score}')
             relation = self.relation_types.get_relation_type(highest_rel)
 
         return relation
@@ -125,11 +122,13 @@ class PatternBasedRE:
         for i, sub_tree in enumerate(chunk_tree):
             if type(sub_tree) is nltk.tree.Tree and sub_tree.label() == 'REL':
                 me = sub_tree[0][0][0].lower()
-                rel = [word for word in sub_tree[0] if word[0].lower() in self.relationship_list]
+                rel_tree_words = []
+                for word in sub_tree[0]:
+                    if word[0] not in self.me_list:
+                        rel_tree_words.append(word[0])
 
-                if me in self.me_list and rel:
-                    relation = [item for item in rel[0]]
-                    relation_type = self.__measure_relation_similarity([relation[0]])
+                if me in self.me_list and rel_tree_words:
+                    relation_type = self.__measure_relation_similarity(rel_tree_words)
 
                     if sub_tree[0][-1][1] == 'PROPN':
                         rel_person = sub_tree[0][-1][0]
@@ -141,3 +140,10 @@ class PatternBasedRE:
 
         return extracted_relations
 
+
+if __name__ == '__main__':
+    text1 = ''''my dad flies airplanes .'''
+    text2 = ''' That's what my mom said.'''
+    pbre = PatternBasedRE().en_lang()
+    rel = pbre.extract_rel(text2)
+    print(rel)

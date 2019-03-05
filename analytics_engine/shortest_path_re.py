@@ -31,7 +31,7 @@ class ShortestPathRE:
         embeddings_model = FlairEmbeddingModels().de_lang()
         nlp = de_core_news_sm.load()
         relationship_list = ['vater', 'mutter', 'sohn', 'tochter', 'bruder', 'schwester', 'enkel', 'enkelin',
-                                'großvater', 'großmutter', 'ehemann', 'ehefrau', 'freund']
+                             'großvater', 'großmutter', 'ehemann', 'ehefrau', 'onkel', 'tante', 'freund']
 
         return cls(me_list, embeddings_model, nlp, relationship_list)
 
@@ -41,7 +41,7 @@ class ShortestPathRE:
         embeddings_model = FlairEmbeddingModels().en_lang()
         nlp = en_core_web_md.load()
         relationship_list = ['father', 'mother', 'sister', 'brother', 'son', 'daughter', 'husband', 'wife',
-                            'grandson', 'granddaughter', 'grandmother', 'grandfather', 'friend']
+                             'grandson', 'granddaughter', 'grandmother', 'grandfather', 'uncle', 'aunt', 'friend']
 
         return cls(me_list, embeddings_model, nlp, relationship_list)
 
@@ -134,13 +134,13 @@ class ShortestPathRE:
         sp_dict = self.__search_shortest_dep_path(entities, sentence, plot_graph)
         extracted_relations = []
 
-        for key, value in sp_dict.items():
-            e1 = key.split('-')[0]
-            e2 = key.split('-')[1]
+        for entity_pair, sp_words in sp_dict.items():
+            e1 = entity_pair.split('-')[0]
+            e2 = entity_pair.split('-')[1]
 
-            if len(value) > 0:
+            if len(sp_words) > 0:
 
-                most_likely_relation = self.__measure_sp_rel_similarity(value)
+                most_likely_relation = self.__measure_sp_rel_similarity(sp_words)
                 if most_likely_relation:
                     if e1 in self.me_list:
                         e1 = 'USER'
