@@ -2,11 +2,8 @@ from random import randint
 from rasa_core.actions.action import Action
 from rasa_core.events import SlotSet
 
-from speech_handling.text_to_speech import TextToSpeech
-from analytics_engine.analytics import AnalyticsEngine, LANG
-
-
-tts = False  # toogle speech output (text to speech)
+from analytics_engine.analytics import AnalyticsEngine
+from analytics_engine.relation_extractor import LANG
 
 
 class ActionGetToKnow(Action):
@@ -18,8 +15,6 @@ class ActionGetToKnow(Action):
                             "Wie ist dein Name?"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskAge(Action):
@@ -30,8 +25,6 @@ class ActionAskAge(Action):
         bot_reply_message = 'Wie alt bist Du?'
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskName(Action):
@@ -44,8 +37,6 @@ class ActionAskName(Action):
         index = randint(0, len(bot_reply_messages))
         bot_reply_message = bot_reply_messages[index]
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
 
 class ActionAskRelatives(Action):
@@ -58,8 +49,6 @@ class ActionAskRelatives(Action):
 
         index = randint(0, len(bot_reply_messages))
         dispatcher.utter_message(bot_reply_messages[index])
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_messages[index])
 
 
 relatives_count = {'einen': 1, 'eine': 1, 'keine': 0, 'viele': 10, 'mehrere': 10, 'zwei': 2, 'drei': 3, 'vier': 4,
@@ -84,8 +73,6 @@ class ActionAskRelativesNames(Action):
             bot_reply_message = bot_reply_messages[index]
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('relativescount', relatives_count)]
 
@@ -99,8 +86,6 @@ class ActionAskAmount(Action):
 
         index = randint(0, len(bot_reply_messages))
         dispatcher.utter_message(bot_reply_messages[index])
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_messages[index])
 
 
 class ActionExtractRelations(Action):

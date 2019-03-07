@@ -9,13 +9,13 @@ from network_core.network_graph import NetworkGraph
 
 from rasa_core.actions.action import Action
 from rasa_core.events import SlotSet
-from speech_handling.text_to_speech import TextToSpeech
-from analytics_engine.analytics import AnalyticsEngine, LANG
+
+from analytics_engine.analytics import AnalyticsEngine
+from analytics_engine.relation_extractor import LANG
 
 import logging
 
 gender_dict = {"frau": "female", "fr.": "female", "herr": "male", "hr.": "male"}
-tts = False  # toggle speech output (text to speech)
 
 
 class ActionSearchMe(Action):
@@ -64,8 +64,6 @@ class ActionSearchMe(Action):
 
         # Response
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
@@ -87,8 +85,6 @@ class ActionAddMe(Action):
             bot_reply_message = "Hallo " + str(me_name).title() + "! Schön dich kennen zu lernen. Wie alt bist du?"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return [SlotSet('me_name', me_name), SlotSet('firstname', None)]
 
@@ -149,4 +145,3 @@ class ActionAddContact(Action):
         else:
             dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. "
                                      "Willst du mir sie nochmal sagen?")
-

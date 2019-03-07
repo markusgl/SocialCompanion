@@ -4,7 +4,6 @@ from rasa_core.actions.action import Action
 
 from google_calendar_tasks import GoogleCalendarTasks
 from date_converter import DateConverter
-from speech_handling.text_to_speech import TextToSpeech
 
 tts = False  # toogle speech output (text to speech)
 
@@ -22,8 +21,6 @@ class ActionSearchAppointment(Action):
     def run(self, dispatcher, tracker, domain):
         # utter wait message
         dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
-        if tts:
-            TextToSpeech().utter_voice_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
         date_conv = DateConverter()
 
         # check if time was given by the user and convert relative dates and time periods
@@ -48,8 +45,6 @@ class ActionSearchAppointment(Action):
             bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -122,7 +117,5 @@ class ActionMakeAppointment(Action):
             bot_reply_message = "Mir fehlen leider noch Information zur Erstellung des Termins."
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []

@@ -11,17 +11,13 @@ import logging
 from random import randint
 from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
-from speech_handling.text_to_speech import TextToSpeech
 
-tts = False  # toggle speech output (text to speech)
 
 class ActionWelcomeMessage(Action):
     def name(self):
         return 'action_welcome_message'
 
     def run(self, dispatcher, tracker, domain):
-
-
         bot_reply_message = "Guten Tag, mein Name ist Carina. " \
                             "Ich kann aktuelle Nachrichten vorlesen " \
                             "oder einfach eine nette Unterhaltung führen. " \
@@ -29,8 +25,6 @@ class ActionWelcomeMessage(Action):
         buttons = [{"title": 'Informationen abrufen', "payload": "/getinformation"},
                    {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         trigger_date = None
         if trigger_date:
@@ -57,8 +51,6 @@ class ActionUtterGreet(Action):
         bot_reply_message = bot_reply_messages[index]
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -71,8 +63,6 @@ class ActionUtterGoodbye(Action):
         bot_reply_message = "Auf Wiedersehen. Hoffentlich sprechen wir bald wieder!"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -85,8 +75,6 @@ class ActionHowCanHelp(Action):
         bot_reply_message = "Was möchtest du gerne wissen?"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -99,8 +87,6 @@ class ActionRemindToDrink(Action):
         bot_reply_message = "Möchten Sie vielleicht etwas Wasser trinken?"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []
 
@@ -140,7 +126,5 @@ class ActionNotUnderstood(Action):
             bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
 
         dispatcher.utter_message(bot_reply_message)
-        if tts:
-            TextToSpeech().utter_voice_message(bot_reply_message)
 
         return []

@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import logging
 import json
-import urllib.request
 import os
 import enum
 
@@ -18,12 +17,15 @@ from rasa_core.policies.fallback import FallbackPolicy
 from rasa_core.policies import MemoizationPolicy, KerasPolicy
 from rasa_core.featurizers import (MaxHistoryTrackerFeaturizer,
                                    BinarySingleStateFeaturizer)
+
 from interpreter_luis import Interpreter as LuisInterpreter
 from interpreter_dialogflow import Interpreter as DialogflowInterpreter
 from interpreter_witai import Interpreter as WitInterpreter
 from network_core.network_graph import NetworkGraph
-from speech_handling.text_to_speech import TextToSpeech
+from custom_channels.voice_channel import VoiceInput
+from custom_channels.telegram_custom import TelegramCustomInput
 
+logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,14 +37,7 @@ class NLU(enum.Enum):
     witai = 4
 
 
-class TTS(enum.Enum):
-    google = 'google'
-    sapi = 'sapi'
-
-
 def train_bot():
-    logging.basicConfig(level='INFO')
-
     training_data_file = './data/stories'
     model_path = './models/dialogue'
     domain_file = './data/domain.yml'
@@ -70,8 +65,6 @@ def train_bot():
 
 
 def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
-    logging.basicConfig(level="INFO")
-
     if not test_neo4j_connection():
         return
 
@@ -79,7 +72,6 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
         train_bot()
 
     interpreter = select_interpreter(nlu_name)
-
     agent = Agent.load('./models/dialogue', interpreter)
 
     if serve_forever:
@@ -88,18 +80,11 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     return agent
 
 
-def run_telegram_bot(train=False, nlu_name=None, tts=None, ):
-    logging.basicConfig(level="INFO")
-
-    webhook_url, bot_name = load_telegram_config()
+def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
+    webhook_url, bot_name, telegram_api_key = load_telegram_config()
 
     if train:
         train_bot()
-
-    # read configuration from file
-    with open(str(ROOT_DIR + '/keys.json')) as f:
-        data = json.load(f)
-    telegram_api_key = data['telegram-api-key']
 
     if not test_neo4j_connection():
         return
@@ -111,24 +96,18 @@ def run_telegram_bot(train=False, nlu_name=None, tts=None, ):
     agent = Agent.load('./models/dialogue', interpreter)
     logging.info('Agent model loaded.')
 
-    # set TTS runtime to Google if available otherwise use the local Windows SAPI engine
-    if tts and tts in TTS:
-        TextToSpeech.runtime = tts.value
-    else:
-        gtts_available = TextToSpeech().check_google_connection()
-        if gtts_available:
-            TextToSpeech.runtime = 'google'
-            logging.info("Setting TTS to Google TTS")
-        else:
-            TextToSpeech.runtime = 'sapi'
-            logging.info("Setting TTS to Microsoft Speech Engine")
-
     logging.info('Starting Telegram channel...')
     try:
-        input_channel = (TelegramInput(access_token=telegram_api_key,
-                                       verify=bot_name,
-                                       webhook_url=webhook_url,
-                                       debug_mode=True))
+        if voice_output:
+            input_channel = (TelegramCustomInput(access_token=telegram_api_key,
+                                                 verify=bot_name,
+                                                 webhook_url=webhook_url,
+                                                 debug_mode=True))
+        else:
+            input_channel = (TelegramInput(access_token=telegram_api_key,
+                                           verify=bot_name,
+                                           webhook_url=webhook_url,
+                                           debug_mode=True))
         agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
     except Exception as err:
         logging.error("Error starting Telegram Channel: {}".format(err))
@@ -173,11 +152,12 @@ def load_telegram_config():
         config = json.load(f)
     webhook = config['telegram_webhook']
     bot_name = config['telegram-bot-name']
+    api_key = config['telegram-api-key']
 
-    return webhook, bot_name
+    return webhook, bot_name, api_key
 
 
 if __name__ == '__main__':
     #train_bot()
-    run_telegram_bot(train=True, nlu_name=NLU.rasanlu, tts=TTS.sapi)
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=True)
 
