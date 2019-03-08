@@ -26,6 +26,7 @@ class SpeechHandler:
         #while True:
         with sr.Microphone() as source:
             print('Sag etwas:')
+            self.recognizer.energy_threshold = 1000
             audio = self.recognizer.listen(source)
             self.recognizer.adjust_for_ambient_noise(source, duration=3)  # adapt to the noise
             message = None
