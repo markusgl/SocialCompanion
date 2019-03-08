@@ -18,10 +18,10 @@ class GoogleTTS:
             tts = gTTS(text=message, lang='de', slow=False)
             tts.save(filename)
 
-            media = pyglet.media.load(filename, streaming=False)
+            media = pyglet.media.load(filename, streaming=True)
             media.play()
             time.sleep(media.duration)
-            os.remove(filename)
+            #os.remove(filename)
 
             return 'TTS finished'
         except Exception as err:
@@ -58,4 +58,9 @@ class SapiTTS:
         except Exception as err:
             logging.error("Error during TTS {}".format(err))
             return None
+
+
+if __name__ == '__main__':
+    gtts = GoogleTTS()
+    gtts.utter_voice_message('Guten Tag, mein Name ist Carina')
 

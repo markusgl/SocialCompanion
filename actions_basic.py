@@ -19,8 +19,8 @@ class ActionWelcomeMessage(Action):
 
     def run(self, dispatcher, tracker, domain):
         bot_reply_message = "Guten Tag, mein Name ist Carina. " \
-                            "Ich kann aktuelle Nachrichten vorlesen " \
-                            "oder einfach eine nette Unterhaltung führen. " \
+                            "Ich kann Informationen abrufen " \
+                            "oder einfach eine Unterhaltung führen. " \
                             "Was möchten Sie tun?"
         buttons = [{"title": 'Informationen abrufen', "payload": "/getinformation"},
                    {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]

@@ -81,7 +81,7 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
 
 
 def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
-    webhook_url, bot_name, telegram_api_key = load_telegram_config()
+    webhook_url, bot_name, telegram_api_key = load_dm_config()
 
     if train:
         train_bot()
@@ -111,6 +111,13 @@ def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
         agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
     except Exception as err:
         logging.error("Error starting Telegram Channel: {}".format(err))
+
+
+def run_voice_channel(nlu_name=None):
+    interpreter = select_interpreter(nlu_name)
+    agent = Agent.load('./models/dialogue', interpreter)
+    input_channel = VoiceInput(output_url='http://localhost:5000')
+    agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
 
 
 def test_neo4j_connection():
@@ -146,7 +153,7 @@ def select_interpreter(nlu_name):  # TODO use factory methods instead
     return interpreter
 
 
-def load_telegram_config():
+def load_dm_config():
     keys_file = 'dm_config.json'
     with open(keys_file) as f:
         config = json.load(f)
@@ -159,5 +166,5 @@ def load_telegram_config():
 
 if __name__ == '__main__':
     #train_bot()
-    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=True)
-
+    #run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=True)
+    run_voice_channel(nlu_name=NLU.rasanlu)

@@ -1,23 +1,38 @@
 import requests
 import json
 
+from flask import Flask, request, render_template, session
 
-def send_api_request():
-    """
-    Sends a HTTP GET request to a published LUIS.ai app with message as URL param
-    :param query: message to be handled
-    :return: JSON response from LUIS.ai
-    """
+app = Flask(__name__)
+
+
+def user_input():
     # encoded_query = quote(query)
+    message = input("User: ")
+    url = "http://50f39933.ngrok.io/app/message"
 
-    data = {"sender": "http://127.0.0.1:5000",
-            "message": "Hallo"}
-    headers = {"Content-type": "application/json"}
+    data = {"sender": "user", "message": message}
+    data_json = json.dumps(data)
+    headers = {'Content-Type': 'application/json'}
 
-    response = requests.post("https://b77597fa.ngrok.io/app/message",
-                             headers=headers,
-                             data=json.dumps(data))
-    print(response.content)
+    r = requests.post(
+        url=url,
+        data=data_json,
+        headers=headers
+    )
 
-    return response.content
 
+@app.route("/", methods=['POST'])
+def receive_bot_response():
+    payload = request.json
+    message = payload.get("message", None)
+    print(f'Bot: {message}')
+    user_input()
+
+    return "success", 200
+
+
+if __name__ == '__main__':
+    #app.session_interface = SecureCookieSessionInterface()
+    app.run()
+    user_input()

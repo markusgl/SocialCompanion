@@ -5,11 +5,12 @@ from __future__ import unicode_literals
 
 import logging
 import requests
+import json
 
 from flask import Blueprint, request, jsonify
+from rasa_core import utils
 from rasa_core.channels.channel import UserMessage, OutputChannel
 from rasa_core.channels.rest import HttpInputComponent
-from rasa_core import utils
 
 from speech_handling.text_to_speech import SapiTTS, GoogleTTS
 
@@ -19,32 +20,29 @@ logger = logging.getLogger(__name__)
 class VoiceOutput(OutputChannel):
     """A bot that uses a custom channel to communicate."""
 
-    def __init__(self, url, access_token):
-        self.access_token = access_token
+    def __init__(self, url=None):
         self.url = url
-        self.tts = SapiTTS()
+        self.tts = GoogleTTS()
+        self.default_output_color = utils.bcolors.OKBLUE
 
     def send_text_message(self, recipient_id, message):
-        self.tts.utter_voice_message(message)
+        # cmd output
+        utils.print_color(message, self.default_output_color)
 
-        # you probably use http to send a message
-        # For Google tts - TODO
-        """
+        # send response message via http
         url = self.url
+        #print(f'Sending message {message} to {url}')
+        data = {"sender": "bot", "message": message}
 
-        print(f'Response message: {message}')
-        print(f'Response URL: {url}')
-        if self.access_token is not None:
-            headers = {"Auth-token": self.access_token}
-        else:
-            headers = {}
-
+        data_json = json.dumps(data)
+        headers = {"Content-Type": "application/json"}
         requests.post(
-                url,
-                message,
+                url=url,
+                data=data_json,
                 headers=headers
         )
-        """
+
+        return self.tts.utter_voice_message(message)
 
 
 class VoiceInput(HttpInputComponent):
@@ -58,12 +56,12 @@ class VoiceInput(HttpInputComponent):
     def name(cls):
         return "voice"
 
-    def __init__(self, url, access_token=None):
-        self.out_channel = VoiceOutput(url, access_token)
+    def __init__(self, output_url=None):
+        self.out_channel = VoiceOutput(output_url)
 
     def blueprint(self, on_new_message):
         custom_webhook = Blueprint('custom_webhook', __name__)
-        out_channel = VoiceOutput(url='http://localhost:5000', access_token=None)
+        out_channel = self.out_channel
 
         @custom_webhook.route("/", methods=['GET'])
         def health():
@@ -73,10 +71,17 @@ class VoiceInput(HttpInputComponent):
         def message():
             payload = request.json
             print(f"Payload received: {payload}")
+
             sender_id = payload.get("sender", None)
             text = payload.get("message", None)
-
-            on_new_message(UserMessage(text, out_channel, sender_id))
+            try:
+                if text == '/start':
+                    on_new_message(UserMessage('/start', out_channel,
+                                               sender_id))
+                else:
+                    on_new_message(UserMessage(text, out_channel, sender_id))
+            except Exception as ex:
+                logger.error(f'Exception trying to handle mesage: {ex}')
 
             return "success"
 
