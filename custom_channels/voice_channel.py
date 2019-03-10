@@ -14,6 +14,9 @@ from rasa_core.channels.rest import HttpInputComponent
 
 from speech_handling.text_to_speech import SapiTTS, GoogleTTS
 
+from frontend.qt_gui import MainWindow
+from PyQt5.QtWidgets import *
+
 logger = logging.getLogger(__name__)
 
 
@@ -26,12 +29,15 @@ class VoiceOutput(OutputChannel):
         self.default_output_color = utils.bcolors.OKBLUE
 
     def send_text_message(self, recipient_id, message):
+        print(f'Sending text message to output: {message}')
+        # send to Qt GUI
+        # TODO
+
         # cmd output
         utils.print_color(message, self.default_output_color)
 
         # send response message via http
         url = self.url
-        #print(f'Sending message {message} to {url}')
         data = {"sender": "bot", "message": message}
 
         data_json = json.dumps(data)
