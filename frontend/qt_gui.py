@@ -1,10 +1,18 @@
 import requests
 import json
+import socket
+import threading
 
+from flask import Flask, request
+
+from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
+from threading import Thread
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 
-class MainWindow(QWidget):
+
+class ChatWindow(QDialog):
     def __init__(self):
         super().__init__()
         self.initWindow()
@@ -17,9 +25,9 @@ class MainWindow(QWidget):
         self.chatLayout = QVBoxLayout(self)
         self.chatWindow = QTextEdit(self)
         self.chatWindow.setReadOnly(True)
-        self.label = QLabel('Listening')
+        label = QLabel('Listening')
 
-        self.chatLayout.addWidget(self.label)
+        self.chatLayout.addWidget(label)
         self.chatLayout.addWidget(self.chatWindow)
         self.chatLayout.addWidget(self.startButton)
 
@@ -29,7 +37,7 @@ class MainWindow(QWidget):
         self.show()
 
     def startBot(self):
-        url = "http://5e8e6b19.ngrok.io/app/message"
+        url = "http://bce96cee.ngrok.io/app/message"
 
         data = {"sender": "user", "message": "/start"}
         data_json = json.dumps(data)
@@ -49,6 +57,5 @@ class MainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication([])
-    window = MainWindow()
+    window = ChatWindow()
     app.exec_()
-

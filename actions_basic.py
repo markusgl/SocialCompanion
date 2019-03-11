@@ -41,56 +41,6 @@ class ActionWelcomeMessage(Action):
         return trigger_date
 
 
-class ActionUtterGreet(Action):
-    def name(self):
-        return 'action_utter_greet'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_messages = ["Guten Tag!", 'Hallo', 'Hi', "Wie geht's"]
-        index = randint(0, len(bot_reply_messages))
-        bot_reply_message = bot_reply_messages[index]
-
-        dispatcher.utter_message(bot_reply_message)
-
-        return []
-
-
-class ActionUtterGoodbye(Action):
-    def name(self):
-        return 'action_utter_goodbye'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Auf Wiedersehen. Hoffentlich sprechen wir bald wieder!"
-
-        dispatcher.utter_message(bot_reply_message)
-
-        return []
-
-
-class ActionHowCanHelp(Action):
-    def name(self):
-        return 'utter_howcanhelp'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Was möchtest du gerne wissen?"
-
-        dispatcher.utter_message(bot_reply_message)
-
-        return []
-
-
-class ActionRemindToDrink(Action):
-    def name(self):
-        return 'action_remind_drink'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Möchten Sie vielleicht etwas Wasser trinken?"
-
-        dispatcher.utter_message(bot_reply_message)
-
-        return []
-
-
 class ActionNotUnderstood(Action):
     def name(self):
         return 'action_not_understood'

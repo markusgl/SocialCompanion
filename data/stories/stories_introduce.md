@@ -5,10 +5,10 @@
     - slot{"me_name": null}
     - slot{"firstname": null}
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 * greet
-    - action_utter_greet
+    - utter_greet
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -21,10 +21,12 @@
 
 ## Generated Story 5553288453171655620
 * greet
-    - action_utter_greet
+    - utter_greet
 * introduce{"gender": "herr", "lastname": "glas"}
     - slot{"gender": "herr"}
     - slot{"lastname": "glas"}
     - action_search_me
     - slot{"me_name": "glas"}
     - slot{"firstname": null}
+    
+    

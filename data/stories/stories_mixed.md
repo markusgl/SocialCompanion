@@ -35,7 +35,7 @@
     
 ## Generated Story 1219538156069456132
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"appointment": "termine", "relativedate": "morgen"}
     - slot{"appointment": "termine"}
     - slot{"relativedate": "morgen"}
@@ -62,3 +62,34 @@
 ## Story welcome message triggered by /init
 * start
     - action_welcome_message
+
+## Generated Story 6103330825858298541
+* greet
+    - utter_greet
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+* read_news{"news": "neuigkeiten"}
+    - slot{"news": "neuigkeiten"}
+    - action_read_news
+    - slot{"news": ""}
+    - export
+
+## Generated Story -248577827627610519
+* greet
+    - utter_greet
+* introduce{"firstname": "thomas"}
+    - slot{"firstname": "thomas"}
+    - action_search_me
+    - slot{"me_name": "thomas"}
+    - slot{"firstname": null}
+* introduce
+    - utter_ask_relatives
+* agree
+    - action_ask_relatives_names
+* introduce_relatives{"firstname": "michael"}
+    - slot{"firstname": "michael"}
+    - action_search_contact
+    - export
+   

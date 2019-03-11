@@ -68,30 +68,56 @@ templates:
     - 'Schön das zu hören!'
   utter_negative:
     - 'Das ist schade.'
+  utter_greet:
+    - 'Guten Tag!'
+    - 'Hallo!'
+  utter_goodbye:
+    - "Auf Wiedersehen. Hoffentlich sprechen wir bald wieder!"
+  utter_howcanhelp:
+    - "Was möchtest du gerne wissen?"
+  utter_remind_drink:
+    -  "Möchten Sie vielleicht etwas Wasser trinken?"
+  utter_gettoknow:
+    - "Wie wäre es wenn wir uns zuerst besser kennen lernen?"
+    - "Wie ist dein Name?"
+  utter_ask_age:
+    - "Wie alt bist Du?"
+  utter_ask_name:
+    - "Wie heißt du?"
+    - "Wie ist dein Name?"
+  utter_ask_relatives:
+    - "Erzähl mir was von deinen Angehörigen. Hast du Geschwister oder Kinder?"
+    - "Ich würde gerne mehr über dich Erfahren. Hast du Angehörige?"
+  utter_ask_amount:
+    - "Wie viele?"
+  utter_ask_news_topic:
+    - "Zu welchem Thema möchte Sie Nachrichten hören?"
+
 
 actions:
   - utter_positive
   - utter_negative
+  - utter_greet
+  - utter_goodbye
+  - utter_howcanhelp
+  - utter_remind_drink
+  - utter_gettoknow
+  - utter_ask_age
+  - utter_ask_name
+  - utter_ask_relatives
+  - utter_ask_amount
+  - utter_ask_news_topic
   - actions_appointment.ActionSearchAppointment
   - actions_appointment.ActionMakeAppointment
   - actions_basic.ActionWelcomeMessage
-  - actions_basic.ActionUtterGreet
-  - actions_basic.ActionUtterGoodbye
-  - actions_basic.ActionHowCanHelp
-  - actions_basic.ActionRemindToDrink
   - actions_basic.ActionNotUnderstood
   - actions_core.ActionClearSlots
-  - actions_chitchat.ActionGetToKnow
-  - actions_chitchat.ActionAskAge
-  - actions_chitchat.ActionAskName
-  - actions_chitchat.ActionAskRelatives
   - actions_chitchat.ActionAskRelativesNames
   - actions_inform.ActionAskLocation
   - actions_inform.ActionAskTime
   - actions_inform.ActionAskSubject
   - actions_news.ActionOfferFeatures
   - actions_news.ActionReadNews
-  - actions_news.ActionAskTopic
   - actions_network_graph.ActionSearchContact
   - actions_network_graph.ActionSearchMe
   - actions_network_graph.ActionAddMe

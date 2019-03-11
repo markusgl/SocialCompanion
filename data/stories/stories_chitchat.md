@@ -9,7 +9,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -17,7 +17,7 @@
     - slot{"firstname": null}
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 * agree
     - action_ask_relatives_names
 * introduce_relatives{"relationship": "bruder", "firstname": "michael"}
@@ -29,7 +29,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -37,7 +37,7 @@
     - slot{"firstname": null}
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 * introduce_relatives{relativescount="zwei"}
     - action_search_contact
 
@@ -46,7 +46,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -60,7 +60,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -70,13 +70,13 @@
     - action_add_me
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
     
 ## Generated Story -2203593755331612100
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -84,7 +84,7 @@
     - slot{"firstname": null}
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 * inform
     - action_ask_relatives_names
 * inform{"firstname": "peter"}
@@ -93,11 +93,11 @@
 
 ## Generated Story -1506477338637397212
 * greet
-    - action_utter_greet
+    - utter_greet
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -108,28 +108,28 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "tobias"}
     - slot{"firstname": "tobias"}
     - action_search_me
     - slot{"me_name": "tobias"}
     - slot{"firstname": null}
-    - action_ask_age
+    - utter_ask_age
 
 
 ## Generated Story 7971903113628496591
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "thorsten"}
     - slot{"firstname": "thorsten"}
     - action_search_me
     - slot{"me_name": "thorsten"}
     - slot{"firstname": null}
-    - action_ask_age
+    - utter_ask_age
 * introduce{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 * introduce{"age": "20"}#
 
 
@@ -138,37 +138,37 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "thorsten"}
     - slot{"firstname": "thorsten"}
     - action_search_me
     - slot{"me_name": "thorsten"}
     - slot{"firstname": null}
-    - action_ask_age
+    - utter_ask_age
 * introduce{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 
 ## Generated Story -3932078860587625752
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
     - slot{"me_name": "markus"}
     - slot{"firstname": null}
 * decline
-    - action_ask_age
+    - utter_ask_age
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 
 ## Generated Story 7531183010745164869
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -181,7 +181,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -191,16 +191,16 @@
     - utter_howcanhelp
 * inform
     - utter_positive
-    - action_ask_age
+    - utter_ask_age
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
     
 ## Generated Story -750904215651896666
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -209,10 +209,10 @@
 * inform
     - utter_howcanhelp
 * inform
-    - action_ask_age
+    - utter_ask_age
 * introduce{"age": "20"}
     - slot{"age": "20"}
-    - action_ask_relatives
+    - utter_ask_relatives
 * agree
     - action_ask_relatives_names
 * introduce_relatives{"relationship": "bruder", "firstname": "michael"}
@@ -224,7 +224,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -237,7 +237,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -252,7 +252,7 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce
     - action_search_me
     - slot{"me_name": ""}
@@ -265,14 +265,14 @@
 * start
     - action_welcome_message
 * chatting
-    - action_gettoknow
+    - utter_gettoknow
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
     - slot{"me_name": "markus"}
     - slot{"firstname": null}
 * inform
-    - action_ask_relatives
+    - utter_ask_relatives
 * agree
     - action_ask_relatives_names
 * introduce

@@ -4,4 +4,4 @@
    
 ## Story 2
 * chatting
-    - action_gettoknow
+    - utter_gettoknow

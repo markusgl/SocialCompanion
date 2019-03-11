@@ -3900,6 +3900,24 @@
             "entity": "relativescount"
           }
         ]
+      },
+      {
+        "text": "Martina und Michael",
+        "intent": "introduce_relatives",
+        "entities": [
+          {
+            "start": 0,
+            "end": 7,
+            "value": "Martina",
+            "entity": "firstname"
+          },
+          {
+            "start": 12,
+            "end": 19,
+            "value": "Michael",
+            "entity": "firstname"
+          }
+        ]
       }
     ]
   }

@@ -18,16 +18,6 @@ class ActionOfferFeatures(Action):
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
 
 
-class ActionAskTopic(Action):
-    def name(self):
-        return 'action_ask_topic'
-
-    def run(self, dispatcher, tracker, domain):
-        bot_reply_message = "Zu welchem Thema möchte Sie Nachrichten hören?"
-
-        dispatcher.utter_message(bot_reply_message)
-
-
 class ActionReadNews(Action):
     def name(self):
         return 'action_read_news'

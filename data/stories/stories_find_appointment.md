@@ -2,13 +2,13 @@
 * find_appointment{"relativedate": "heute"}    
     - slot{"relativedate": "heute"}
     - action_search_appointment
-    - action_utter_goodbye
+    - utter_goodbye
     
 ## Story 2
 * start
     - action_welcome_message
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment
     - utter_ask_time
 * inform
@@ -16,14 +16,14 @@
   
 ## Story 2
 * inform
-    - action_utter_greet
+    - utter_greet
 * find_appointment
     - utter_ask_time
     - action_search_appointment
       
 ## Story 3
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"datetime": "06.05.2018"}
     - action_search_appointment
     
@@ -34,14 +34,14 @@
     
 ## Generated Story -2253719340681464826
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
 
 ## Generated Story 984826086781566823
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"appointment": "termine", "relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
@@ -53,23 +53,23 @@
 
 ## Generated Story -6420086653261703240
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 ## Generated Story -3727083982337256137
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
     
 ## Generated Story -5401742184894396297
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
@@ -80,56 +80,56 @@
     - action_search_appointment
 
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"activity": "arzt"}
     - slot{"activity": "arzt"}
     - action_search_appointment
     
 ## Generated Story 5478279954146030739
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"relativedate": "heute", "appointment": "termine"}
     - slot{"appointment": "termine"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 ## Story 5
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"activity": "Arzt"}
     - slot{"activity": "Arzt"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 ## Story 6
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"activity": "Kino"}
     - slot{"activity": "Kino"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
     
 ## Story 7
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"activity": "Orthopäden"}
     - slot{"activity": "Orthopäden"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
     
 ## Generated Story 9174633887046606895
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"activity": "arzttermin"}
     - slot{"activity": "arzttermin"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 ## Generated Story -141300964851179736
 * find_appointment{"dateperiod": "n\u00e4chsten tage", "appointment": "termine"}
@@ -151,7 +151,7 @@
     
 ## Generated Story -9118930676261623522
 * greet
-    - action_utter_greet
+    - utter_greet
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -164,7 +164,7 @@
     
 ## Generated Story -9035383903536848030
 * greet
-    - action_utter_greet
+    - utter_greet
 * find_appointment{"appointment": "termine"}
     - slot{"appointment": "termine"}
     - utter_ask_time
@@ -174,7 +174,7 @@
     
 ## Generated Story 4062316493595125542
 * greet
-    - action_utter_greet
+    - utter_greet
 * introduce{"firstname": "markus"}
     - slot{"firstname": "markus"}
     - action_search_me
@@ -189,12 +189,12 @@
     - slot{"relativedate": "heute"}
     - action_search_appointment
 * goodbye
-    - action_utter_goodbye
+    - utter_goodbye
 
 ## Generated Story 4861291829673346146
 * greet
-    - action_utter_greet
-* introduce
+    - utter_greet
+* intr``oduce
     - action_search_me
     - slot{"me_name": ""}
     - slot{"firstname": null}

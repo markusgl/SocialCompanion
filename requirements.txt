@@ -51,6 +51,7 @@ google-api-core==1.8.0
 google-api-python-client==1.7.4
 google-auth==1.5.1
 google-auth-httplib2==0.0.3
+google-cloud-texttospeech==0.4.0
 googleapis-common-protos==1.5.8
 grakn==1.4.2
 graphviz==0.8.4
@@ -130,6 +131,7 @@ pykwalify==1.6.0
 pymongo==3.7.1
 pyparsing==2.2.1
 Pyphen==0.9.5
+PyQt5==5.9.2
 pyreadline==2.1
 PySocks==1.6.8
 pytest==3.8.1
@@ -159,6 +161,7 @@ scipy==1.1.0
 segtok==1.5.7
 simplegeneric==0.8.1
 simplejson==3.16.0
+sip==4.19.8
 six==1.11.0
 sklearn==0.0
 sklearn-crfsuite==0.3.5
