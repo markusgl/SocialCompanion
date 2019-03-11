@@ -42,7 +42,7 @@ class NewsSearcher:
         news_titles_w_url = ''
 
         for article in raw_news['articles']:
-            news_titles += article['title'] + '\n'
+            news_titles += '- ' + article['title'] + '\n'
             news_titles_w_url += article['title'] + '\n' + article['url'] + '\n'
 
         return news_titles, news_titles_w_url

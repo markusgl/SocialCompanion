@@ -12,7 +12,7 @@ class ActionOfferFeatures(Action):
 
     def run(self, dispatcher, tracker, domain):
         buttons = [{"title": '5 aktuelle Schlagzeilen', "payload": "/read_news"},
-                   {"title": 'Bestimmtes Thema', "payload": "/ask_topic"}]
+                   {"title": 'Thema eingeben', "payload": "/ask_topic"}]
         bot_reply_message = "Wollen Sie die fünf aktuellen Schlagzeilen hören oder ein bestimmtes Thema suchen?"
 
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)

@@ -3918,6 +3918,30 @@
             "entity": "firstname"
           }
         ]
+      },
+      {
+        "text": "welche Termine habe ich diese Woche?",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 35,
+            "value": "diese Woche",
+            "entity": "dateperiod"
+          }
+        ]
+      },
+      {
+        "text": "welche Termine habe ich am Wochenende",
+        "intent": "find_appointment",
+        "entities": [
+          {
+            "start": 24,
+            "end": 37,
+            "value": "am Wochenende",
+            "entity": "dateperiod"
+          }
+        ]
       }
     ]
   }

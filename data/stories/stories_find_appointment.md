@@ -194,7 +194,7 @@
 ## Generated Story 4861291829673346146
 * greet
     - utter_greet
-* intr``oduce
+* introduce
     - action_search_me
     - slot{"me_name": ""}
     - slot{"firstname": null}
@@ -220,3 +220,16 @@
 * inform{"relativedate": "heute"}
     - slot{"relativedate": "heute"}
     - action_search_appointment
+
+## Generated Story -2898060424092435522
+* find_appointment{"appointment": "termine", "dateperiod": "diese woche"}
+    - slot{"appointment": "termine"}
+    - slot{"dateperiod": "diese woche"}
+    - action_search_appointment
+    
+## Generated Story -2783829852532766001
+* find_appointment{"appointment": "termine", "dateperiod": "wochenende"}
+    - slot{"appointment": "termine"}
+    - slot{"dateperiod": "wochenende"}
+    - action_search_appointment
+    

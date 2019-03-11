@@ -34,8 +34,13 @@ class DateConverter:
             else:
                 appointment_start_time = datetime.datetime.now()
 
-            appointment_end_time = appointment_start_time + timedelta(days=2)
-
+            #appointment_end_time = appointment_start_time + timedelta(days=2)
+            appointment_end_time = 2
+        elif fuzz.ratio(dateperiod, 'diese woche') > 85:
+            weekno = datetime.datetime.now().weekday()
+            delta = 6 - weekno
+            appointment_start_time = datetime.datetime.now()
+            appointment_end_time = delta
         else:
             appointment_start_time = 0
             appointment_end_time = 0

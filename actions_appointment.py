@@ -20,7 +20,7 @@ class ActionSearchAppointment(Action):
 
     def run(self, dispatcher, tracker, domain):
         # utter wait message
-        dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
+        #dispatcher.utter_message("Einen Augenblick. Ich sehe mal im Kalender nach.")
         date_conv = DateConverter()
 
         # check if time was given by the user and convert relative dates and time periods
@@ -37,12 +37,13 @@ class ActionSearchAppointment(Action):
             given_date = tracker.get_slot('dateperiod')
             start_time, end_time = date_conv.convert_dateperiod(given_date)
             bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
-        elif tracker.get_slot('activity'): # if only activity (subject) is given search an event by activity name
+        elif tracker.get_slot('activity'):  # if only activity (subject) is given search an event by activity name
             subject = tracker.get_slot('activity')
 
             bot_reply_message = self._generate_reply_message_with_subject(subject)
         else:
-            bot_reply_message = "Mir fehlen leider noch Informationen, wie Betreff oder Uhrzeit, zum Finden deiner Termine."
+            bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine. \n" \
+                                "Versuche es noch einmal mit Uhrzeit oder Betreff."
 
         dispatcher.utter_message(bot_reply_message)
 
@@ -68,7 +69,7 @@ class ActionSearchAppointment(Action):
         date_format = start_time.strftime('%d.%m.%Y')
 
         if events:
-            bot_reply_message = "Ich konnte folgende Termine für {} finden:\n".format(date_format)
+            bot_reply_message = f"Ich konnte folgende Termine finden:\n"
             for event in events:
                 start = event['start'].get('dateTime', event['start'].get('date'))
 
@@ -77,8 +78,7 @@ class ActionSearchAppointment(Action):
                     bot_reply_message += "(Ganztägig) {}\n".format(conv_date.strftime('%d.%m.%Y'), event['summary'])
                 else:  # non full-day events including specific time
                     conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
-                    bot_reply_message += "{} {}\n".format(conv_date.strftime('%H:%M'),
-                                                          event['summary'])
+                    bot_reply_message += "{} {}\n".format(conv_date.strftime('%d.%m.%Y %H:%M'), event['summary'])
         else:
             bot_reply_message = "Du hast heute keine Termine."
 
@@ -99,7 +99,7 @@ class ActionMakeAppointment(Action):
             elif tracker.get_slot('date'):
                 start_date = date_conv.convert_date(tracker.get_slot('date'), 'date')
             #elif tracker.get_slot('dateperiod'):
-                #TODO
+                # TODO
             else:
                 return
 

@@ -113,7 +113,10 @@ def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
         logging.error("Error starting Telegram Channel: {}".format(err))
 
 
-def run_voice_channel(nlu_name=None):
+def run_voice_channel(train=False, nlu_name=None):
+    if train:
+        train_bot()
+
     interpreter = select_interpreter(nlu_name)
     agent = Agent.load('./models/dialogue', interpreter)
     input_channel = VoiceInput(output_url='http://localhost:5000')
@@ -166,5 +169,5 @@ def load_dm_config():
 
 if __name__ == '__main__':
     #train_bot()
-    #run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=True)
-    run_voice_channel(nlu_name=NLU.rasanlu)
+    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False)
+    #run_voice_channel(train=False, nlu_name=NLU.rasanlu)

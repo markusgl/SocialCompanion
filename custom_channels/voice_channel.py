@@ -27,19 +27,14 @@ class VoiceOutput(OutputChannel):
         self.url = url
         self.tts = GoogleTTS()
         self.default_output_color = utils.bcolors.OKBLUE
-        self.chat_window = ChatWindow()
 
     def send_text_message(self, recipient_id, message):
-        print(f'Sending text message to output: {message}')
-        # send to Qt GUI
-        # TODO
-        self.chat_window.connect.appendMessage('message')
-
         # cmd output
         utils.print_color(message, self.default_output_color)
 
         # send response message via http
         url = self.url
+        print(f'Sending text message {message} to output address {url}')
         data = {"sender": "bot", "message": message}
 
         data_json = json.dumps(data)
