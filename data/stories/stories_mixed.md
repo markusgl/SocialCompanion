@@ -93,3 +93,18 @@
     - action_search_contact
     - export
    
+## Generated Story 7748086947484708520
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+* inform{"relativedate": "\u00fcbermorgen"}
+    - slot{"relativedate": "\u00fcbermorgen"}
+    - action_search_appointment
+* read_news{"news": "neuigkeiten"}
+    - slot{"news": "neuigkeiten"}
+    - action_read_news
+    - slot{"news": ""}
+* goodbye
+    - utter_goodbye
+

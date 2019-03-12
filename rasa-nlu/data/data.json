@@ -3942,6 +3942,42 @@
             "entity": "dateperiod"
           }
         ]
+      },
+      {
+        "text": "und morgen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 4,
+            "end": 10,
+            "value": "morgen",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "und am wochenende",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 7,
+            "end": 17,
+            "value": "wochenende",
+            "entity": "relativedate"
+          }
+        ]
+      },
+      {
+        "text": "und übermorgen",
+        "intent": "inform",
+        "entities": [
+          {
+            "start": 4,
+            "end": 14,
+            "value": "übermorgen",
+            "entity": "relativedate"
+          }
+        ]
       }
     ]
   }

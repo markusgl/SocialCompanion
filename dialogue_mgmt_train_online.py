@@ -56,7 +56,8 @@ def run_eventbot_online(input_channel, interpreter,
                        batch_size=50,
                        epochs=200,
                        max_training_samples=300)
-    #agent.persist('./models/dialogue')
+
+    agent.persist('./models/dialogue')
     return agent
 
 

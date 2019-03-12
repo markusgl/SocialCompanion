@@ -32,7 +32,7 @@ slots:
 
 intents:
   - agree
-  - ask_topic
+  - cal_mgmt
   - chatting
   - decline
   - find_appointment
@@ -78,20 +78,27 @@ templates:
   utter_remind_drink:
     -  "Möchten Sie vielleicht etwas Wasser trinken?"
   utter_gettoknow:
-    - "Wie wäre es wenn wir uns zuerst besser kennen lernen?"
-    - "Wie ist dein Name?"
+    - "Wie wäre es wenn wir uns zuerst besser kennen lernen? Wie ist dein Name?"
   utter_ask_age:
     - "Wie alt bist Du?"
   utter_ask_name:
     - "Wie heißt du?"
     - "Wie ist dein Name?"
   utter_ask_relatives:
-    - "Erzähl mir was von deinen Angehörigen. Hast du Geschwister oder Kinder?"
-    - "Ich würde gerne mehr über dich Erfahren. Hast du Angehörige?"
+    - "Hast du Geschwister oder Kinder?"
+    - "Ich würde gerne mehr über dich Erfahren. Hast du Geschwister?"
   utter_ask_amount:
     - "Wie viele?"
-  utter_ask_news_topic:
-    - "Zu welchem Thema möchte Sie Nachrichten hören?"
+  utter_ask_cal_mgmt:
+    - "Frag mich was zu deinem Terminkalender"
+  utter_ask_time:
+    - "An welchem Tag oder zu welcher Uhrzeit?"
+  utter_ask_subject:
+    - "Wie lautet der Betreff?"
+  utter_ask_location:
+    - "An welchem Ort?"
+  utter_ask_other_relatives:
+    - "Hast du andere Angehörige oder jemanden der dir nachesteht?"
 
 
 actions:
@@ -106,16 +113,17 @@ actions:
   - utter_ask_name
   - utter_ask_relatives
   - utter_ask_amount
-  - utter_ask_news_topic
+  - utter_ask_cal_mgmt
+  - utter_ask_time
+  - utter_ask_subject
+  - utter_ask_location
+  - utter_ask_other_relatives
   - actions_appointment.ActionSearchAppointment
   - actions_appointment.ActionMakeAppointment
   - actions_basic.ActionWelcomeMessage
   - actions_basic.ActionNotUnderstood
   - actions_core.ActionClearSlots
   - actions_chitchat.ActionAskRelativesNames
-  - actions_inform.ActionAskLocation
-  - actions_inform.ActionAskTime
-  - actions_inform.ActionAskSubject
   - actions_news.ActionOfferFeatures
   - actions_news.ActionReadNews
   - actions_network_graph.ActionSearchContact

@@ -8,7 +8,6 @@ from __future__ import unicode_literals
 import datetime
 import logging
 
-from random import randint
 from rasa_core.actions.action import Action
 from rasa_core.events import ReminderScheduled
 
@@ -23,7 +22,7 @@ class ActionWelcomeMessage(Action):
                             "oder einfach eine Unterhaltung führen. " \
                             "Was möchten Sie tun?"
         buttons = [{"title": 'Informationen abrufen', "payload": "/getinformation"},
-                   {"title": 'Eine Unterhaltung beginnen', "payload": "/chatting"}]
+                   {"title": 'Unterhaltung beginnen', "payload": "/chatting"}]
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
 
         trigger_date = None
@@ -68,12 +67,12 @@ class ActionNotUnderstood(Action):
             elif intent_name == 'inform':
                 bot_reply_message += 'mir Informationen mitteilen. Ist das korrekt?'
             else:
-                bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
+                bot_reply_message = "Ich habe dich leider nicht verstanden. Was möchtest du tun?"
         else:
             # Try to get further information out of the utterance
             logging.debug("No intent recognized.")
 
-            bot_reply_message = "Ich habe Sie leider nicht verstanden. Was möchten Sie tun?"
+            bot_reply_message = "Ich habe dich leider nicht verstanden. Was möchten dich tun?"
 
         dispatcher.utter_message(bot_reply_message)
 

@@ -38,6 +38,18 @@
     - slot{"news": "neuigkeiten"}
     - action_read_news
     - export
+
+## Generated Story 5302753220542035417
+* getinformation
+    - action_offer_features
+* read_news
+    - action_read_news
+    - slot{"news": ""}
     
-* ask_topic
-    - utter_ask_news_topic
+ 
+ ## Generated Story -8513688906958796756
+* getinformation
+    - action_offer_features
+* read_news
+    - action_read_news
+    - slot{"news": ""}
