@@ -3978,6 +3978,18 @@
             "entity": "relativedate"
           }
         ]
+      },
+      {
+        "text": "Politiknachrichten bitte",
+        "intent": "read_news",
+        "entities": [
+          {
+            "start": 0,
+            "end": 18,
+            "value": "Politiknachrichten",
+            "entity": "news_type"
+          }
+        ]
       }
     ]
   }

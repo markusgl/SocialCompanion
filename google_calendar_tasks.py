@@ -131,12 +131,3 @@ class GoogleCalendarTasks:
 
         return []
 
-
-if __name__ == '__main__':
-    from date_converter import DateConverter
-    dc = DateConverter()
-    start_time, end_time = dc.convert_dateperiod('diese Woche')
-
-    gct = GoogleCalendarTasks()
-    appointment = gct.search_google_calendar_by_time(start_time, end_time)
-    print(type(appointment))

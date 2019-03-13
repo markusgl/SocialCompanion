@@ -23,16 +23,17 @@ class ActionReadNews(Action):
         return 'action_read_news'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen: \n'
+
         ns = NewsSearcher()
 
         if tracker.get_slot('news_type'):
             topic = tracker.get_slot('news_type')
             topic = re.sub('nachrichten$', '', topic)
-            bot_reply_message += 'zum Thema' + topic
+            bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen zum Thema ' + topic.title() + ':\n'
 
             news_titles, news_urls = ns.search_news(topic)
         else:
+            bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen: \n'
             news_titles, news_urls = ns.search_news()
 
         bot_reply_message += news_titles

@@ -71,8 +71,7 @@ class ActionNotUnderstood(Action):
         else:
             # Try to get further information out of the utterance
             logging.debug("No intent recognized.")
-
-            bot_reply_message = "Ich habe dich leider nicht verstanden. Was möchten dich tun?"
+            bot_reply_message = "Ich habe dich leider nicht verstanden. Was möchtest du tun?"
 
         dispatcher.utter_message(bot_reply_message)
 

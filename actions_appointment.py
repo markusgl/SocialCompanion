@@ -6,8 +6,6 @@ from rasa_core.events import SlotSet
 from google_calendar_tasks import GoogleCalendarTasks
 from date_converter import DateConverter
 
-tts = False  # toogle speech output (text to speech)
-
 
 class ActionSearchAppointment(Action):
     """
@@ -30,17 +28,25 @@ class ActionSearchAppointment(Action):
             start_time = given_date
             end_time = 0
             bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('date', None)]
         elif tracker.get_slot('relativedate'):
             given_date = tracker.get_slot('relativedate')
             start_time, end_time = date_conv.convert_relativedate(given_date)
             bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('relativedate', None)]
         elif tracker.get_slot('dateperiod'):
             given_date = tracker.get_slot('dateperiod')
             start_time, end_time = date_conv.convert_dateperiod(given_date)
             bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('dateperiod', None)]
         elif tracker.get_slot('activity'):  # if only activity (subject) is given search an event by activity name
             subject = tracker.get_slot('activity')
             bot_reply_message = self._generate_reply_message_with_subject(subject)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('activity', None)]
         else:
             bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine. \n" \
                                 "Versuche es noch einmal mit Uhrzeit oder Betreff."
@@ -98,8 +104,10 @@ class ActionMakeAppointment(Action):
                 start_date = date_conv.convert_date(tracker.get_slot('relativedate'), 'relativedate')
             elif tracker.get_slot('date'):
                 start_date = date_conv.convert_date(tracker.get_slot('date'), 'date')
-            #elif tracker.get_slot('dateperiod'):
-                # TODO
+            elif tracker.get_slot('dateperiod'):
+                bot_reply_message = "An welchem Tag möchtest du einen Termin erstellen?"
+                dispatcher.utter_message(bot_reply_message)
+                return
             else:
                 return
 

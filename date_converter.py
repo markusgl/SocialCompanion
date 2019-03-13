@@ -1,7 +1,8 @@
-from datetime import timedelta
-import datetime
-from fuzzywuzzy import fuzz
 import re
+import datetime
+
+from fuzzywuzzy import fuzz
+from datetime import timedelta
 
 
 class DateConverter:
