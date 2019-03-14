@@ -123,7 +123,7 @@ def run_voice_channel(train=False, nlu_name=None):
 
     interpreter = select_interpreter(nlu_name)
     agent = Agent.load('./models/dialogue', interpreter)
-    input_channel = VoiceInput(output_url='http://localhost:5000')
+    input_channel = VoiceInput()
     agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
 
 

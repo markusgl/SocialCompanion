@@ -3990,6 +3990,18 @@
             "entity": "news_type"
           }
         ]
+      },
+      {
+        "text": "Ich heiße Hans",
+        "intent": "introduce",
+        "entities": [
+          {
+            "start": 10,
+            "end": 14,
+            "value": "Hans",
+            "entity": "firstname"
+          }
+        ]
       }
     ]
   }

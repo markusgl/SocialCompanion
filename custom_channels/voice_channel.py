@@ -14,9 +14,6 @@ from rasa_core.channels.rest import HttpInputComponent
 
 from speech_handling.text_to_speech import SapiTTS, GoogleTTS
 
-from frontend.qt_gui import ChatWindow
-from PyQt5.QtWidgets import *
-
 logger = logging.getLogger(__name__)
 
 

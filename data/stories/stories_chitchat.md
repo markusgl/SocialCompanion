@@ -422,3 +422,39 @@
     - utter_ask_relatives
 * decline
     - utter_ask_other_relatives
+
+
+## Generated Story 8332499062679272804
+* start
+    - action_welcome_message
+* chatting
+    - utter_gettoknow
+* introduce
+    - action_search_me
+    - slot{"me_name": ""}
+    - slot{"firstname": null}
+* introduce
+    - action_search_me
+    - slot{"me_name": ""}
+    - slot{"firstname": null}
+    
+    
+## Generated Story 7479936340661109999
+* start
+    - action_welcome_message
+* chatting
+    - utter_gettoknow
+* introduce
+    - action_search_me
+    - slot{"me_name": ""}
+    - slot{"firstname": null}
+* introduce{"firstname": "hans"}
+    - slot{"firstname": "hans"}
+    - action_search_me
+    - slot{"me_name": "hans"}
+    - slot{"firstname": null}
+* introduce{"age": "20"}
+    - slot{"age": "20"}
+    - utter_ask_relatives
+* inform
+    - action_not_understood
