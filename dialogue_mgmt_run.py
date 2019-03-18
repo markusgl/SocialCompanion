@@ -117,9 +117,12 @@ def run_telegram_bot(train=False, nlu_name=None, voice_output=False, url=None):
         logging.error("Error starting Telegram Channel: {}".format(err))
 
 
-def run_voice_channel(train=False, nlu_name=None):
+def run_voice_channel(train=False, nlu_name=None, url=None):
     if train:
         train_bot()
+
+    if url:
+        webhook_url = url + '/app/webhook'
 
     interpreter = select_interpreter(nlu_name)
     agent = Agent.load('./models/dialogue', interpreter)
@@ -172,10 +175,12 @@ def load_dm_config():
 
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", type=str, help="https web hook url from ngrok")
     parser.add_argument("--tts", type=bool, help="if true, text to speech output is activated")
     parser.add_argument("--train", type=bool, help="if true, (re-)trains the dialog model")
+    parser.add_argument("--voicechannel", type=bool, help="if true, runs the voice channel")
     args = parser.parse_args()
 
     if args.url and args.tts and args.train:
@@ -186,7 +191,9 @@ if __name__ == '__main__':
         run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=args.tts, url=args.url)
     elif args.url:
         run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False, url=args.url)
+    elif args.voicechannel and args.url:
+        run_voice_channel(train=False, nlu_name=NLU.rasanlu, url=args.url)
     else:
         run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False)
 
-    #run_voice_channel(train=False, nlu_name=NLU.rasanlu)
+

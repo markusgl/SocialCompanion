@@ -85,7 +85,7 @@ templates:
     - "Wie heißt du?"
     - "Wie ist dein Name?"
   utter_ask_relatives:
-    - "Hast du Geschwister oder Kinder?"
+    - "Hast du Geschwister?"
     - "Ich würde gerne mehr über dich Erfahren. Hast du Geschwister?"
   utter_ask_amount:
     - "Wie viele?"

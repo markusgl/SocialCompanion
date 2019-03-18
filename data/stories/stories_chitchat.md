@@ -458,3 +458,57 @@
     - utter_ask_relatives
 * inform
     - action_not_understood
+
+## Generated Story -75441865042321075
+* start
+    - action_welcome_message
+* chatting
+    - utter_gettoknow
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* agree
+    - utter_howcanhelp
+    
+
+## Generated Story -3851457012185376134
+* start
+    - action_welcome_message
+* chatting
+    - utter_gettoknow
+* introduce{"firstname": "peter"}
+    - slot{"firstname": "peter"}
+    - action_search_me
+    - slot{"me_name": "peter"}
+    - slot{"firstname": null}
+* introduce{"age": "20"}
+    - slot{"age": "20"}
+    - utter_ask_relatives
+* agree
+    - action_ask_relatives_names
+* introduce_relatives
+    - action_add_contact
+
+
+## Generated Story 7209333772426264914
+* start
+    - action_welcome_message
+* chatting
+    - utter_gettoknow
+* introduce{"firstname": "markus"}
+    - slot{"firstname": "markus"}
+    - action_search_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* decline
+    - action_add_me
+    - slot{"me_name": "markus"}
+    - slot{"firstname": null}
+* inform
+    - utter_ask_relatives
+* introduce_relatives{"relationship": "schwester", "firstname": "laura"}
+    - slot{"firstname": "laura"}
+    - slot{"relationship": "schwester"}
+    - action_add_contact

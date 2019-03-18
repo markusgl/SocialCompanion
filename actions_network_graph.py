@@ -141,7 +141,6 @@ class ActionAddContact(Action):
 
         if me_name and contactname and relationship:
             kg.add_contact(me_name, contactname, relationship)
-            dispatcher.utter_message("Danke, jetzt kenne ich auch " + str(contactname).title() + "!")
+            dispatcher.utter_message("Schön, jetzt kenne ich auch " + str(contactname).title() + "!")
         else:
-            dispatcher.utter_message("Ich habe deinen Kontakt und die Beziehung leider nicht verstanden. "
-                                     "Willst du mir sie nochmal sagen?")
+            dispatcher.utter_message("Ich habe den Namen leider nicht verstanden. Willst du mir sie nochmal sagen?")
