@@ -29,6 +29,8 @@ slots:
     type: text
   relativename:
     type: text
+  relationextracted:
+    type: bool
   time:
     type: text
 
@@ -63,6 +65,7 @@ entities:
   - relativedate
   - relativescount
   - relativename
+  - relationextracted
   - time
   - gender
 

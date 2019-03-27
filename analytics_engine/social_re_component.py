@@ -34,15 +34,21 @@ class SocialRelationExtractor(Component):
             else:
                 entity_value = self.rt.get_relation_from_relation_type_DE(extracted_relations[0][1])
 
-            entity = {"value": entity_value,
+            entities = [{"value": entity_value,
                       "confidence": 1,
                       "entity": "relativename",
-                      "extractor": "sentiment_extractor"}
+                      "extractor": "relationextractor"},
+                      {"value": True,
+                      "confidence": 1,
+                      "entity": "relationextracted",
+                      "extractor": "relationextractor"}]
 
-            message.set("entities", [entity], add_to_output=True)
+            message.set("entities", entities, add_to_output=True)
 
             # TODO set intent
-            intent = {"confidence": 1,
-                      "name": "introduce_relationships"}
-
+            #intent = {"confidence": 1,
+            #          "name": "introduce_relationships"}
+            #intent_ranking = {"confidence": 1,
+            #                  "name": "introduce_relationships"}
             #message.set("intent", [intent], add_to_output=True)
+            #message.set("intent_ranking", [intent_ranking], add_to_output=True)

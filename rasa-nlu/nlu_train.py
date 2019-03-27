@@ -22,5 +22,5 @@ def evaluate_nlu(text):
 
 if __name__ == '__main__':
     train_nlu('data/data.json', 'config_rasa-nlu.yml', 'models/rasa-nlu')
-    #evaluate_nlu(u"Peter ist der Vater von Tom.")
+    evaluate_nlu(u"Peter ist der Vater von Tom.")
     #evaluate_nlu(u"Guten Tag")
