@@ -39,3 +39,38 @@ class RelationTypes:
             return 'aunt-of'
         else:
             return None
+
+    def get_relation_from_relation_type_DE(self, rel_type):
+        rel_type = rel_type.lower()
+        if rel_type == 'father-of':
+            return 'dein Vater'
+        elif rel_type == 'mother-of':
+            return 'deine Mutter'
+        elif rel_type == 'son-of':
+            return 'dein Sohn'
+        elif rel_type == 'daughter-of':
+            return 'deine Tochter'
+        elif rel_type == 'brother-of':
+            return 'dein Bruder'
+        elif rel_type == 'sister-of':
+            return 'deine Schwester'
+        elif rel_type == 'grandfather-of':
+            return 'dein Großvater'
+        elif rel_type == 'grandmother-of':
+            return 'deine Großmutter'
+        elif rel_type == 'grandson-of':
+            return 'dein Enkel'
+        elif rel_type == 'granddaughter-of':
+            return 'deine Enkelin'
+        elif rel_type == 'husband-of':
+            return 'dein Mann'
+        elif rel_type == 'wife-of':
+            return 'dein eFrau'
+        elif rel_type == 'friend-of':
+            return 'dein Freund'
+        elif rel_type == 'uncle-of':
+            return 'dein Onkel'
+        elif rel_type == 'aunt-of':
+            return 'deine Tante'
+        else:
+            return None

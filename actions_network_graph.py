@@ -124,7 +124,7 @@ class ActionSearchContact(Action):
         elif me_name:
             dispatcher.utter_message("Leider hab ich dich nicht ganz verstanden. Wen willst du mitnehmen?")
         else:
-            dispatcher.utter_message("Leider kenne ich dich noch nicht und auch deine Kontkate nicht. "
+            dispatcher.utter_message("Leider kenne ich dich noch nicht. "
                                      "Willst du mir sagen wie du heißt?")
 
 

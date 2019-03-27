@@ -1,28 +1,48 @@
+"""
+Custom Rasa Component for extracting social relationships within chat messages
+"""
+
 from rasa_nlu.components import Component
 
 from analytics_engine.relation_extractor import RelationExtractor, LANG
+from analytics_engine.analytics import AnalyticsEngine
+from analytics_engine.relation_types import RelationTypes
 
 
 class SocialRelationExtractor(Component):
 
     name = "relationextractor"
     provides = ["entities"]
-    requires = [""]
+    #requires = [""]
     defaults = {}
     language_list = ["de_core_news_sm"]
 
     def __init__(self, component_config=None):
         super(SocialRelationExtractor, self).__init__(component_config)
         self.re = RelationExtractor(LANG.DE)
-
-    def convert_to_rasa(self, extracted_relation):
-        # TODO
-        entity = {}
-
-        return entity
+        self.ae = AnalyticsEngine(LANG.DE)
+        self.rt = RelationTypes()
 
     def process(self, message, **kwargs):
-        extracted_relations = self.re.extract_relations(message.text)
-        # TODO
-        chat_entities = []
-        chat_entity = self.convert_to_rasa(extracted_relations)
+        print(f'Processing Message {message.text}')
+        extracted_relations, response_message = self.ae.analyze_utterance(message.text, persist=True)
+        print(f'Extracted relations: {extracted_relations}')
+
+        if extracted_relations:
+            if len(extracted_relations[0]) == 3:
+                entity_value = extracted_relations[0][2]
+            else:
+                entity_value = self.rt.get_relation_from_relation_type_DE(extracted_relations[0][1])
+
+            entity = {"value": entity_value,
+                      "confidence": 1,
+                      "entity": "relativename",
+                      "extractor": "sentiment_extractor"}
+
+            message.set("entities", [entity], add_to_output=True)
+
+            # TODO set intent
+            intent = {"confidence": 1,
+                      "name": "introduce_relationships"}
+
+            #message.set("intent", [intent], add_to_output=True)

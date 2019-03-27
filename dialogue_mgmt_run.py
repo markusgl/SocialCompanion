@@ -175,12 +175,12 @@ def load_dm_config():
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", type=str, help="https web hook url from ngrok")
     parser.add_argument("--tts", type=bool, help="if true, text to speech output is activated")
     parser.add_argument("--train", type=bool, help="if true, (re-)trains the dialog model")
     parser.add_argument("--voicechannel", type=bool, help="if true, runs the voice channel")
+    parser.add_argument("--cli", type=bool, help="if true, runs the cli channel")
     args = parser.parse_args()
 
     if args.url and args.tts and args.train:
@@ -193,6 +193,8 @@ if __name__ == '__main__':
         run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False, url=args.url)
     elif args.voicechannel and args.url:
         run_voice_channel(train=False, nlu_name=NLU.rasanlu, url=args.url)
+    elif args.cli:
+        run_cli_bot(train=False, nlu_name=NLU.rasanlu)
     else:
         run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False)
 
