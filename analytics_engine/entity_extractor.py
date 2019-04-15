@@ -8,7 +8,7 @@ Used for extracting only PERSON entities and PRONOUNS for social relation extrac
 
 import re
 import os
-import en_core_web_md
+import en_core_web_md, de_core_news_sm
 
 from abc import ABC, abstractmethod
 
@@ -109,10 +109,27 @@ class FlairEntityExtractor(EntityExtractor):
 
 
 class SpacyEntityExtractor(EntityExtractor):
-    def __init__(self):
-        self.nlp = en_core_web_md.load()
-        self.spacy_per_symbol = 'PERSON'
-        self.me_list = ['i', 'my']
+    def __init__(self, nlp=None, me_list=None, spacy_per_symbol=None):
+        self.nlp = nlp
+        self.me_list = me_list
+        self.spacy_per_symbol = spacy_per_symbol
+
+    # Factory methods for language selection
+    @classmethod
+    def de_lang(cls):
+        nlp = de_core_news_sm.load()
+        me_list = ['ich', 'mein', 'meine']
+        spacy_per_symbol = 'PER'
+
+        return cls(nlp, me_list, spacy_per_symbol)
+
+    @classmethod
+    def en_lang(cls):
+        nlp = en_core_web_md.load()
+        me_list = ['i', 'my', 'me']
+        spacy_per_symbol = 'PERSON'
+
+        return cls(nlp, me_list, spacy_per_symbol)
 
     def extract_entities(self, raw_text):
         """
@@ -124,16 +141,17 @@ class SpacyEntityExtractor(EntityExtractor):
         sentence = re.sub('\s{2,}', ' ', raw_text)  # delete multiple consecutive spaces
         doc = self.nlp(sentence)
         entities = []
-
-        for token in doc:
-            if token.text.lower() in self.me_list:
-                entities.append('USER')
+        per_entities = []
 
         for ent in doc.ents:
             if ent.label_ == self.spacy_per_symbol:
-                entities.append(ent.text.lower())
+                per_entities.append(ent.text.lower())
 
-        return entities
+        for token in doc:
+            if token.text.lower() in self.me_list or token.text.lower() in per_entities:
+                entities.append(token.text.lower())
+
+        return entities, per_entities
 
 
 class StanfordAnalyzer(EntityExtractor):
@@ -170,3 +188,4 @@ class StanfordAnalyzer(EntityExtractor):
                 entities.append(entity_text)
 
         return entities
+

@@ -29,4 +29,3 @@
     - slot{"me_name": "glas"}
     - slot{"firstname": null}
     
-    

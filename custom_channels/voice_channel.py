@@ -14,9 +14,6 @@ from rasa_core.channels.rest import HttpInputComponent
 
 from speech_handling.text_to_speech import SapiTTS, GoogleTTS
 
-from frontend.qt_gui import ChatWindow
-from PyQt5.QtWidgets import *
-
 logger = logging.getLogger(__name__)
 
 
@@ -33,6 +30,7 @@ class VoiceOutput(OutputChannel):
         utils.print_color(message, self.default_output_color)
 
         # send response message via http
+        """
         url = self.url
         print(f'Sending text message {message} to output address {url}')
         data = {"sender": "bot", "message": message}
@@ -44,7 +42,7 @@ class VoiceOutput(OutputChannel):
                 data=data_json,
                 headers=headers
         )
-
+        """
         return self.tts.utter_voice_message(message)
 
 

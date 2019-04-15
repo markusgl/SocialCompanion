@@ -89,7 +89,7 @@ class NetworkGraph:
         result = self.graph.run(query,
                                 node_name=_node_name,
                                 ).data()
-        print(result)
+
         if result:
             node = result[0]['n.name']
         else:
@@ -230,7 +230,3 @@ class NetworkGraph:
 
         return contactname
 
-
-if __name__ == '__main__':
-    ng = NetworkGraph()
-    print(ng.search_node_by_name('Hans'))

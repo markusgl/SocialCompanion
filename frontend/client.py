@@ -16,8 +16,8 @@ recognizer = sr.Recognizer()
 
 def send_message_to_voice_channel(message):
     # encoded_query = quote(query)
-    #print(f'sending message {message}')
-    url = "http://56b7de37.ngrok.io/app/message"
+    print(f'sending message {message}')
+    url = "http://5fb525f4.ngrok.io/app/message"
 
     data = {"sender": "user", "message": message}
     data_json = json.dumps(data)

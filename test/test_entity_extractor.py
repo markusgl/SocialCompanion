@@ -1,4 +1,6 @@
-from analytics_engine.entity_extractor import FlairEntityExtractor
+import time
+
+from analytics_engine.entity_extractor import FlairEntityExtractor, SpacyEntityExtractor
 
 
 def test_extract_entities():
@@ -53,3 +55,44 @@ def test_extract_entities_6():
 
     assert entities == ['my', 'tom_cruise', 'my', 'nicole_kidman', 'my', 'madonna']
     assert per_entities == ['tom_cruise', 'nicole_kidman', 'madonna']
+
+
+def test_extract_entities_7():
+    utterance = u'''Peter ist der Vater von Hans.'''
+    start = time.time()
+    fee = FlairEntityExtractor.de_lang()
+    entities, per_entities = fee.extract_entities(utterance)
+    print(f'Flair duration: {time.time() - start}')
+
+    assert entities == ['peter', 'hans']
+    assert per_entities == ['peter', 'hans']
+
+
+def test_extract_entities_8():
+    utterance = u'''Peter ist der Vater von Tom.'''
+    start = time.time()
+    see = SpacyEntityExtractor().de_lang()
+    entities, per_entities = see.extract_entities(utterance)
+    print(f'SpaCy duration: {time.time() - start}')
+
+    assert entities == ['peter', 'tom']
+    assert per_entities == ['peter', 'tom']
+
+
+def test_extract_entities_9():
+    utterance = u'''Mein kleiner Bruder Paul'''
+    see = SpacyEntityExtractor().de_lang()
+    entities, per_entities = see.extract_entities(utterance)
+
+    assert entities == ['mein', 'paul']
+    assert per_entities == ['paul']
+
+
+def test_extract_entities_10():
+    utterance = u'''Peter ist der Vater von Hans und Tom ist der Freund von Peter'''
+    see = SpacyEntityExtractor().de_lang()
+    entities, per_entities = see.extract_entities(utterance)
+
+    assert entities == ['peter', 'hans', 'tom', 'peter']
+    assert per_entities == ['peter', 'hans', 'tom', 'peter']
+

@@ -190,29 +190,7 @@
     - action_search_appointment
 * goodbye
     - utter_goodbye
-
-## Generated Story 4861291829673346146
-* greet
-    - utter_greet
-* introduce
-    - action_search_me
-    - slot{"me_name": ""}
-    - slot{"firstname": null}
-* introduce{"firstname": "markus"}
-    - slot{"firstname": "markus"}
-    - action_search_me
-    - slot{"me_name": "markus"}
-    - slot{"firstname": null}
-* find_appointment{"appointment": "termine"}
-    - slot{"appointment": "termine"}
-    - utter_ask_time
-* inform{"relativedate": "heute"}
-    - slot{"relativedate": "heute"}
-    - action_search_appointment
-* read_news{"news": "nachrichten"}
-    - slot{"news": "nachrichten"}
-    - action_read_news
-    
+  
 ## Generated Story -599900253432680093
 * find_appointment{"appointment": "termine"}
     - slot{"appointment": "termine"}
@@ -233,3 +211,63 @@
     - slot{"dateperiod": "wochenende"}
     - action_search_appointment
     
+## Generated Story -2783829852532766001
+* find_appointment{"appointment": "termine", "dateperiod": "wochenende"}
+    - slot{"appointment": "termine"}
+    - slot{"dateperiod": "wochenende"}
+    - action_search_appointment
+
+## Generated Story 5456749444384238336
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+* inform{"relativedate": "morgen"}
+    - slot{"relativedate": "morgen"}
+    - action_search_appointment
+
+## Generated Story 5909151835849625082
+* getinformation
+    - action_offer_features
+ 
+## Generated Story -1474849469512328514
+* getinformation
+    - action_offer_features
+* cal_mgmt
+    - utter_ask_cal_mgmt
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+    
+## Generated Story 230365573254311693
+* getinformation
+    - action_offer_features
+* cal_mgmt
+    - utter_ask_cal_mgmt
+* find_appointment{"appointment": "termine", "relativedate": "heute"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "heute"}
+    - action_search_appointment
+
+## Generated Story 3198622446063463113
+* start
+    - action_welcome_message
+* getinformation
+    - action_offer_features
+* cal_mgmt
+    - utter_ask_cal_mgmt
+* find_appointment{"relativedate": "morgen", "appointment": "termine"}
+    - slot{"appointment": "termine"}
+    - slot{"relativedate": "morgen"}
+    - action_search_appointment
+    
+## Generated Story -8661245260886894886
+* start
+    - action_welcome_message
+* getinformation
+    - action_offer_features
+* cal_mgmt
+    - utter_ask_cal_mgmt
+    
+  

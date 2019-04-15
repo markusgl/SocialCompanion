@@ -6,4 +6,3 @@ def test_load_data_into_graph():
     kg = KnowledgeGraph()
     kg.insert_query(graql_query)
 
-# TODO further tests

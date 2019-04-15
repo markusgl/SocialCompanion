@@ -1,48 +1,32 @@
 import requests
 import json
 import threading
+import sys
+import socket
 
+from threading import Thread
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtNetwork import QTcpSocket
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer, SimpleHTTPRequestHandler
 
+HOST, PORT = '127.0.0.1', 5000
 
-class ChatWindow(QDialog, BaseHTTPRequestHandler):
-    def __init__(self, request, clien_):
+#TODO - chat gui with http endpoint
+
+class ChatWindow(QDialog):
+    message = pyqtSignal(str)
+
+    def __init__(self):
         super().__init__()
+        #self.initWindow()
 
-        server_address = ('127.0.0.1', 8081)
-        httpd = HTTPServer(server_address, self)
-        thread = threading.Thread(target=httpd.serve_forever())
-        thread.start()
-
-        self.initWindow()
-
-    def _set_headers(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        json_data = json.loads(post_data.decode('utf-8').replace("'", '"'))
-        self.chatWindow.append(json_data['message'])
-
-        # response
-        self._set_headers()
-        message = "Hello POST!"
-        self.wfile.write(bytes(message, "utf8"))
-
-
-    def initWindow(self):
+#    def initWindow(self):
         self.label = QLabel('Listening')
 
         self.chatWindow = QTextEdit(self)
         self.chatWindow.setReadOnly(True)
-
         self.inputField = QLineEdit(self)
 
         self.startButton = QPushButton('Start', self)
@@ -63,8 +47,7 @@ class ChatWindow(QDialog, BaseHTTPRequestHandler):
 
         self.setGeometry(500, 200, 500, 500)
         self.setWindowTitle('Carebot')
-
-        self.show()
+        #self.show()
 
     def httpSendMessage(self, message):
         url = "http://bce96cee.ngrok.io/app/message"
@@ -79,16 +62,6 @@ class ChatWindow(QDialog, BaseHTTPRequestHandler):
             headers=headers
         )
 
-    def httpGetMessage(self):
-        url = "http://bce96cee.ngrok.io/app/message"
-        headers = {'Content-Type': 'application/json'}
-
-        new_message = requests.get(
-            url=url
-        )
-
-        return new_message
-
     def send_message(self, message):
         self.httpSendMessage(message)
 
@@ -96,18 +69,45 @@ class ChatWindow(QDialog, BaseHTTPRequestHandler):
         self.httpSendMessage(message)
         self.chatWindow.append('Guten Tag')
 
-    def display_new_message(self):
-        new_message = self.httpGetMessage()
-        if new_message:
-            self.chatWindow.append(new_message)
+    def display_new_message(self, message):
+        self.chatWindow.append(message)
+
+
+class HttpDaemon(QThread):
+    def __init__(self):
+        super().__init__()
+        #self.window = ChatWindow()
+
+    def run(self):
+        app = QApplication(sys.argv)
+        window = ChatWindow()
+        window.show()
+        app.exec_()
+        QThread.terminate()
+
+    def append(self, message):
+        self.window.display_new_message(message)
+
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+
+    def do_GET(self):
+        self._set_headers()
+        print('GET message received')
+        self.window.display_new_message('Test')
+        self.wfile.write("<html><body><h1>hi!</h1></body></html>")
+
+    def do_POST(self):
+        # Doesn't do anything with posted data
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        print(post_data)
+        self._set_headers()
+        self.wfile.write("<html><body><h1>POST!</h1></body></html>")
 
 
 if __name__ == '__main__':
-    app = QApplication([])
     window = ChatWindow()
 
-    timer = QTimer()
-    timer.timeout.connect(window.display_new_message)
-    timer.start(1000)
-
-    app.exec_()

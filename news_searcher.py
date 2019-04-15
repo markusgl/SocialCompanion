@@ -19,7 +19,6 @@ class NewsSearcher:
                 'language=de&'
                 'pageSize=5&'
                'q=' + topic + '&'
-               'from=2019-02-06&'
                'sortBy=popularity&'
                'apiKey=' + self.api_key)
         response = requests.get(url)
@@ -32,7 +31,7 @@ class NewsSearcher:
 
         return response.json()
 
-    def search_news(self, topic=""):
+    def search_news(self, topic=None):
         if topic:
             raw_news = self.get_topic_news(topic)
         else:

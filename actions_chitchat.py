@@ -36,4 +36,7 @@ class ActionExtractRelations(Action):
         utterance = tracker.latest_message()
 
         ae = AnalyticsEngine(lang=LANG.DE)
-        ae.analyze_utterance(utterance, persist=True)
+        result, response_mesage = ae.analyze_utterance(utterance, persist=True)
+
+        if response_mesage:
+            dispatcher.utter_message(response_mesage)

@@ -1,11 +1,10 @@
 import datetime
 
 from rasa_core.actions.action import Action
+from rasa_core.events import SlotSet
 
 from google_calendar_tasks import GoogleCalendarTasks
 from date_converter import DateConverter
-
-tts = False  # toogle speech output (text to speech)
 
 
 class ActionSearchAppointment(Action):
@@ -28,19 +27,26 @@ class ActionSearchAppointment(Action):
             given_date = tracker.get_slot('date')
             start_time = given_date
             end_time = 0
-            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('date', None)]
         elif tracker.get_slot('relativedate'):
             given_date = tracker.get_slot('relativedate')
             start_time, end_time = date_conv.convert_relativedate(given_date)
-            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('relativedate', None)]
         elif tracker.get_slot('dateperiod'):
             given_date = tracker.get_slot('dateperiod')
             start_time, end_time = date_conv.convert_dateperiod(given_date)
-            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time)
+            bot_reply_message = self._generate_reply_message_with_date(start_time, end_time, given_date)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('dateperiod', None)]
         elif tracker.get_slot('activity'):  # if only activity (subject) is given search an event by activity name
             subject = tracker.get_slot('activity')
-
             bot_reply_message = self._generate_reply_message_with_subject(subject)
+            dispatcher.utter_message(bot_reply_message)
+            return [SlotSet('activity', None)]
         else:
             bot_reply_message = "Mir fehlen leider noch Informationen zum Finden deiner Termine. \n" \
                                 "Versuche es noch einmal mit Uhrzeit oder Betreff."
@@ -63,13 +69,13 @@ class ActionSearchAppointment(Action):
         return bot_reply_message
 
     @staticmethod
-    def _generate_reply_message_with_date(start_time, end_time):
+    def _generate_reply_message_with_date(start_time, end_time, given_date):
         gcal_tasks = GoogleCalendarTasks()
         events = gcal_tasks.search_google_calendar_by_time(start_time, end_time)
         date_format = start_time.strftime('%d.%m.%Y')
 
         if events:
-            bot_reply_message = f"Ich konnte folgende Termine finden:\n"
+            bot_reply_message = f"Ich konnte folgende Termine für den {date_format} finden:\n"
             for event in events:
                 start = event['start'].get('dateTime', event['start'].get('date'))
 
@@ -80,7 +86,7 @@ class ActionSearchAppointment(Action):
                     conv_date = datetime.datetime.strptime(start[:(len(start) - 6)], '%Y-%m-%dT%H:%M:%S')
                     bot_reply_message += "{} {}\n".format(conv_date.strftime('%d.%m.%Y %H:%M'), event['summary'])
         else:
-            bot_reply_message = "Du hast heute keine Termine."
+            bot_reply_message = f"Du hast am {date_format} keine Termine."
 
         return bot_reply_message
 
@@ -98,8 +104,10 @@ class ActionMakeAppointment(Action):
                 start_date = date_conv.convert_date(tracker.get_slot('relativedate'), 'relativedate')
             elif tracker.get_slot('date'):
                 start_date = date_conv.convert_date(tracker.get_slot('date'), 'date')
-            #elif tracker.get_slot('dateperiod'):
-                # TODO
+            elif tracker.get_slot('dateperiod'):
+                bot_reply_message = "An welchem Tag möchtest du einen Termin erstellen?"
+                dispatcher.utter_message(bot_reply_message)
+                return
             else:
                 return
 

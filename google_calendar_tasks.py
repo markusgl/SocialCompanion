@@ -1,3 +1,4 @@
+import os
 import datetime
 import logging
 
@@ -6,6 +7,8 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 from fuzzywuzzy import fuzz
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class GoogleCalendarTasks:
@@ -27,10 +30,10 @@ class GoogleCalendarTasks:
 
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-        store = file.Storage('credentials.json')
+        store = file.Storage(ROOT_DIR + '/credentials.json')
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+            flow = client.flow_from_clientsecrets(ROOT_DIR + '/client_secret.json', SCOPES)
             creds = tools.run_flow(flow, store)
         service = build('calendar', 'v3', http=creds.authorize(Http()), cache_discovery=False)
 
@@ -49,10 +52,10 @@ class GoogleCalendarTasks:
 
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-        store = file.Storage('credentials.json')
+        store = file.Storage(ROOT_DIR + '/credentials.json')
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+            flow = client.flow_from_clientsecrets(ROOT_DIR + '/client_secret.json', SCOPES)
             creds = tools.run_flow(flow, store)
         service = build('calendar', 'v3', http=creds.authorize(Http()), cache_discovery=False)
 
@@ -81,7 +84,6 @@ class GoogleCalendarTasks:
 
         return appointment
 
-
     def create_event_in_google_calendar(self, start_datetime, end_datetime, subject, location=""):
         """
         :param start_datetime: datetime object
@@ -98,10 +100,10 @@ class GoogleCalendarTasks:
 
         # Setup the Calendar API
         SCOPES = 'https://www.googleapis.com/auth/calendar'
-        store = file.Storage('credentials_create_event.json')
+        store = file.Storage(ROOT_DIR + '/credentials_create_event.json')
         creds = store.get()
         if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+            flow = client.flow_from_clientsecrets(ROOT_DIR + '/client_secret.json', SCOPES)
             creds = tools.run_flow(flow, store)
         service = build('calendar', 'v3', http=creds.authorize(Http()), cache_discovery=False)
 
@@ -128,3 +130,4 @@ class GoogleCalendarTasks:
             return None
 
         return []
+

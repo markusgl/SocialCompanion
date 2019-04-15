@@ -69,6 +69,7 @@ def test_extract_relation_11():
     result = re.extract_relations(utterance)
     assert result == [('rachel', 'KNOWS', 'USER')]
 
+
 """ 
   ***** GERMAN UTTERANCES ***** 
 """
@@ -93,6 +94,21 @@ def test_extract_relations_german3():
 
     re = RelationExtractor(lang=LANG.DE)
     result = re.extract_relations(utterance, plot_graph=False)
-    print(result)
+
     assert result == [('sarah', 'KNOWS', 'anna')]
 
+
+def test_extract_relations_german4():
+    utterance = u'''Peter ist der Vater von Hans.'''
+
+    re = RelationExtractor(lang=LANG.DE)
+    result = re.extract_relations(utterance)
+    assert result == [('peter', 'father-of', 'hans')]
+
+
+def test_extract_relations_german5():
+    utterance = u'''Peter ist der Vater von Hans und Tom ist der Freund von Hubert'''
+
+    re = RelationExtractor(lang=LANG.DE)
+    result = re.extract_relations(utterance, plot_graph=True)
+    assert result == [('peter', 'father-of', 'hans'), ('tom', 'friend-of', 'peter ')]

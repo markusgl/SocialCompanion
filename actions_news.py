@@ -11,9 +11,9 @@ class ActionOfferFeatures(Action):
         return 'action_offer_features'
 
     def run(self, dispatcher, tracker, domain):
-        buttons = [{"title": '5 aktuelle Schlagzeilen', "payload": "/read_news"},
-                   {"title": 'Thema eingeben', "payload": "/ask_topic"}]
-        bot_reply_message = "Wollen Sie die fünf aktuellen Schlagzeilen hören oder ein bestimmtes Thema suchen?"
+        buttons = [{"title": 'Aktuelle Schlagzeilen', "payload": "/read_news"},
+                   {"title": 'Termine verwalten', "payload": "/cal_mgmt"}]
+        bot_reply_message = "Ich kann dir aktuelle Nachrichten zeigen oder deine Termine verwalten. Was möchtest du tun?"
 
         dispatcher.utter_button_message(text=bot_reply_message, buttons=buttons)
 
@@ -23,16 +23,17 @@ class ActionReadNews(Action):
         return 'action_read_news'
 
     def run(self, dispatcher, tracker, domain):
-        bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen: \n'
+
         ns = NewsSearcher()
 
         if tracker.get_slot('news_type'):
             topic = tracker.get_slot('news_type')
             topic = re.sub('nachrichten$', '', topic)
-            bot_reply_message += 'zum Thema' + topic
+            bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen zum Thema ' + topic.title() + ':\n'
 
             news_titles, news_urls = ns.search_news(topic)
         else:
+            bot_reply_message = 'Hier sind die fünf aktuellen Schlagzeilen: \n'
             news_titles, news_urls = ns.search_news()
 
         bot_reply_message += news_titles

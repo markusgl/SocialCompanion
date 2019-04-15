@@ -7,7 +7,7 @@ import enum
 
 from nltk.tokenize import sent_tokenize
 
-from analytics_engine.entity_extractor import FlairEntityExtractor
+from analytics_engine.entity_extractor import FlairEntityExtractor, SpacyEntityExtractor
 from analytics_engine.shortest_path_re import ShortestPathRE
 from analytics_engine.pattern_based_re import PatternBasedRE
 
@@ -25,12 +25,14 @@ class RelationExtractor:
         if lang == LANG.DE:
             self.spre = ShortestPathRE().de_lang()
             self.pbre = PatternBasedRE().de_lang()
-            self.entity_extractor = FlairEntityExtractor().de_lang()
+            #self.entity_extractor = FlairEntityExtractor().de_lang()
+            self.entity_extractor = SpacyEntityExtractor().de_lang()
 
         else:
             self.spre = ShortestPathRE().en_lang()
             self.pbre = PatternBasedRE().en_lang()
-            self.entity_extractor = FlairEntityExtractor().en_lang()
+            #self.entity_extractor = FlairEntityExtractor().en_lang()
+            self.entity_extractor = SpacyEntityExtractor().en_lang()
 
     def extract_relations(self, text, plot_graph=False, validate=False, out_val_file=None):
         extracted_relations = []

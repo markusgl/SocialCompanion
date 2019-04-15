@@ -7,6 +7,7 @@ import logging
 import json
 import os
 import enum
+import argparse
 
 from neo4j.exceptions import ServiceUnavailable
 from rasa_core.agent import Agent
@@ -80,8 +81,11 @@ def run_cli_bot(serve_forever=True, train=False, nlu_name=None):
     return agent
 
 
-def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
+def run_telegram_bot(train=False, nlu_name=None, voice_output=False, url=None):
     webhook_url, bot_name, telegram_api_key = load_dm_config()
+
+    if url:
+        webhook_url = url + '/app/webhook'
 
     if train:
         train_bot()
@@ -113,13 +117,16 @@ def run_telegram_bot(train=False, nlu_name=None, voice_output=False):
         logging.error("Error starting Telegram Channel: {}".format(err))
 
 
-def run_voice_channel(train=False, nlu_name=None):
+def run_voice_channel(train=False, nlu_name=None, url=None):
     if train:
         train_bot()
 
+    if url:
+        webhook_url = url + '/app/webhook'
+
     interpreter = select_interpreter(nlu_name)
     agent = Agent.load('./models/dialogue', interpreter)
-    input_channel = VoiceInput(output_url='http://localhost:5000')
+    input_channel = VoiceInput()
     agent.handle_channel(HttpInputChannel(5004, '/app', input_channel))
 
 
@@ -168,6 +175,27 @@ def load_dm_config():
 
 
 if __name__ == '__main__':
-    #train_bot()
-    run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False)
-    #run_voice_channel(train=False, nlu_name=NLU.rasanlu)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--url", type=str, help="https web hook url from ngrok")
+    parser.add_argument("--tts", type=bool, help="if true, text to speech output is activated")
+    parser.add_argument("--train", type=bool, help="if true, (re-)trains the dialog model")
+    parser.add_argument("--voicechannel", type=bool, help="if true, runs the voice channel")
+    parser.add_argument("--cli", type=bool, help="if true, runs the cli channel")
+    args = parser.parse_args()
+
+    if args.url and args.tts and args.train:
+        run_telegram_bot(train=args.train, nlu_name=NLU.rasanlu, voice_output=args.tts, url=args.url)
+    elif args.url and args.train:
+        run_telegram_bot(train=args.train, nlu_name=NLU.rasanlu, voice_output=False, url=args.url)
+    elif args.url and args.tts:
+        run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=args.tts, url=args.url)
+    elif args.url:
+        run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False, url=args.url)
+    elif args.voicechannel and args.url:
+        run_voice_channel(train=False, nlu_name=NLU.rasanlu, url=args.url)
+    elif args.cli:
+        run_cli_bot(train=False, nlu_name=NLU.rasanlu)
+    else:
+        run_telegram_bot(train=False, nlu_name=NLU.rasanlu, voice_output=False)
+
+
