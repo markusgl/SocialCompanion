@@ -23,9 +23,9 @@ from network_core.network_graph import NetworkGraph
 logger = logging.getLogger(__name__)
 
 
-def run_eventbot_online(input_channel, interpreter,
-                        domain_file="./data/domain.yml",
-                        training_data_file='./data/stories'):
+def run_interactive_training(input_channel, interpreter,
+                             domain_file="./data/domain.yml",
+                             training_data_file='./data/stories'):
     try:
         NetworkGraph()
     except ServiceUnavailable:
@@ -63,4 +63,4 @@ def run_eventbot_online(input_channel, interpreter,
 
 if __name__ == '__main__':
     logging.basicConfig(level="INFO")
-    run_eventbot_online(ConsoleInputChannel(), interpreter='rasa')
+    run_interactive_training(ConsoleInputChannel(), interpreter='rasa')
