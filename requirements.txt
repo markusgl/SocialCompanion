@@ -172,7 +172,7 @@ SpeechRecognition==3.8.1
 sqlitedict==1.6.0
 tabulate==0.8.2
 tensorboard==1.8.0
-tensorflow==1.8.0
+tensorflow==1.15.0
 termcolor==1.1.0
 terminaltables==3.1.0
 textacy==0.6.2
