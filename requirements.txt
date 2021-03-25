@@ -145,7 +145,7 @@ pytorch-pretrained-bert==0.3.0
 pyttsx3==2.7
 pytz==2018.5
 pywin32==223
-PyYAML==5.1
+PyYAML==5.4
 pyzmq==17.1.2
 rasa-core==0.10.4
 rasa-nlu==0.13.4
